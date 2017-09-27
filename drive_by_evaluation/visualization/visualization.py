@@ -48,10 +48,11 @@ class VisualizationAppStarter(App):
 
 class VisualizationApp(App):
 
-    def __init__(self, data_file, **kwargs):
+    def __init__(self, data_file, additional_interval, **kwargs):
         super(VisualizationApp, self).__init__(**kwargs)
 
         self.data_file = data_file
+        self.additional_interval = additional_interval
         self.camera_folder = data_file + '_images_Camera\\'
         self.camera_files = sorted([f for f in os.listdir(self.camera_folder)
                                     if os.path.isfile(os.path.join(self.camera_folder, f)) and f.endswith('.jpg')])
@@ -60,12 +61,15 @@ class VisualizationApp(App):
         #print self.camera_files
 
         options = {
-            'mc_min_speed': 4.0, 'mc_merge': True,
-            'mc_separation_threshold': 1.0, 'mc_min_measure_count': 2,
-            # 'mc_surrounding_times_s': [10.0],
-            # 'mc_surrounding_m': [50.0, 100.0],
-            'outlier_threshold_distance': 1.0, 'outlier_threshold_diff': 0.5,
-            '1cm_replacement_value': 10.01
+            'mc_min_speed': 1.0,
+            'mc_merge': True,
+            'mc_separation_threshold': 1.0,
+            'mc_min_measure_count': 2,
+            # 'mc_surrounding_times_s': [2.0, 5.0],
+            'outlier_threshold_distance': 1.0,
+            'outlier_threshold_diff': 0.5,
+            # 'replacement_values': {0.01: 10.01},
+            'min_measurement_value': 0.06,
         }
 
         self.measurements = Measurement.read(data_file, self.ground_truth_file, options=options)
@@ -111,7 +115,10 @@ class VisualizationApp(App):
 
         if self.cur_index + 1 < len(self.camera_files):
             next_time = self.get_timestamp(self.cur_index + 1)
-            Clock.schedule_once(self.show_next_image, next_time - cur_time)
+            Clock.schedule_once(self.show_next_image, next_time - cur_time + self.additional_interval)
+        else:
+            self.cur_index = -1
+            Clock.schedule_once(self.show_next_image, 1)
 
     def get_timestamp(self, index):
         f = self.camera_files[index]
@@ -120,5 +127,9 @@ class VisualizationApp(App):
 
 
 if __name__ == '__main__':
-    VisualizationApp('C:\\sw\\master\\collected data\\data_20170725_linz\\raw_20170725_065205_690205.dat').run()
+    # VisualizationApp('C:\\sw\\master\\scenarios\\parking_cars.dat').run()
+    # VisualizationApp('C:\\sw\\master\\scenarios\\parking_cars_angular.dat').run()
+    # VisualizationApp('C:\\sw\\master\\scenarios\\overtaking_bike.dat', 0.1).run()
+    VisualizationApp('C:\\sw\\master\\scenarios\\overtaking_cars_and_perpendicular_cars.dat', 0.02).run()
+
 

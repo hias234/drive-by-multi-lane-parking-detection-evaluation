@@ -1,4 +1,5 @@
 from drive_by_evaluation.ground_truth import GroundTruthClass
+import numpy as np
 
 
 class DataSet:
@@ -59,6 +60,67 @@ class DataSet:
             if use_floats:
                 dataset.append_sample(features, ['FREE_SPACE', 'PARKING_CAR', 'OVERTAKING_SITUATION', 'PARKING_MC_BC']
                                                  .index(ground_truth))
+            else:
+                dataset.append_sample(features, ground_truth)
+
+        return dataset
+
+    @staticmethod
+    def get_raw_sensor_dataset(measure_collections, dataset=None, use_floats=False):
+        if dataset is None:
+            dataset = DataSet(['FREE_SPACE', 'PARKING_CAR', 'OVERTAKING_SITUATION', 'PARKING_MC_BC'])
+
+        for i, mc in enumerate(measure_collections):
+            features = np.zeros(1024)
+            features[:min(1024, len(mc.measures))] = [m.distance for m in mc.measures][:1024]
+
+            ground_truth = 'FREE_SPACE'
+            gt = mc.get_probable_ground_truth()
+            if GroundTruthClass.is_parking_car(gt):
+                ground_truth = 'PARKING_CAR'
+            elif GroundTruthClass.is_overtaking_situation(gt):
+                ground_truth = 'OVERTAKING_SITUATION'
+            elif GroundTruthClass.is_parking_motorcycle_or_bicycle(gt):
+                ground_truth = 'PARKING_MC_BC'
+
+            if use_floats:
+                dataset.append_sample(features, ['FREE_SPACE', 'PARKING_CAR', 'OVERTAKING_SITUATION', 'PARKING_MC_BC']
+                                      .index(ground_truth))
+            else:
+                dataset.append_sample(features, ground_truth)
+
+        return dataset
+
+    @staticmethod
+    def get_raw_sensor_dataset_per_10cm(measure_collections, dataset=None, use_floats=False):
+        if dataset is None:
+            dataset = DataSet(['FREE_SPACE', 'PARKING_CAR', 'OVERTAKING_SITUATION', 'PARKING_MC_BC'])
+
+        for i, mc in enumerate(measure_collections):
+            features = np.zeros(100)
+            i = 0
+            next_length = 0.0
+            first_m = mc.measures[0]
+            for m in mc.measures:
+                if i < len(features):
+                    cur_length = m.distance_to(first_m)
+                    if next_length <= cur_length:
+                        features[i] = m.distance
+                        next_length += 0.1
+                        i += 1
+
+            ground_truth = 'FREE_SPACE'
+            gt = mc.get_probable_ground_truth()
+            if GroundTruthClass.is_parking_car(gt):
+                ground_truth = 'PARKING_CAR'
+            elif GroundTruthClass.is_overtaking_situation(gt):
+                ground_truth = 'OVERTAKING_SITUATION'
+            elif GroundTruthClass.is_parking_motorcycle_or_bicycle(gt):
+                ground_truth = 'PARKING_MC_BC'
+
+            if use_floats:
+                dataset.append_sample(features, ['FREE_SPACE', 'PARKING_CAR', 'OVERTAKING_SITUATION', 'PARKING_MC_BC']
+                                      .index(ground_truth))
             else:
                 dataset.append_sample(features, ground_truth)
 

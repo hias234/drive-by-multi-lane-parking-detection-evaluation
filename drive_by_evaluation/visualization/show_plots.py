@@ -133,6 +133,25 @@ class MeasurementVisualization:
             #plt.scatter([measure_collection.first_measure().timestamp], [measure_collection.get_acceleration() * 1000], color='orange')
         fig.show()
 
+    def show_2d_scatter(self, measure_collections, fig=None):
+        if fig is None:
+            fig = plt.figure(500)
+        for measure_collection in measure_collections:
+            xs = [measure_collection.length]
+            ys = [measure_collection.avg_distance]
+            probable_gt = measure_collection.get_probable_ground_truth()
+            color = 'black'
+            if GroundTruthClass.is_parking_car(probable_gt):
+                color = 'orange'
+            elif GroundTruthClass.is_overtaking_situation(probable_gt):
+                color = 'magenta'
+            elif GroundTruthClass.is_parking_motorcycle_or_bicycle(probable_gt):
+                color = 'yellow'
+            plt.scatter(xs, ys, color=color, s=5)
+
+            # plt.scatter([measure_collection.first_measure().timestamp], [measure_collection.get_acceleration() * 1000], color='orange')
+        fig.show()
+
     def show_distance_for_class(self, measure_collections, classes, fig=None):
         if fig is None:
             fig = plt.figure(9)
@@ -201,8 +220,9 @@ if __name__ == '__main__':
     measure_collections_dir = MeasureCollection.read_directory(base_path, options=options)
     #gt25 = 0
     i = 1
-    for file_name, measure_collection in measure_collections_dir.iteritems():
-        visualization.show_distances_plus_segmentation(measure_collection, fig=plt.figure(i))
+    for file_name, measure_collection in measure_collections_dir.items():
+        visualization.show_2d_scatter(measure_collection, fig=plt.figure(1))
+        #visualization.show_distances_plus_segmentation(measure_collection, fig=plt.figure(i))
         #visualization.show_distance_for_class(measure_collection, [GroundTruthClass.OVERTAKEN_BICYCLE], fig=plt.figure(i))
         #gt25 += len([mc for mc in measure_collection if mc.get_probable_ground_truth() == GroundTruthClass.FREE_SPACE and mc.length >= 5])
         #free_space_measure_collections.extend([mc for mc in measure_collection if mc.get_probable_ground_truth() == GroundTruthClass.FREE_SPACE]);

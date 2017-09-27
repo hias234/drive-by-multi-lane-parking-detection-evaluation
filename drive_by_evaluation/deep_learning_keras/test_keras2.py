@@ -4,7 +4,9 @@ import keras
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation
 from keras.layers import LSTM
+from keras.layers import Embedding
 from keras.optimizers import SGD
+from keras.preprocessing import sequence
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
 from sklearn.model_selection import cross_val_score
@@ -44,32 +46,28 @@ x_test = np.array([x_t for i, x_t in enumerate(dataset.x) if i >= len(dataset.x)
 y_test = np.array([x_t for i, x_t in enumerate(dataset.y_true) if i >= len(dataset.x) * 0.8])
                                    #num_classes=len(dataset.class_labels))
 
-x_train = np.reshape(x_train, (x_train.shape[0], 1, x_train.shape[1]))
-x_test = np.reshape(x_test, (x_test.shape[0], 1, x_test.shape[1]))
+#x_train = np.reshape(x_train, (x_train.shape[0], 1, x_train.shape[1]))
+#x_test = np.reshape(x_test, (x_test.shape[0], 1, x_test.shape[1]))
+
+length = len(x_train)
+max_review_length = 100
+x_train = sequence.pad_sequences(x_train, maxlen=max_review_length)
+x_test = sequence.pad_sequences(x_test, maxlen=max_review_length)
 
 print('x_train[0]', x_train[0])
 print('y_train[0]', y_train[0])
 
+embedding_vecor_length = 50
 model = Sequential()
 
-model.add(LSTM(
-    input_dim=len(x_train[0]),
-    output_dim=50,
-    return_sequences=True))
+model.add(Embedding(length, embedding_vecor_length, input_length=max_review_length))
 model.add(Dropout(0.2))
-
-model.add(LSTM(
-    100,
-    return_sequences=False))
+model.add(LSTM(100))
 model.add(Dropout(0.2))
-
-model.add(Dense(
-     output_dim=1))
-model.add(Activation("linear"))
-#model.add(Dense(len(dataset.class_labels), activation='softmax'))
+model.add(Dense(1, activation='sigmoid'))
 
 sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
-model.compile(loss='categorical_crossentropy',
+model.compile(loss='sparse_categorical_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
 

@@ -1,4 +1,5 @@
 import csv
+from geopy.distance import vincenty
 
 from drive_by_evaluation.ground_truth import GroundTruth
 
@@ -12,6 +13,10 @@ class Measurement:
         self.longitude = longitude
         self.speed = speed
         self.ground_truth = ground_truth
+
+    def distance_to(self, other_m):
+        return vincenty((self.latitude, self.longitude),
+                        (other_m.latitude, other_m.longitude)).meters
 
     @staticmethod
     def read(file_path, ground_truth_path, options=None):

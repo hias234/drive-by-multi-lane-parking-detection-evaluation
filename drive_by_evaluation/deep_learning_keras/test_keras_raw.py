@@ -2,7 +2,7 @@
 import numpy as np
 import keras
 from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation
+from keras.layers import Dense, Dropout, Activation, Conv1D, MaxPooling1D, GlobalAveragePooling1D
 from keras.optimizers import SGD
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
@@ -13,7 +13,7 @@ from drive_by_evaluation.db_machine_learning.multi_scorer import MultiScorer
 from drive_by_evaluation.measure_collection import MeasureCollection
 from drive_by_evaluation.db_machine_learning.db_data_set import DataSet
 
-base_path = 'C:\\sw\\master\\collected data\\'
+base_path = 'C:\\sw\\master\\collected data\\data_20170725_linz\\'
 
 options = {
     'mc_min_speed': 1.0,
@@ -32,30 +32,40 @@ measure_collections_files_dir = MeasureCollection.read_directory(base_path, opti
 measure_collections_dir = {}
 for file_name, measure_collections in measure_collections_files_dir.items():
     print(file_name)
-    dataset = DataSet.get_dataset(measure_collections, dataset=dataset, use_floats=True)
+    dataset = DataSet.get_raw_sensor_dataset(measure_collections, dataset=dataset, use_floats=True)
     measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
 
 # Generate dummy data
-x_train = [x_t for i, x_t in enumerate(dataset.x) if i < len(dataset.x) * 0.8]
+x_train = np.array([x_t for i, x_t in enumerate(dataset.x) if i < len(dataset.x) * 0.8])
 y_train = keras.utils.to_categorical([x_t for i, x_t in enumerate(dataset.y_true) if i < len(dataset.x) * 0.8],
                                      num_classes=len(dataset.class_labels))
-x_test = [x_t for i, x_t in enumerate(dataset.x) if i >= len(dataset.x) * 0.8]
+x_test = np.array([x_t for i, x_t in enumerate(dataset.x) if i >= len(dataset.x) * 0.8])
 y_test = keras.utils.to_categorical([x_t for i, x_t in enumerate(dataset.y_true) if i >= len(dataset.x) * 0.8],
                                     num_classes=len(dataset.class_labels))
 
+
 print('x_train[0]', x_train[0])
 print('y_train[0]', y_train[0])
+
+# x_train = np.random.random((100, 100, 3))
+# y_train = keras.utils.to_categorical(np.random.randint(4, size=(100, 1)), num_classes=len(dataset.class_labels))
+# x_test = np.random.random((20, 100, 3))
+# y_test = keras.utils.to_categorical(np.random.randint(4, size=(20, 1)), num_classes=len(dataset.class_labels))
+# print('x_train[0]', x_train[0])
+# print('y_train[0]', y_train[0])
+
 
 model = Sequential()
 # Dense(64) is a fully-connected layer with 64 hidden units.
 # in the first layer, you must specify the expected input data shape:
 # here, 20-dimensional vectors.
-model.add(Dense(64, activation='relu', input_dim=len(x_train[0])))
-model.add(Dropout(0.1))
-model.add(Dense(64, activation='relu'))
-model.add(Dropout(0.1))
-model.add(Dense(64, activation='relu'))
-model.add(Dropout(0.1))
+model.add(Conv1D(64, 5, activation='relu', input_shape=(2228,1024)))
+model.add(Conv1D(64, 5, activation='relu'))
+model.add(MaxPooling1D(5))
+model.add(Conv1D(128, 3, activation='relu'))
+model.add(Conv1D(128, 3, activation='relu'))
+model.add(GlobalAveragePooling1D())
+model.add(Dropout(0.5))
 model.add(Dense(len(dataset.class_labels), activation='softmax'))
 
 sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
