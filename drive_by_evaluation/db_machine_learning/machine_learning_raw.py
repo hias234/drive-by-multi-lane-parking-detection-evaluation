@@ -16,10 +16,18 @@ from sklearn.model_selection import KFold
 
 from drive_by_evaluation.db_machine_learning.db_data_set import DataSet
 from drive_by_evaluation.db_machine_learning.multi_scorer import MultiScorer
-from drive_by_evaluation.ground_truth import GroundTruthClass
+from drive_by_evaluation.ground_truth import GroundTruthClass, GroundTruth
 from drive_by_evaluation.measure_collection import MeasureCollection
 from drive_by_evaluation.measurement import Measurement
 
+import keras
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Activation
+from keras.optimizers import SGD
+from keras.wrappers.scikit_learn import KerasClassifier
+from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import KFold
 
 def get_dataset_parking_cars(measure_collections, dataset=None):
     if dataset is None:
@@ -94,6 +102,32 @@ def filter_acceleration_situations(measure_collections):
     return measure_collections
 
 
+def create_keras_model_dense():
+    mc = MeasureCollection()
+    m = Measurement(1, 1111111111, 48, 14, 4, GroundTruth(1111, GroundTruthClass.FREE_SPACE))
+    mc.add_measure(m)
+    dataset = DataSet.get_raw_sensor_dataset([mc])
+    model = Sequential()
+    model.add(Dense(64, activation='relu', input_dim=len(dataset.x[0])))
+    model.add(Dropout(0.1))
+    model.add(Dense(64, activation='relu'))
+    model.add(Dropout(0.1))
+    model.add(Dense(64, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(64, activation='relu'))
+    model.add(Dropout(0.1))
+    model.add(Dense(64, activation='relu'))
+    model.add(Dropout(0.1))
+    model.add(Dense(len(dataset.class_labels), activation='softmax'))
+
+    sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+    return model
+
+
 if __name__ == '__main__':
     base_path = 'C:\\sw\\master\\collected data\\'
     #base_path = 'C:\\sw\\master\\collected data\\data_20170718_tunnel\\'
@@ -114,6 +148,7 @@ if __name__ == '__main__':
 
     dataset_raw = None
     dataset_10cm = None
+    dataset_parking = None
     #write_to_file(base_path, ml_file_path)
     measure_collections_files_dir = MeasureCollection.read_directory(base_path, options=options)
     measure_collections_dir = {}
@@ -126,16 +161,22 @@ if __name__ == '__main__':
         #measure_collection = [mc for mc in measure_collection if mc.length > 0.5]
         dataset_raw = DataSet.get_raw_sensor_dataset(measure_collections, dataset=dataset_raw)
         dataset_10cm = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset_10cm)
+        dataset_parking = DataSet.get_raw_sensor_dataset_parking_space_detection(measure_collections, dataset=dataset_parking)
         measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
 
     datasets = {
         'dataset_raw': dataset_raw,
-        'dataset_raw_10cm': dataset_10cm
+        #'dataset_raw_10cm': dataset_10cm,
+        #'dataset_raw_parking_space': dataset_parking
     }
 
     classifiers = {
-       'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50)),
-       'NeuralNetwork_relu100000_hl10': MLPClassifier(activation='relu', max_iter=1000000, hidden_layer_sizes=(100,90,80,70,60,50,40,30,20,10)),
+       #'NeuralNetwork': MLPClassifier(),
+       #'NeuralNetwork_relu10000_hl5_10': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(100,100,100,100,100)),
+       #'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50,50,50,50,50)),
+       #'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50)),
+        'Keras': KerasClassifier(build_fn=create_keras_model_dense, epochs=100, batch_size=128, class_weights=dataset_raw.get_class_weights()),
+       #'NeuralNetwork_relu100000_hl10': MLPClassifier(activation='relu', max_iter=1000000, hidden_layer_sizes=(100,90,80,70,60,50,40,30,20,10)),
     }
 
     for dataset_name, dataset in datasets.items():

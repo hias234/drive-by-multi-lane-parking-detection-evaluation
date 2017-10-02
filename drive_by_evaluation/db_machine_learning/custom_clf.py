@@ -7,7 +7,7 @@ class SurroundingClf(BaseEstimator, ClassifierMixin):
 
     def __init__(self, measure_collection_dir, base_clf=None, lvl2_clf=None):
         self.measure_collection_dir = measure_collection_dir
-        print measure_collection_dir
+        print(measure_collection_dir)
         self.base_clf = base_clf
         self.lvl2_clf = lvl2_clf
         self.extended_x = None
@@ -19,7 +19,7 @@ class SurroundingClf(BaseEstimator, ClassifierMixin):
 
         # dict where key = id and value = predicted
         y_pred = {x[0]: self.base_clf.predict(np.array(x).reshape(1, -1))[0] for x in X}
-        print y_pred
+        print(y_pred)
 
         for index, x in enumerate(X):
             id = x[0]

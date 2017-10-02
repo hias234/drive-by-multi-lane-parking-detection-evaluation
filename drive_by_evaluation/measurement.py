@@ -118,7 +118,7 @@ class Measurement:
             distance_to_next = m.distance - next_m.distance
 
             if (abs(distance_to_last) > outlier_threshold_distance and
-                        abs(distance_to_last - distance_to_next) < outlier_threshold_diff):
+                abs(distance_to_last - distance_to_next) < outlier_threshold_diff):
                 measurements.pop(i)
             else:
                 i += 1
