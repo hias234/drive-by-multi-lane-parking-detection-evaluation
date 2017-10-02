@@ -158,13 +158,13 @@ if __name__ == '__main__':
         #MeasureCollection.write_arff_file(measure_collections1, ml_file_path)
         #measure_collection = [mc for mc in measure_collection if mc.length > 0.5]
         dataset_raw = DataSet.get_raw_sensor_dataset(measure_collections, dataset=dataset_raw, is_softmax_y=True)
-        dataset_10cm = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset_10cm, is_softmax_y=True)
+        dataset_10cm = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset_10cm, is_softmax_y=False)
         dataset_parking = DataSet.get_raw_sensor_dataset_parking_space_detection(measure_collections, dataset=dataset_parking)
         measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
 
     datasets = {
-        'dataset_raw': dataset_raw,
-        #'dataset_raw_10cm': dataset_10cm,
+        #'dataset_raw': dataset_raw,
+        'dataset_raw_10cm': dataset_10cm,
         #'dataset_raw_parking_space': dataset_parking
     }
 
@@ -172,8 +172,8 @@ if __name__ == '__main__':
        #'NeuralNetwork': MLPClassifier(),
        #'NeuralNetwork_relu10000_hl5_10': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(100,100,100,100,100)),
        #'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50,50,50,50,50)),
-       #'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50)),
-        'Keras': KerasClassifier(build_fn=create_keras_model_dense, epochs=100, batch_size=128, class_weight=dataset_raw.get_class_weights()),
+       'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50)),
+        #'Keras': KerasClassifier(build_fn=create_keras_model_dense, epochs=100, batch_size=128, class_weight=dataset_raw.get_class_weights()),
        #'NeuralNetwork_relu100000_hl10': MLPClassifier(activation='relu', max_iter=1000000, hidden_layer_sizes=(100,90,80,70,60,50,40,30,20,10)),
     }
 

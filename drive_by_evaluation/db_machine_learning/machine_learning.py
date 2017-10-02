@@ -143,7 +143,7 @@ if __name__ == '__main__':
     classifiers = {
        #'NeuralNetwork': MLPClassifier(),
        #'NeuralNetwork_relu1000': MLPClassifier(activation='relu', max_iter=10000000000),
-       'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50)),
+       #'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50)),
        #'NeuralNetwork_relu1000000': MLPClassifier(activation='relu', max_iter=10000000),
        #'DecisionTree_GINI': DecisionTreeClassifier(),
        #'knn20': KNeighborsClassifier(21),
