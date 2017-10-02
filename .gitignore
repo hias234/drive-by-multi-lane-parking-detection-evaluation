@@ -100,3 +100,4 @@ ENV/
 # mypy
 .mypy_cache/
 
+parking_space_maps/Ruhender_Verkehr_Urfahr.dxf

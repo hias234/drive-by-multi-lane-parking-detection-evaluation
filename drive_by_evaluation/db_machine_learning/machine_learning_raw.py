@@ -131,8 +131,6 @@ def create_keras_model_dense():
 if __name__ == '__main__':
     base_path = 'C:\\sw\\master\\collected data\\'
     #base_path = 'C:\\sw\\master\\collected data\\data_20170718_tunnel\\'
-    # ml_file_path = 'C:\\sw\\master\\00ml.arff'
-    ml_file_path = 'C:\\sw\\master\\20170718ml.arff'
 
     options = {
         'mc_min_speed': 1.0,
@@ -159,8 +157,8 @@ if __name__ == '__main__':
         #print('filtered', len(measure_collection))
         #MeasureCollection.write_arff_file(measure_collections1, ml_file_path)
         #measure_collection = [mc for mc in measure_collection if mc.length > 0.5]
-        dataset_raw = DataSet.get_raw_sensor_dataset(measure_collections, dataset=dataset_raw)
-        dataset_10cm = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset_10cm)
+        dataset_raw = DataSet.get_raw_sensor_dataset(measure_collections, dataset=dataset_raw, is_softmax_y=True)
+        dataset_10cm = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset_10cm, is_softmax_y=True)
         dataset_parking = DataSet.get_raw_sensor_dataset_parking_space_detection(measure_collections, dataset=dataset_parking)
         measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
 
@@ -175,7 +173,7 @@ if __name__ == '__main__':
        #'NeuralNetwork_relu10000_hl5_10': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(100,100,100,100,100)),
        #'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50,50,50,50,50)),
        #'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50)),
-        'Keras': KerasClassifier(build_fn=create_keras_model_dense, epochs=100, batch_size=128, class_weights=dataset_raw.get_class_weights()),
+        'Keras': KerasClassifier(build_fn=create_keras_model_dense, epochs=100, batch_size=128, class_weight=dataset_raw.get_class_weights()),
        #'NeuralNetwork_relu100000_hl10': MLPClassifier(activation='relu', max_iter=1000000, hidden_layer_sizes=(100,90,80,70,60,50,40,30,20,10)),
     }
 
@@ -190,26 +188,6 @@ if __name__ == '__main__':
             print(dataset_name)
             print(name)
 
-            # X_train, X_test, y_train, y_test = train_test_split(dataset.x, dataset.y_true, test_size=0.33, random_state=42)
-            # clf.fit(X_train, y_train)
-            # print('fitted')
-            # i = 0
-            # mismatches = []
-            # while i < len(X_test[0]):
-            #      predicted = clf.predict(np.array(X_test), [[1, 15], [15, 0]])
-            #                              #.reshape(1, -1))
-            #      #print(predicted[0])
-            #      #print(dataset_test[1][i])
-            #      if predicted[0] != y_test[i]:
-            #           print('features: ', X_test)
-            #           print('GroundTruth: ', y_test)
-            #           print('Predicted: ', predicted[0])
-            #           print('')
-            #           mismatches.append((X_test, y_test, predicted[0]))
-            #      i += 1
-            # print(len(mismatches))
-            #
-            # continue
             kfold = KFold(n_splits=5)
             cross_val_score(clf, dataset.x, dataset.y_true, cv=kfold, scoring=scorer)
             results = scorer.get_results()

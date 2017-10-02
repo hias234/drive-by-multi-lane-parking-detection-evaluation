@@ -32,16 +32,14 @@ measure_collections_files_dir = MeasureCollection.read_directory(base_path, opti
 measure_collections_dir = {}
 for file_name, measure_collections in measure_collections_files_dir.items():
     print(file_name)
-    dataset = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset, use_floats=True)
+    dataset = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset, is_softmax_y=True)
     measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
 
 # Generate dummy data
 x_train = [x_t for i, x_t in enumerate(dataset.x) if i < len(dataset.x) * 0.8]
-y_train = keras.utils.to_categorical([x_t for i, x_t in enumerate(dataset.y_true) if i < len(dataset.x) * 0.8],
-                                     num_classes=len(dataset.class_labels))
+y_train = [x_t for i, x_t in enumerate(dataset.y_true) if i < len(dataset.x) * 0.8]
 x_test = [x_t for i, x_t in enumerate(dataset.x) if i >= len(dataset.x) * 0.8]
-y_test = keras.utils.to_categorical([x_t for i, x_t in enumerate(dataset.y_true) if i >= len(dataset.x) * 0.8],
-                                    num_classes=len(dataset.class_labels))
+y_test = [x_t for i, x_t in enumerate(dataset.y_true) if i >= len(dataset.x) * 0.8]
 
 print('x_train[0]', x_train[0])
 print('y_train[0]', y_train[0])
@@ -65,7 +63,8 @@ model.compile(loss='categorical_crossentropy',
               metrics=['accuracy'])
 
 model.fit(x_train, y_train,
-          epochs=100)
+          epochs=100,
+          class_weight=dataset.get_class_weights())
 score = model.evaluate(x_test, y_test)
 
 print('score', score)
