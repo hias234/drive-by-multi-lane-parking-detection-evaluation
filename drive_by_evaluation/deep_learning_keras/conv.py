@@ -72,7 +72,7 @@ def create_conv_model(dataset, x_train, y_train):
                   metrics=['accuracy'])
 
     model.fit(x_train, y_train,
-              epochs=20,
+              epochs=100,
               batch_size=128)
 
     return model

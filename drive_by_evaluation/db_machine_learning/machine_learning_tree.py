@@ -16,18 +16,11 @@ from sklearn.model_selection import KFold
 
 from drive_by_evaluation.db_machine_learning.db_data_set import DataSet
 from drive_by_evaluation.db_machine_learning.multi_scorer import MultiScorer
-from drive_by_evaluation.ground_truth import GroundTruthClass, GroundTruth
+from drive_by_evaluation.ground_truth import GroundTruthClass
 from drive_by_evaluation.measure_collection import MeasureCollection
 from drive_by_evaluation.measurement import Measurement
+from sklearn import tree
 
-import keras
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation
-from keras.optimizers import SGD
-from keras.wrappers.scikit_learn import KerasClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import KFold
 
 def get_dataset_parking_cars(measure_collections, dataset=None):
     if dataset is None:
@@ -102,35 +95,9 @@ def filter_acceleration_situations(measure_collections):
     return measure_collections
 
 
-def create_keras_model_dense():
-    mc = MeasureCollection()
-    m = Measurement(1, 1111111111, 48, 14, 4, GroundTruth(1111, GroundTruthClass.FREE_SPACE))
-    mc.add_measure(m)
-    dataset = DataSet.get_raw_sensor_dataset([mc])
-    model = Sequential()
-    model.add(Dense(64, activation='relu', input_dim=len(dataset.x[0])))
-    model.add(Dropout(0.1))
-    model.add(Dense(64, activation='relu'))
-    model.add(Dropout(0.1))
-    model.add(Dense(64, activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(64, activation='relu'))
-    model.add(Dropout(0.1))
-    model.add(Dense(64, activation='relu'))
-    model.add(Dropout(0.1))
-    model.add(Dense(len(dataset.class_labels), activation='softmax'))
-
-    sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
-    model.compile(loss='categorical_crossentropy',
-                  optimizer='adam',
-                  metrics=['accuracy'])
-
-    return model
-
-
 if __name__ == '__main__':
-    base_path = 'C:\\sw\\master\\collected data\\'
-    #base_path = 'C:\\sw\\master\\collected data\\data_20170718_tunnel\\'
+    #base_path = 'C:\\sw\\master\\collected data\\'
+    base_path = 'C:\\sw\\master\\collected data\\data_20170718_tunnel\\'
 
     options = {
         'mc_min_speed': 1.0,
@@ -144,10 +111,7 @@ if __name__ == '__main__':
         'min_measurement_value': 0.06,
     }
 
-    dataset_raw = None
-    dataset_10cm = None
-    dataset_parking = None
-    #write_to_file(base_path, ml_file_path)
+    dataset = None
     measure_collections_files_dir = MeasureCollection.read_directory(base_path, options=options)
     measure_collections_dir = {}
     for file_name, measure_collections in measure_collections_files_dir.items():
@@ -157,57 +121,89 @@ if __name__ == '__main__':
         #print('filtered', len(measure_collection))
         #MeasureCollection.write_arff_file(measure_collections1, ml_file_path)
         #measure_collection = [mc for mc in measure_collection if mc.length > 0.5]
-        dataset_raw = DataSet.get_raw_sensor_dataset(measure_collections, dataset=dataset_raw, is_softmax_y=True)
-        dataset_10cm = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset_10cm, is_softmax_y=False)
-        dataset_parking = DataSet.get_raw_sensor_dataset_parking_space_detection(measure_collections, dataset=dataset_parking)
+        dataset = DataSet.get_dataset(measure_collections, dataset=dataset)
         measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
-
-    datasets = {
-        #'dataset_raw': dataset_raw,
-        'dataset_raw_10cm': dataset_10cm,
-        #'dataset_raw_parking_space': dataset_parking
-    }
 
     classifiers = {
        #'NeuralNetwork': MLPClassifier(),
-       #'NeuralNetwork_relu10000_hl5_10': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(100,100,100,100,100)),
-       #'NeuralNetwork_relu10000_hl10_50': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50,50,50,50,50)),
-       'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=1000000, hidden_layer_sizes=(50,50,50,50,50)),
-        #'Keras': KerasClassifier(build_fn=create_keras_model_dense, epochs=100, batch_size=128, class_weight=dataset_raw.get_class_weights()),
-       #'NeuralNetwork_relu100000_hl10': MLPClassifier(activation='relu', max_iter=1000000, hidden_layer_sizes=(100,90,80,70,60,50,40,30,20,10)),
+       #'NeuralNetwork_relu1000': MLPClassifier(activation='relu', max_iter=10000000000),
+       #'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50)),
+       #'NeuralNetwork_relu1000000': MLPClassifier(activation='relu', max_iter=10000000),
+       'DecisionTree_GINI': DecisionTreeClassifier(),
+       #'knn20': KNeighborsClassifier(21),
+       #'supportVector': SVC(),
+       #'gaussian': GaussianProcessClassifier(),
+       #'randomforest100': RandomForestClassifier(n_estimators=100, n_jobs=-1, random_state=42),
+       #'randomforest1000': RandomForestClassifier(n_estimators=1000, n_jobs=-1, random_state=42),
+       #'randomforest1000_balanced': RandomForestClassifier(n_estimators=1000, n_jobs=-1, random_state=42, class_weight='balanced'),
+       #'randomforest10000_balanced': RandomForestClassifier(n_estimators=10000, class_weight='balanced')
+       #'custom': SurroundingClf(measure_collections_dir, base_clf=MLPClassifier(), lvl2_clf=MLPClassifier())
     }
 
-    for dataset_name, dataset in datasets.items():
-        for name, clf in classifiers.items():
-            scorer = MultiScorer({
-                'Accuracy': (accuracy_score, {}),
-                'Precision': (precision_score, {'average': 'weighted'}),
-                'Recall': (recall_score, {'average': 'weighted'}),
-                'ConfusionMatrix': (confusion_matrix, {'labels': dataset.class_labels})
-            })
-            print(dataset_name)
-            print(name)
+    for name, clf in classifiers.items():
+        clf.fit(dataset.x, dataset.y_true)
 
-            kfold = KFold(n_splits=5)
-            cross_val_score(clf, dataset.x, dataset.y_true, cv=kfold, scoring=scorer)
-            results = scorer.get_results()
+        import pydot
+        from io import StringIO
 
-            confusion_m = None
-            for metric_name in results.keys():
-                if metric_name == 'ConfusionMatrix':
-                    print(metric_name)
-                    confusion_m = np.sum(results[metric_name], axis=0)
-                    print(dataset.class_labels)
-                    print(confusion_m)
-                else:
-                    print(metric_name, np.average(results[metric_name]))
+        #dot_data = StringIO()
+        tree.export_graphviz(clf, out_file='tree.dot')
+        #print(dot_data.getvalue())
+        #graph = pydot.graph_from_dot_data(dot_data.getvalue())
+        #print(graph)
+        #graph[0].write_pdf("iris.pdf")
 
-            true_pos = np.array(np.diag(confusion_m), dtype=float)
-            false_pos = np.sum(confusion_m, axis=0) - true_pos
-            false_neg = np.sum(confusion_m, axis=1) - true_pos
+        scorer = MultiScorer({
+            'Accuracy': (accuracy_score, {}),
+            'Precision': (precision_score, {'average': 'weighted'}),
+            'Recall': (recall_score, {'average': 'weighted'}),
+            'ConfusionMatrix': (confusion_matrix, {'labels': dataset.class_labels})
+        })
+        print(name)
 
-            precision = (true_pos / (true_pos + false_pos))
-            print('Precision: ', precision)
-            recall = (true_pos / (true_pos + false_neg))
-            print('Recall: ', recall)
-            print('')
+        # X_train, X_test, y_train, y_test = train_test_split(dataset.x, dataset.y_true, test_size=0.33, random_state=42)
+        # clf.fit(X_train, y_train)
+        # print('fitted')
+        # i = 0
+        # mismatches = []
+        # while i < len(X_test[0]):
+        #      predicted = clf.predict(np.array(X_test), [[1, 15], [15, 0]])
+        #                              #.reshape(1, -1))
+        #      #print(predicted[0])
+        #      #print(dataset_test[1][i])
+        #      if predicted[0] != y_test[i]:
+        #           print('features: ', X_test)
+        #           print('GroundTruth: ', y_test)
+        #           print('Predicted: ', predicted[0])
+        #           print('')
+        #           mismatches.append((X_test, y_test, predicted[0]))
+        #      i += 1
+        # print(len(mismatches))
+        #
+        # continue
+        kfold = KFold(n_splits=5)
+        cross_val_score(clf, dataset.x, dataset.y_true, cv=kfold, scoring=scorer)
+        results = scorer.get_results()
+
+        confusion_m = None
+        for metric_name in results.keys():
+            if metric_name == 'ConfusionMatrix':
+                print(metric_name)
+                confusion_m = np.sum(results[metric_name], axis=0)
+                print(dataset.class_labels)
+                print(confusion_m)
+            else:
+                print(metric_name, np.average(results[metric_name]))
+
+        true_pos = np.array(np.diag(confusion_m), dtype=float)
+        false_pos = np.sum(confusion_m, axis=0) - true_pos
+        false_neg = np.sum(confusion_m, axis=1) - true_pos
+
+        precision = (true_pos / (true_pos + false_pos))
+        print('Precision: ', precision)
+        recall = (true_pos / (true_pos + false_neg))
+        print('Recall: ', recall)
+        print('')
+
+
+

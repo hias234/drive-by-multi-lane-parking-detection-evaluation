@@ -40,8 +40,8 @@ def simple_dense_model(dataset, x_train, y_train):
                   metrics=['accuracy'])
 
     model.fit(x_train, y_train,
-              epochs=100,
-              class_weight=dataset.get_class_weights()
+              epochs=2000,
+              #class_weight=dataset.get_class_weights()
               )
 
     return model
@@ -76,6 +76,8 @@ def evaluate_model(create_model, dataset):
     confusion_sum = sumup_confusion_matrices(confusion_res, dataset.get_nr_of_classes())
     print_confusion_matrix_measures(confusion_sum)
 
+    return confusion_sum
+
 
 if __name__ == '__main__':
     base_path = 'C:\\sw\\master\\collected data\\'
@@ -100,6 +102,13 @@ if __name__ == '__main__':
         dataset = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset, is_softmax_y=True)
         measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
 
-    #evaluate_model(create_model=create_lstm_model, dataset=dataset)
-    evaluate_model(create_conv_model, dataset)
+    confusion_m_simp = evaluate_model(simple_dense_model, dataset)
+    #confusion_m_lstm = evaluate_model(create_lstm_model, dataset)
+    #confusion_m_conv = evaluate_model(create_conv_model, dataset)
+
+    print_confusion_matrix_measures(confusion_m_simp)
+    #print('lstm')
+    #print_confusion_matrix_measures(confusion_m_lstm)
+    #print('conv')
+    #print_confusion_matrix_measures(confusion_m_conv)
 

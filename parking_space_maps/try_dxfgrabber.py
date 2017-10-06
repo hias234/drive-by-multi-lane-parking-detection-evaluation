@@ -18,17 +18,17 @@ print(dxf.blocks)
 print(dxf.entities)
 
 for entity in dxf.entities:
-    #print(entity)
-    #print(entity.__dict__)
+    print(entity)
+    print(entity.__dict__)
     attribs = entity.__dict__.get('attribs', [])
     for attrib in attribs:
-        #print(attrib.__dict__)
-        try:
-            if 'insert' in attrib.__dict__:
-                #print(str(attrib.insert[0]) + ' ' + str(attrib.insert[1]))
-                print(convert_GK_to_lat_long(attrib.insert[1], attrib.insert[0]))
-        except ValueError:
-            #print('error')
-            i = 0
+        print(attrib.__dict__)
+        # try:
+        #     if 'insert' in attrib.__dict__:
+        #         #print(str(attrib.insert[0]) + ' ' + str(attrib.insert[1]))
+        #         print(convert_GK_to_lat_long(attrib.insert[1], attrib.insert[0]))
+        # except ValueError:
+        #     #print('error')
+        #     i = 0
     print('')
 
