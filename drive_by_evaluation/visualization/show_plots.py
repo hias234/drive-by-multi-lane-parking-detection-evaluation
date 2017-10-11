@@ -112,6 +112,18 @@ class MeasurementVisualization:
 
         gmap.draw("C:\\sw\\master\\mymap1.html")
 
+    def show_gps_locations_mc(self, mc_dir):
+        gmap = gmplot.GoogleMapPlotter(48.3045, 14.291153333, 16)
+        for name, mc_list in mc_dir.items():
+            gmap.scatter([mc.center_latitude for mc in mc_list if GroundTruthClass.is_parking_car(mc.get_probable_ground_truth())],
+                         [mc.center_longitude for mc in mc_list if GroundTruthClass.is_parking_car(mc.get_probable_ground_truth())],
+                         '#00FF00', size=2, marker=False)
+            gmap.scatter([mc.center_latitude for mc in mc_list if not GroundTruthClass.is_parking_car(mc.get_probable_ground_truth())],
+                         [mc.center_longitude for mc in mc_list if not GroundTruthClass.is_parking_car(mc.get_probable_ground_truth())],
+                         '#000000', size=1, marker=False)
+
+        gmap.draw("C:\\sw\\master\\mymap_mcs.html")
+
     def show_distances_plus_segmentation(self, measure_collections, fig=None):
         if fig is None:
             fig = plt.figure(8)
@@ -188,8 +200,8 @@ class MeasurementVisualization:
 if __name__ == '__main__':
     visualization = MeasurementVisualization()
     # base_path = 'C:\\sw\\master\\collected data\\data_20170725_linz\\'
-    base_path = 'C:\\sw\\master\\collected data\\data_20170908_linz\\'
-    #base_path = 'C:\\sw\\master\\collected data\\'
+    #base_path = 'C:\\sw\\master\\collected data\\data_20170908_linz\\'
+    base_path = 'C:\\sw\\master\\collected data\\'
 
     font = {'family': 'normal',
             'weight': 'normal',
@@ -198,7 +210,7 @@ if __name__ == '__main__':
     matplotlib.rc('font', **font)
 
     options = {
-        'mc_min_speed': 4.0,
+        'mc_min_speed': 3.0,
         'mc_merge': True,
         'mc_separation_threshold': 1.0,
         'mc_min_measure_count': 2,
@@ -221,7 +233,7 @@ if __name__ == '__main__':
     #gt25 = 0
     i = 1
     for file_name, measure_collection in measure_collections_dir.items():
-        visualization.show_2d_scatter(measure_collection, fig=plt.figure(1))
+        #visualization.show_2d_scatter(measure_collection, fig=plt.figure(1))
         #visualization.show_distances_plus_segmentation(measure_collection, fig=plt.figure(i))
         #visualization.show_distance_for_class(measure_collection, [GroundTruthClass.OVERTAKEN_BICYCLE], fig=plt.figure(i))
         #gt25 += len([mc for mc in measure_collection if mc.get_probable_ground_truth() == GroundTruthClass.FREE_SPACE and mc.length >= 5])
@@ -236,3 +248,5 @@ if __name__ == '__main__':
     #visualization.show_3d(measurements)
     #visualization.show_gps_locations(measurements)
     plt.show()
+
+    visualization.show_gps_locations_mc(measure_collections_dir)

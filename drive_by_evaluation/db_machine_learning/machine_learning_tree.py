@@ -1,103 +1,19 @@
-import os
-import random
-
-# from custom_clf import SurroundingClf
 
 import numpy as np
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
 from sklearn.model_selection import cross_val_score
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.neural_network import MLPClassifier
-from sklearn.svm import SVC
-from sklearn.gaussian_process import GaussianProcessClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import KFold
 
 from drive_by_evaluation.db_machine_learning.db_data_set import DataSet
 from drive_by_evaluation.db_machine_learning.multi_scorer import MultiScorer
-from drive_by_evaluation.ground_truth import GroundTruthClass
 from drive_by_evaluation.measure_collection import MeasureCollection
-from drive_by_evaluation.measurement import Measurement
 from sklearn import tree
 
 
-def get_dataset_parking_cars(measure_collections, dataset=None):
-    if dataset is None:
-        dataset = DataSet(['PARKING_CAR', 'NO_PARKING_CAR'])
-
-    for mc in measure_collections:
-        features = [mc.avg_distance, mc.get_length(), mc.get_duration(), mc.get_nr_of_measures(),
-                    mc.get_distance_variance(), mc.avg_speed, mc.get_acceleration(),
-                    mc.first_measure().distance, mc.measures[len(mc.measures) / 2].distance, mc.last_measure().distance
-                    ]
-
-        for interval, surrounding_mc in mc.time_surrounding_mcs.iteritems():
-            features.append(surrounding_mc.avg_distance)
-            features.append(surrounding_mc.avg_speed)
-            features.append(surrounding_mc.length)
-            features.append(surrounding_mc.get_acceleration())
-
-        ground_truth = 'NO_PARKING_CAR'
-        gt = mc.get_probable_ground_truth()
-        if GroundTruthClass.is_parking_car(gt):
-            ground_truth = 'PARKING_CAR'
-
-        dataset.append_sample(features, ground_truth)
-
-    return dataset
-
-
-def get_overtaking_situation_dataset(measure_collections, dataset=None):
-    if dataset is None:
-        dataset = DataSet(['NO_OVERTAKING_SITUATION', 'OVERTAKING_SITUATION'])
-
-    for mc in measure_collections:
-        if mc.get_length() > 1.0:
-            features = [mc.avg_distance, mc.get_length(), mc.get_duration(), mc.get_nr_of_measures(),
-                        mc.get_distance_variance(), mc.avg_speed, mc.get_acceleration(),
-                        mc.first_measure().distance, mc.measures[len(mc.measures) / 2].distance,
-                        mc.last_measure().distance]
-
-            for interval, surrounding_mc in mc.time_surrounding_mcs.iteritems():
-                features.append(surrounding_mc.avg_distance)
-                features.append(surrounding_mc.avg_speed)
-                features.append(surrounding_mc.length)
-                features.append(surrounding_mc.get_acceleration())
-
-            ground_truth = 'NO_OVERTAKING_SITUATION'
-            gt = mc.get_probable_ground_truth()
-            if GroundTruthClass.is_overtaking_situation(gt):
-                ground_truth = 'OVERTAKING_SITUATION'
-
-            # undersampling
-            if not GroundTruthClass.is_overtaking_situation(gt) and random.randint(0, 10) < 10:
-                dataset.append_sample(features, ground_truth)
-            elif GroundTruthClass.is_overtaking_situation(gt):
-                i = 0
-                while i < 3:
-                    dataset.append_sample(features, ground_truth)
-                    i += 1
-
-    return dataset
-
-
-def filter_acceleration_situations(measure_collections):
-    i = 0
-    for measure_collection in measure_collections:
-        #print(measure_collection.time_surrounding_mcs.get(10.0).get_acceleration())
-        if measure_collection.time_surrounding_mcs.get(10.0).get_acceleration() < -0.2:
-            measure_collections.pop(i)
-            #print(measure_collection.time_surrounding_mcs.get(10.0).get_acceleration())
-        else:
-            i += 1
-
-    return measure_collections
-
-
 if __name__ == '__main__':
-    #base_path = 'C:\\sw\\master\\collected data\\'
-    base_path = 'C:\\sw\\master\\collected data\\data_20170718_tunnel\\'
+    base_path = 'C:\\sw\\master\\collected data\\'
+    #base_path = 'C:\\sw\\master\\collected data\\data_20170718_tunnel\\'
 
     options = {
         'mc_min_speed': 1.0,
@@ -116,28 +32,11 @@ if __name__ == '__main__':
     measure_collections_dir = {}
     for file_name, measure_collections in measure_collections_files_dir.items():
         print(file_name)
-        #print(len(measure_collection))
-        #measure_collection = filter_acceleration_situations(measure_collection)
-        #print('filtered', len(measure_collection))
-        #MeasureCollection.write_arff_file(measure_collections1, ml_file_path)
-        #measure_collection = [mc for mc in measure_collection if mc.length > 0.5]
         dataset = DataSet.get_dataset(measure_collections, dataset=dataset)
         measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
 
     classifiers = {
-       #'NeuralNetwork': MLPClassifier(),
-       #'NeuralNetwork_relu1000': MLPClassifier(activation='relu', max_iter=10000000000),
-       #'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50)),
-       #'NeuralNetwork_relu1000000': MLPClassifier(activation='relu', max_iter=10000000),
        'DecisionTree_GINI': DecisionTreeClassifier(),
-       #'knn20': KNeighborsClassifier(21),
-       #'supportVector': SVC(),
-       #'gaussian': GaussianProcessClassifier(),
-       #'randomforest100': RandomForestClassifier(n_estimators=100, n_jobs=-1, random_state=42),
-       #'randomforest1000': RandomForestClassifier(n_estimators=1000, n_jobs=-1, random_state=42),
-       #'randomforest1000_balanced': RandomForestClassifier(n_estimators=1000, n_jobs=-1, random_state=42, class_weight='balanced'),
-       #'randomforest10000_balanced': RandomForestClassifier(n_estimators=10000, class_weight='balanced')
-       #'custom': SurroundingClf(measure_collections_dir, base_clf=MLPClassifier(), lvl2_clf=MLPClassifier())
     }
 
     for name, clf in classifiers.items():

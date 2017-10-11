@@ -68,7 +68,7 @@ class DataSet:
             last_distance = 0 if i == 0 else measure_collections[i - 1].avg_distance  # .last_measure().distance
             next_distance = 0 if len(measure_collections) == i + 1 else measure_collections[
                 i + 1].avg_distance  # .first_measure().distance
-            features = [mc.id,
+            features = [#mc.id,
                         mc.avg_distance,
                         mc.get_length(),
                         mc.get_duration(),
@@ -80,13 +80,13 @@ class DataSet:
                         # next_distance,
                         mc.avg_distance - last_distance,
                         mc.avg_distance - next_distance,
-                        mc.first_measure().distance - last_distance,
-                        mc.last_measure().distance - next_distance,
-                        mc.first_measure().distance,
-                        mc.measures[int(len(mc.measures) / 2)].distance,
-                        mc.measures[int(len(mc.measures) / 4)].distance,
-                        mc.measures[int(len(mc.measures) / 4 * 3)].distance,
-                        mc.last_measure().distance
+                        #mc.first_measure().distance - last_distance,
+                        #mc.last_measure().distance - next_distance,
+                        #mc.first_measure().distance,
+                        #mc.measures[int(len(mc.measures) / 2)].distance,
+                        #mc.measures[int(len(mc.measures) / 4)].distance,
+                        #mc.measures[int(len(mc.measures) / 4 * 3)].distance,
+                        #mc.last_measure().distance
                         ]
 
             for interval, surrounding_mc in mc.time_surrounding_mcs.items():
@@ -183,10 +183,59 @@ class DataSet:
                         next_length += 0.1
                         i += 1
 
-            #np.append(features, mc.avg_speed)
-            #np.append(features, mc.get_acceleration())
+            prev_features = DataSet.get_prev_raw_sensor_data_per_10cm(measure_collections, mc_index)
+
+            x = prev_features.tolist()
+            x.extend(features)
+            x.extend(DataSet.get_next_raw_sensor_data_per_10cm(measure_collections, mc_index).tolist())
+            x.append(mc.avg_speed)
+            x.append(mc.get_acceleration())
 
             ground_truth = DataSet.get_four_classes_groundtruth(mc)
-            dataset = DataSet.append_to_dataset(dataset, features.tolist(), ground_truth, class_labels)
+            dataset = DataSet.append_to_dataset(dataset, x, ground_truth, class_labels)
 
         return dataset
+
+    @staticmethod
+    def get_prev_raw_sensor_data_per_10cm(measure_collections, mc_index):
+        prev_features = np.zeros(100)
+        cur_mc = measure_collections[mc_index]
+        i = 0
+        next_length = 0.0
+        first_m = cur_mc.measures[0]
+
+        prev_index = mc_index - 1
+        while prev_index >= 0 and i < len(prev_features):
+            mc = measure_collections[prev_index]
+            for m in mc.measures[::-1]: # traverse over reverted list of measures
+                if i < len(prev_features):
+                    cur_length = m.distance_to(first_m)
+                    if next_length <= cur_length:
+                        prev_features[len(prev_features) - 1 - i] = m.distance
+                        next_length += 0.1
+                        i += 1
+            prev_index -= 1
+
+        return prev_features
+
+    @staticmethod
+    def get_next_raw_sensor_data_per_10cm(measure_collections, mc_index):
+        next_features = np.zeros(100)
+        cur_mc = measure_collections[mc_index]
+        i = 0
+        next_length = 0.0
+        first_m = cur_mc.measures[len(cur_mc.measures) - 1]
+
+        next_index = mc_index + 1
+        while next_index < len(measure_collections) and i < len(next_features):
+            mc = measure_collections[next_index]
+            for m in mc.measures:
+                if i < len(next_features):
+                    cur_length = m.distance_to(first_m)
+                    if next_length <= cur_length:
+                        next_features[i] = m.distance
+                        next_length += 0.1
+                        i += 1
+            next_index += 1
+
+        return next_features

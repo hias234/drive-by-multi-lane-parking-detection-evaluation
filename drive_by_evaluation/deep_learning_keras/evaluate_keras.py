@@ -83,7 +83,7 @@ if __name__ == '__main__':
     base_path = 'C:\\sw\\master\\collected data\\'
 
     options = {
-        'mc_min_speed': 1.0,
+        'mc_min_speed': 3.0,
         'mc_merge': True,
         'mc_separation_threshold': 1.0,
         'mc_min_measure_count': 2,

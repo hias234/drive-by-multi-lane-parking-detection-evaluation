@@ -133,7 +133,7 @@ if __name__ == '__main__':
     #base_path = 'C:\\sw\\master\\collected data\\data_20170718_tunnel\\'
 
     options = {
-        'mc_min_speed': 1.0,
+        'mc_min_speed': 3.0,
         'mc_merge': True,
         'mc_separation_threshold': 1.0,
         'mc_min_measure_count': 2,
@@ -146,6 +146,7 @@ if __name__ == '__main__':
 
     dataset_raw = None
     dataset_10cm = None
+    dataset_10cm_surrounding = None
     dataset_parking = None
     #write_to_file(base_path, ml_file_path)
     measure_collections_files_dir = MeasureCollection.read_directory(base_path, options=options)
@@ -159,12 +160,14 @@ if __name__ == '__main__':
         #measure_collection = [mc for mc in measure_collection if mc.length > 0.5]
         dataset_raw = DataSet.get_raw_sensor_dataset(measure_collections, dataset=dataset_raw, is_softmax_y=True)
         dataset_10cm = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset_10cm, is_softmax_y=False)
+        dataset_10cm_surrounding = DataSet.get_raw_sensor_dataset_per_10cm_p_surroundings(measure_collections, dataset=dataset_10cm_surrounding, is_softmax_y=False)
         dataset_parking = DataSet.get_raw_sensor_dataset_parking_space_detection(measure_collections, dataset=dataset_parking)
         measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
 
     datasets = {
         #'dataset_raw': dataset_raw,
         'dataset_raw_10cm': dataset_10cm,
+        'dataset_raw_10cm_surrounding': dataset_10cm_surrounding,
         #'dataset_raw_parking_space': dataset_parking
     }
 
