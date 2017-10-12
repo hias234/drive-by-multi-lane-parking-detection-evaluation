@@ -41,10 +41,10 @@ def mc_metric(mc1, mc2):
     direction2 = (mc2[0] - mc2[2], mc2[1] - mc2[3])
 
     angle_in_rad = angle_between(direction1, direction2)
-    if angle_in_rad > math.pi / 2:
-        angle_in_rad = math.pi / 2 - (angle_in_rad - math.pi / 2)
+    if angle_in_rad > math.pi:
+        angle_in_rad = 2 * math.pi - angle_in_rad
 
-    if angle_in_rad > math.pi / 8:
+    if angle_in_rad > math.pi / 4:
         return 1000
 
     dist1 = vincenty((mc1[0], mc1[1]), (mc2[0], mc2[1])).meters
@@ -65,7 +65,7 @@ def distance_to_line(x, y, p1_x, p1_y, p2_x, p2_y):
 
 
 def create_parking_space_map():
-    base_path = 'C:\\sw\\master\\collected data\\data_20170718_tunnel\\'
+    # base_path = 'C:\\sw\\master\\collected data\\data_20170718_tunnel\\'
     base_path = 'C:\\sw\\master\\collected data\\'
 
     options = {
@@ -89,12 +89,11 @@ def create_parking_space_map():
     for file_name, measure_collections in measure_collections_files_dir.items():
         parking_cars_mcs.extend(
             [mc for mc in measure_collections if GroundTruthClass.is_parking_car(mc.get_probable_ground_truth())])
-        clustering_data.extend([[mc.first_measure().latitude, mc.first_measure().longitude, mc.last_measure().latitude,
+        clustering_data.extend([[mc.first_measure().latitude,
+                                 mc.first_measure().longitude,
+                                 mc.last_measure().latitude,
                                  mc.last_measure().longitude] for mc in measure_collections if
                                 GroundTruthClass.is_parking_car(mc.get_probable_ground_truth())])
-        # print(file_name)
-        # dataset = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset, is_softmax_y=True)
-        # measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
 
     print(len(clustering_data))
 
