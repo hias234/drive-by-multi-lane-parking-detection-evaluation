@@ -58,7 +58,6 @@ class VisualizationApp(App):
                                     if os.path.isfile(os.path.join(self.camera_folder, f)) and f.endswith('.jpg')])
         self.ground_truth_file = [os.path.join(self.camera_folder, f) for f in os.listdir(self.camera_folder)
                                   if os.path.isfile(os.path.join(self.camera_folder, f)) and f.startswith('00gt')][0]
-        #print self.camera_files
 
         options = {
             'mc_min_speed': 1.0,
@@ -89,6 +88,10 @@ class VisualizationApp(App):
         plot.points = [(m.timestamp - self.first_timestamp, m.distance) for m in self.measurements]
         self.graph.add_plot(plot)
 
+        self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
+        self._keyboard.bind(on_key_down=self._on_keyboard_down)
+
+        self.running = True
         self.cur_index = -1
         self.show_next_image(0)
 
@@ -105,6 +108,23 @@ class VisualizationApp(App):
             Rectangle(size=(1, 10000))
         return flow_layout
 
+    def _keyboard_closed(self):
+        self._keyboard.unbind(on_key_down=self._on_keyboard_down)
+        self._keyboard = None
+
+    def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
+        if keycode[1] == 'spacebar':
+            self.on_start_stop()
+        return True
+
+    def on_start_stop(self):
+        if not self.running:
+            self.running = True
+            self.show_next_image(0)
+        else:
+            self.running = False
+
+
     def show_next_image(self, dt):
         self.cur_index += 1
         self.image.source = os.path.join(self.camera_folder, self.camera_files[self.cur_index])
@@ -113,12 +133,15 @@ class VisualizationApp(App):
         self.graph.xmin = cur_time - self.first_timestamp - 2
         self.graph.xmax = cur_time - self.first_timestamp + 2
 
+        next_dt = 1
         if self.cur_index + 1 < len(self.camera_files):
             next_time = self.get_timestamp(self.cur_index + 1)
-            Clock.schedule_once(self.show_next_image, next_time - cur_time + self.additional_interval)
+            next_dt = next_time - cur_time + self.additional_interval
         else:
             self.cur_index = -1
-            Clock.schedule_once(self.show_next_image, 1)
+
+        if self.running:
+            Clock.schedule_once(self.show_next_image, next_dt)
 
     def get_timestamp(self, index):
         f = self.camera_files[index]
@@ -129,7 +152,7 @@ class VisualizationApp(App):
 if __name__ == '__main__':
     # VisualizationApp('C:\\sw\\master\\scenarios\\parking_cars.dat').run()
     # VisualizationApp('C:\\sw\\master\\scenarios\\parking_cars_angular.dat').run()
-    # VisualizationApp('C:\\sw\\master\\scenarios\\overtaking_bike.dat', 0.1).run()
-    VisualizationApp('C:\\sw\\master\\scenarios\\overtaking_cars_and_perpendicular_cars.dat', 0.02).run()
+    VisualizationApp('C:\\sw\\master\\scenarios\\overtaking_bike.dat', 0.1).run()
+    # VisualizationApp('C:\\sw\\master\\scenarios\\overtaking_cars_and_perpendicular_cars.dat', 0.02).run()
 
 
