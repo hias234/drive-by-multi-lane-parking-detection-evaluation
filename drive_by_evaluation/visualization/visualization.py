@@ -149,9 +149,9 @@ class VisualizationApp(App):
 
 
 if __name__ == '__main__':
-    # VisualizationApp('C:\\sw\\master\\scenarios\\parking_cars.dat').run()
-    # VisualizationApp('C:\\sw\\master\\scenarios\\parking_cars_angular.dat').run()
-    VisualizationApp('C:\\sw\\master\\scenarios\\overtaking_bike.dat', 0.1).run()
+    VisualizationApp('C:\\sw\\master\\scenarios\\parking_cars.dat', 0.02).run()
+    # VisualizationApp('C:\\sw\\master\\scenarios\\parking_cars_angular.dat', 0.02).run()
+    # VisualizationApp('C:\\sw\\master\\scenarios\\overtaking_bike.dat', 0.1).run()
     # VisualizationApp('C:\\sw\\master\\scenarios\\overtaking_cars_and_perpendicular_cars.dat', 0.02).run()
 
 
