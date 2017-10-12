@@ -124,7 +124,6 @@ class VisualizationApp(App):
         else:
             self.running = False
 
-
     def show_next_image(self, dt):
         self.cur_index += 1
         self.image.source = os.path.join(self.camera_folder, self.camera_files[self.cur_index])
