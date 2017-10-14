@@ -132,6 +132,7 @@ if __name__ == '__main__':
 
     #parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
     #measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir, parking_space_map_clusters)
+
     print(MeasureCollection.get_size(measure_collections_files_dir))
 
     measure_collections_dir = {}

@@ -18,6 +18,7 @@ from drive_by_evaluation.deep_learning_keras.conv import create_conv_model
 import operator
 
 from drive_by_evaluation.db_machine_learning.confusion_matrix_util import print_confusion_matrix_measures, sumup_confusion_matrices
+from drive_by_evaluation.parking_map_clustering.dbscan_clustering_directional import create_parking_space_map, filter_parking_space_map_mcs
 
 
 def simple_dense_model(dataset, x_train, y_train):
@@ -40,7 +41,7 @@ def simple_dense_model(dataset, x_train, y_train):
                   metrics=['accuracy'])
 
     model.fit(x_train, y_train,
-              epochs=2000,
+              epochs=200,
               #class_weight=dataset.get_class_weights()
               )
 
@@ -96,6 +97,11 @@ if __name__ == '__main__':
 
     dataset = None
     measure_collections_files_dir = MeasureCollection.read_directory(base_path, options=options)
+
+    parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
+    measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
+                                                                 parking_space_map_clusters)
+
     measure_collections_dir = {}
     for file_name, measure_collections in measure_collections_files_dir.items():
         print(file_name)

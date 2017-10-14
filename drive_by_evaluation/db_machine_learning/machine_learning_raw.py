@@ -28,6 +28,7 @@ from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
+from drive_by_evaluation.parking_map_clustering.dbscan_clustering_directional import create_parking_space_map, filter_parking_space_map_mcs
 
 def get_dataset_parking_cars(measure_collections, dataset=None):
     if dataset is None:
@@ -150,6 +151,12 @@ if __name__ == '__main__':
     dataset_parking = None
     #write_to_file(base_path, ml_file_path)
     measure_collections_files_dir = MeasureCollection.read_directory(base_path, options=options)
+
+    parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
+    measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
+                                                                 parking_space_map_clusters)
+    print(MeasureCollection.get_size(measure_collections_files_dir))
+
     measure_collections_dir = {}
     for file_name, measure_collections in measure_collections_files_dir.items():
         print(file_name)

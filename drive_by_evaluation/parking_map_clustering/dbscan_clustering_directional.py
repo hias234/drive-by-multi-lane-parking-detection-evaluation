@@ -145,10 +145,6 @@ def get_bounding_box(cl):
 
 
 def is_in_bounding_box(bounding_box, lat, long):
-    print(bounding_box)
-    print(lat, long)
-
-
     return is_on_right_of_line(lat, long, bounding_box[0][0], bounding_box[0][1], bounding_box[1][0], bounding_box[1][1]) \
            and is_on_right_of_line(lat, long, bounding_box[1][0], bounding_box[1][1], bounding_box[2][0], bounding_box[2][1]) \
            and is_on_right_of_line(lat, long, bounding_box[2][0], bounding_box[2][1], bounding_box[3][0], bounding_box[3][1]) \
