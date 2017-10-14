@@ -359,3 +359,21 @@ class MeasureCollection:
                     measure_collections[data_file] = measure_collections_f
 
         return measure_collections
+
+    @staticmethod
+    def get_size(measure_collections_dir):
+        cnt_measurements = 0
+        cnt_measure_collections = 0
+        total_seconds = 0.0
+        for name, mc_list in measure_collections_dir.items():
+            cnt_measure_collections += len(mc_list)
+            #first_ts = mc_list[0].first_measure().timestamp
+            #last_ts = mc_list[len(mc_list) - 1].last_measure().timestamp
+
+            for mc in mc_list:
+                cnt_measurements += len(mc.measures)
+                first_ts = mc.first_measure().timestamp
+                last_ts = mc.last_measure().timestamp
+                total_seconds += last_ts - first_ts
+
+        return cnt_measure_collections, cnt_measurements, total_seconds

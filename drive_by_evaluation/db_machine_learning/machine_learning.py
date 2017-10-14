@@ -20,6 +20,8 @@ from drive_by_evaluation.ground_truth import GroundTruthClass
 from drive_by_evaluation.measure_collection import MeasureCollection
 from drive_by_evaluation.measurement import Measurement
 
+from drive_by_evaluation.parking_map_clustering.dbscan_clustering_directional import create_parking_space_map, filter_parking_space_map_mcs
+
 
 def get_dataset_parking_cars(measure_collections, dataset=None):
     if dataset is None:
@@ -111,8 +113,6 @@ def filter_acceleration_situations(measure_collections):
 if __name__ == '__main__':
     base_path = 'C:\\sw\\master\\collected data\\'
     #base_path = 'C:\\sw\\master\\collected data\\data_20170718_tunnel\\'
-    # ml_file_path = 'C:\\sw\\master\\00ml.arff'
-    ml_file_path = 'C:\\sw\\master\\20170718ml.arff'
 
     options = {
         'mc_min_speed': 3.0,
@@ -129,6 +129,11 @@ if __name__ == '__main__':
     dataset = None
     #write_to_file(base_path, ml_file_path)
     measure_collections_files_dir = MeasureCollection.read_directory(base_path, options=options)
+
+    #parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
+    #measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir, parking_space_map_clusters)
+    print(MeasureCollection.get_size(measure_collections_files_dir))
+
     measure_collections_dir = {}
     for file_name, measure_collections in measure_collections_files_dir.items():
         print(file_name)
