@@ -112,20 +112,12 @@ class MeasureCollection:
         self.center_latitude = (first_measure.latitude + last_measure.latitude) / 2
 
     def get_length(self):
-        # length = 0.0
-        # if len(self.measures) > 0:
-        #     last_measure = self.measures[0]
-        #     for i in range(1, len(self.measures)):
-        #         length += vincenty(
-        #                     (self.measures[i].latitude, self.measures[i].longitude),
-        #                     (last_measure.latitude, last_measure.longitude)
-        #                 ).meters
-        #         last_measure = self.measures[i]
-        #
-        # return length
-        #print(self.first_measure().latitude, self.first_measure().longitude, self.last_measure().latitude, self.last_measure().longitude)
         return vincenty((self.first_measure().latitude, self.first_measure().longitude),
                         (self.last_measure().latitude, self.last_measure().longitude)).meters
+
+    def get_direction_vector(self):
+        return (self.last_measure().latitude - self.first_measure().latitude,
+                self.last_measure().longitude - self.first_measure().longitude)
 
     def get_nr_of_measures(self):
         return len(self.measures)

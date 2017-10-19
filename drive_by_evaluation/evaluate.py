@@ -11,32 +11,6 @@ class DriveByEvaluation:
     def __init__(self):
         self.visualize = MeasurementVisualization()
 
-    def filter_flawed_measurements(self, measurements):
-        filter_distance_above_threshold = 20
-        filter_outlier_distance_threshold = 100
-        filter_outlier = True
-
-        i = 0
-        filtered_measurements = []
-        while i < len(measurements):
-            add = True
-            if measurements[i].distance <= filter_distance_above_threshold:
-                add = False
-            elif filter_outlier and 0 < i < len(measurements) - 1:
-                diff_to_prev = abs(measurements[i].distance - measurements[i-1].distance)
-                diff_to_next = abs(measurements[i].distance - measurements[i+1].distance)
-                diff_between_prev_next = abs(measurements[i-1].distance - measurements[i+1].distance)
-                if diff_to_next > filter_outlier_distance_threshold \
-                        and diff_to_prev > filter_outlier_distance_threshold and diff_between_prev_next < 20:
-                    add = False
-
-            if add:
-                filtered_measurements.append(measurements[i])
-            i += 1
-
-        print('filtered measurements', len(filtered_measurements))
-        return filtered_measurements
-
     def evaluate(self, measurements):
         measurements = self.filter_flawed_measurements(measurements)
 

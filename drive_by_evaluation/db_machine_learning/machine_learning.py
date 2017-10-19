@@ -1,5 +1,6 @@
 import os
 import random
+import time
 
 # from custom_clf import SurroundingClf
 
@@ -163,6 +164,7 @@ if __name__ == '__main__':
     }
 
     for name, clf in classifiers.items():
+        start = time.time()
         scorer = MultiScorer({
             'Accuracy': (accuracy_score, {}),
             'Precision': (precision_score, {'average': 'weighted'}),
@@ -194,6 +196,7 @@ if __name__ == '__main__':
         kfold = KFold(n_splits=5)
         cross_val_score(clf, dataset.x, dataset.y_true, cv=kfold, scoring=scorer)
         results = scorer.get_results()
+        print(time.time() - start)
 
         confusion_m = None
         for metric_name in results.keys():
