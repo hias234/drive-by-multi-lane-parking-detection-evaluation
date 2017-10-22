@@ -88,6 +88,17 @@ class VisualizationApp(App):
             plot.points = [(m.timestamp - self.first_timestamp, m.distance) for m in mc.measures]
             self.graph.add_plot(plot)
 
+            color_actual = [1, 1, 0, 1]
+            if mc.get_probable_ground_truth() == GroundTruthClass.FREE_SPACE:
+                color_actual = [1, 0, 1, 1]
+            elif GroundTruthClass.is_parking_car(mc.get_probable_ground_truth()):
+                color_actual = [0, 1, 1, 1]
+            elif GroundTruthClass.is_overtaking_situation(mc.get_probable_ground_truth()):
+                color_actual = [0, 0, 1, 1]
+            plot_actual = MeshLinePlot(color=color_actual)
+            plot_actual.points = [(m.timestamp - self.first_timestamp, m.distance - 0.1) for m in mc.measures]
+            self.graph.add_plot(plot_actual)
+
             if last_mc is not None:
                 plot_next = MeshLinePlot(color=[1, 1, 1, 1])
                 plot_next.points = [(last_mc.last_measure().timestamp - self.first_timestamp, last_mc.last_measure().distance),
@@ -161,11 +172,11 @@ class VisualizationApp(App):
 
 
 if __name__ == '__main__':
-    # scenario_path = 'C:\\sw\\master\\scenarios\\overtaking_cars_and_perpendicular_cars.dat'
-    # additional_timeout = 0.02
-
-    scenario_path = 'C:\\sw\\master\\scenarios\\parking_cars.dat'
+    scenario_path = 'C:\\sw\\master\\scenarios\\overtaking_cars_and_perpendicular_cars.dat'
     additional_timeout = 0.02
+
+    #scenario_path = 'C:\\sw\\master\\scenarios\\parking_cars.dat'
+    #additional_timeout = 0.02
     #scenario_path = 'C:\\sw\\master\\scenarios\\parking_cars_angular.dat'
     #additional_timeout = 0.02
     #scenario_path = 'C:\\sw\\master\\scenarios\\overtaking_bike.dat'
@@ -181,6 +192,7 @@ if __name__ == '__main__':
         # 'mc_surrounding_times_s': [2.0, 5.0],
         'outlier_threshold_distance': 1.0,
         'outlier_threshold_diff': 0.5,
+        'max_measure_value': 10.0,
         # 'replacement_values': {0.01: 10.01},
         'min_measurement_value': 0.06
     }

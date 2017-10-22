@@ -25,6 +25,7 @@ class Measurement:
 
         replacement_values = options.get('replacement_values', {})
         min_value = options.get('min_measurement_value', 0.0)
+        max_measure_value = options.get('max_measure_value', 1000.0)
 
         gps_measurements = []
         distances = []
@@ -40,6 +41,8 @@ class Measurement:
                     distance_value = float(row[2]) / 100
                     if distance_value >= min_value:
                         distance_value = replacement_values.get(distance_value, distance_value)
+                        if distance_value > max_measure_value:
+                            distance_value = max_measure_value
                         distances.append(LidarLiteMeasurement(timestamp, distance_value))
                 elif sensor_type == 'GPS':
                     if row[2] != '0.0' and row[3] != '0.0' and \
