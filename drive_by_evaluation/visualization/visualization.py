@@ -10,12 +10,17 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.textinput import TextInput
+from sklearn.ensemble import RandomForestClassifier
+
+from drive_by_evaluation.db_machine_learning.db_data_set import DataSet
 
 kivy.require('1.10.0')
 
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.core.window import Window
+
+import numpy as np
 
 from datetime import datetime
 
@@ -149,9 +154,68 @@ class VisualizationApp(App):
 
 
 if __name__ == '__main__':
-    #VisualizationApp('C:\\sw\\master\\scenarios\\parking_cars.dat', 0.02).run()
-    #VisualizationApp('C:\\sw\\master\\scenarios\\parking_cars_angular.dat', 0.02).run()
-    #VisualizationApp('C:\\sw\\master\\scenarios\\overtaking_bike.dat', 0.1).run()
-    VisualizationApp('C:\\sw\\master\\scenarios\\overtaking_cars_and_perpendicular_cars.dat', 0.02).run()
+    # scenario_path = 'C:\\sw\\master\\scenarios\\overtaking_cars_and_perpendicular_cars.dat'
+    # additional_timeout = 0.02
+
+    # scenario_path = 'C:\\sw\\master\\scenarios\\parking_cars.dat'
+    # additional_timeout = 0.02
+    # scenario_path = 'C:\\sw\\master\\scenarios\\parking_cars_angular.dat'
+    # additional_timeout = 0.02
+    scenario_path = 'C:\\sw\\master\\scenarios\\overtaking_bike.dat'
+    additional_timeout = 0.1
+
+    base_path = 'C:\\sw\\master\\collected data\\'
+
+    options = {
+        'mc_min_speed': 3.0,
+        'mc_merge': True,
+        'mc_separation_threshold': 1.0,
+        'mc_min_measure_count': 2,
+        # 'mc_surrounding_times_s': [2.0, 5.0],
+        'outlier_threshold_distance': 1.0,
+        'outlier_threshold_diff': 0.5,
+        # 'replacement_values': {0.01: 10.01},
+        'min_measurement_value': 0.06
+    }
+
+    camera_folder = scenario_path + '_images_Camera\\'
+    ground_truth_file = [os.path.join(camera_folder, f) for f in os.listdir(camera_folder)
+                              if os.path.isfile(os.path.join(camera_folder, f)) and f.startswith('00gt')][0]
+    measurements_scenario = Measurement.read(scenario_path, ground_truth_file, options=options)
+    measure_collections_scenario = MeasureCollection.create_measure_collections(measurements_scenario, options=options)
+    dataset_scenario = DataSet.get_dataset(measure_collections_scenario)
+
+    options['exclude_mcs'] = measure_collections_scenario
+
+    dataset = None
+    measure_collections_files_dir = MeasureCollection.read_directory(base_path, options=options)
+    for file_name, measure_collections in measure_collections_files_dir.items():
+        dataset = DataSet.get_dataset(measure_collections, dataset=dataset)
+
+    clf = RandomForestClassifier(n_estimators=1000, n_jobs=-1, random_state=42)
+    clf.fit(dataset.x, dataset.y_true)
+
+    predictions = clf.predict(np.array(dataset_scenario.x)).reshape(1, -1)[0]
+
+    #print(predictions[0])
+    #print(dataset_scenario.y_true[0])
+    nr_false = 0
+    for i in range(0, len(dataset_scenario.y_true)):
+        measure_collections_scenario[i].prediction = predictions[i]
+        if predictions[i] != dataset_scenario.y_true[i]:
+            print('Predicted: ', predictions[i])
+            print('GroundTruth: ', dataset_scenario.y_true[i])
+            print('features: ', dataset_scenario.x[i])
+            print('')
+            nr_false += 1
+        #mismatches.append((X_test, y_test, predicted[0]))
+     #i += 1
+
+    print(nr_false)
+    print(len(dataset_scenario.y_true))
+
+    VisualizationApp(scenario_path, additional_interval=additional_timeout).run()
+
+
 
 

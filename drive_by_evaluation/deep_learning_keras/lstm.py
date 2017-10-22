@@ -8,7 +8,7 @@ def create_lstm_model(dataset, x_train, y_train):
 
     model = Sequential()
     model.add(Embedding(max_features, output_dim=256))
-    model.add(LSTM(128, return_sequences=True))
+    #model.add(LSTM(128, return_sequences=True))
     model.add(LSTM(128))
     model.add(Dense(hidden_dims, activation='relu'))
     model.add(Dropout(0.1))
@@ -22,7 +22,7 @@ def create_lstm_model(dataset, x_train, y_train):
                   metrics=['accuracy'])
 
     model.fit(x_train, y_train,
-              epochs=3,
+              epochs=30,
               batch_size=128)
 
     return model

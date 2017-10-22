@@ -36,7 +36,7 @@ if __name__ == '__main__':
         measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
 
     classifiers = {
-       'DecisionTree_GINI': DecisionTreeClassifier(max_depth=4),
+       'DecisionTree_GINI': DecisionTreeClassifier(max_depth=3),
     }
 
     for name, clf in classifiers.items():
@@ -46,7 +46,7 @@ if __name__ == '__main__':
         from io import StringIO
 
         #dot_data = StringIO()
-        tree.export_graphviz(clf, out_file='tree_pruned.dot')
+        tree.export_graphviz(clf, out_file='tree_pruned_2.dot')
         #print(dot_data.getvalue())
         #graph = pydot.graph_from_dot_data(dot_data.getvalue())
         #print(graph)

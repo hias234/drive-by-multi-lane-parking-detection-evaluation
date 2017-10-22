@@ -178,6 +178,7 @@ class MeasureCollection:
 
         separation_threshold = options.get('mc_separation_threshold', 0.9)
         min_measure_count = options.get('mc_min_measure_count', 1)
+        excluded_mcs = options.get('exclude_mcs', [])
 
         measure_collections = []
         cur_measure_collection = MeasureCollection()
@@ -189,8 +190,11 @@ class MeasureCollection:
                      abs(last_mc_timestamp - measure.timestamp) < 1.0):
                 cur_measure_collection.add_measure(measure)
             else:
-                if len(cur_measure_collection.measures) >= min_measure_count:
+                if (len(cur_measure_collection.measures) >= min_measure_count and
+                    not MeasureCollection.contains_excluded_mcs(cur_measure_collection, excluded_mcs)):
+
                     measure_collections.append(cur_measure_collection)
+
                 cur_measure_collection = MeasureCollection()
                 cur_measure_collection.add_measure(measure)
             last_mc_distance = measure.distance
@@ -213,6 +217,14 @@ class MeasureCollection:
                 measure_collection.add_time_surrounding_measure_collection(measure_collections, surrounding_mc_time)
 
         return measure_collections
+
+    @staticmethod
+    def contains_excluded_mcs(cur_measure_collection, excluded_mcs):
+        for excluded_mc in excluded_mcs:
+            if excluded_mc.first_measure().timestamp == cur_measure_collection.first_measure().timestamp:
+                print('excluded')
+                return True
+        return False
 
     @staticmethod
     def filter_standing_situations(measurement_collections, min_speed):
@@ -334,6 +346,7 @@ class MeasureCollection:
     @staticmethod
     def read_directory(base_path, options=None):
         measure_collections = {}
+        excluded_mcs = options.get('exclude_mcs', [])
 
         for f in sorted(os.listdir(base_path)):
             if os.path.isdir(os.path.join(base_path, f)) and not f.endswith('_images_Camera'):

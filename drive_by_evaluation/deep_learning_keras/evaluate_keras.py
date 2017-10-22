@@ -62,6 +62,8 @@ def evaluate_model(create_model, dataset):
 
         predictions = model.predict(x_test)
 
+        # predictions = post_process(predictions, x_test, y_test)
+
         y_pred = []
         y_true = []
 
@@ -110,14 +112,15 @@ if __name__ == '__main__':
         measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
 
     start = time.time()
-    confusion_m_simp = evaluate_model(simple_dense_model, dataset)
-    print(time.time() - start)
-    #confusion_m_lstm = evaluate_model(create_lstm_model, dataset)
-    #confusion_m_conv = evaluate_model(create_conv_model, dataset)
+    #confusion_m_simp = evaluate_model(simple_dense_model, dataset)
 
-    print_confusion_matrix_measures(confusion_m_simp)
-    #print('lstm')
-    #print_confusion_matrix_measures(confusion_m_lstm)
+    confusion_m_lstm = evaluate_model(create_lstm_model, dataset)
+    #confusion_m_conv = evaluate_model(create_conv_model, dataset)
+    print(time.time() - start)
+
+    #print_confusion_matrix_measures(confusion_m_simp)
+    print('lstm')
+    print_confusion_matrix_measures(confusion_m_lstm)
     #print('conv')
     #print_confusion_matrix_measures(confusion_m_conv)
 
