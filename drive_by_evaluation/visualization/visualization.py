@@ -53,7 +53,7 @@ class VisualizationAppStarter(App):
 
 class VisualizationApp(App):
 
-    def __init__(self, data_file, additional_interval, **kwargs):
+    def __init__(self, data_file, measure_collections_f, additional_interval, **kwargs):
         super(VisualizationApp, self).__init__(**kwargs)
 
         self.data_file = data_file
@@ -64,21 +64,6 @@ class VisualizationApp(App):
         self.ground_truth_file = [os.path.join(self.camera_folder, f) for f in os.listdir(self.camera_folder)
                                   if os.path.isfile(os.path.join(self.camera_folder, f)) and f.startswith('00gt')][0]
 
-        options = {
-            'mc_min_speed': 1.0,
-            'mc_merge': True,
-            'mc_separation_threshold': 1.0,
-            'mc_min_measure_count': 2,
-            # 'mc_surrounding_times_s': [2.0, 5.0],
-            'outlier_threshold_distance': 1.0,
-            'outlier_threshold_diff': 0.5,
-            # 'replacement_values': {0.01: 10.01},
-            'min_measurement_value': 0.06,
-        }
-
-        self.measurements = Measurement.read(data_file, self.ground_truth_file, options=options)
-        self.measure_collections_f = MeasureCollection.create_measure_collections(self.measurements, options=options)
-
         self.image = Image(source=os.path.join(self.camera_folder, self.camera_files[0]), size=(352, 288), pos=(0, 0))
         #with self.image.canvas as canvas:
         #    Color(1., 0, 0)
@@ -88,10 +73,32 @@ class VisualizationApp(App):
                            x_ticks_major=2, y_ticks_major=1,
                            y_grid_label=True, x_grid_label=True, padding=10,
                            x_grid=True, y_grid=True, xmin=0, xmax=0, ymin=-1, ymax=11)
-        self.first_timestamp = self.measurements[0].timestamp
-        plot = MeshLinePlot(color=[1, 1, 1, 1])
-        plot.points = [(m.timestamp - self.first_timestamp, m.distance) for m in self.measurements]
-        self.graph.add_plot(plot)
+
+        last_mc = None
+        self.first_timestamp = measure_collections_f[0].first_measure().timestamp
+        for mc in measure_collections_f:
+            color = [1, 1, 0, 1]
+            if mc.prediction == 'FREE_SPACE':
+                color = [1, 0, 1, 1]
+            elif mc.prediction == 'PARKING_CAR':
+                color = [0, 1, 1, 1]
+            elif mc.prediction == 'OVERTAKING_SITUATION':
+                color = [0, 0, 1, 1]
+            plot = MeshLinePlot(color=color)
+            plot.points = [(m.timestamp - self.first_timestamp, m.distance) for m in mc.measures]
+            self.graph.add_plot(plot)
+
+            if last_mc is not None:
+                plot_next = MeshLinePlot(color=[1, 1, 1, 1])
+                plot_next.points = [(last_mc.last_measure().timestamp - self.first_timestamp, last_mc.last_measure().distance),
+                                    (mc.first_measure().timestamp - self.first_timestamp, mc.first_measure().distance)]
+                self.graph.add_plot(plot_next)
+
+            last_mc = mc
+
+        # plot = MeshLinePlot(color=[1, 1, 1, 1])
+        # plot.points = [(m.timestamp - self.first_timestamp, m.distance) for m in self.measurements]
+        # self.graph.add_plot(plot)
 
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
@@ -157,12 +164,12 @@ if __name__ == '__main__':
     # scenario_path = 'C:\\sw\\master\\scenarios\\overtaking_cars_and_perpendicular_cars.dat'
     # additional_timeout = 0.02
 
-    # scenario_path = 'C:\\sw\\master\\scenarios\\parking_cars.dat'
-    # additional_timeout = 0.02
-    # scenario_path = 'C:\\sw\\master\\scenarios\\parking_cars_angular.dat'
-    # additional_timeout = 0.02
-    scenario_path = 'C:\\sw\\master\\scenarios\\overtaking_bike.dat'
-    additional_timeout = 0.1
+    scenario_path = 'C:\\sw\\master\\scenarios\\parking_cars.dat'
+    additional_timeout = 0.02
+    #scenario_path = 'C:\\sw\\master\\scenarios\\parking_cars_angular.dat'
+    #additional_timeout = 0.02
+    #scenario_path = 'C:\\sw\\master\\scenarios\\overtaking_bike.dat'
+    #additional_timeout = 0.1
 
     base_path = 'C:\\sw\\master\\collected data\\'
 
@@ -208,13 +215,11 @@ if __name__ == '__main__':
             print('features: ', dataset_scenario.x[i])
             print('')
             nr_false += 1
-        #mismatches.append((X_test, y_test, predicted[0]))
-     #i += 1
 
     print(nr_false)
     print(len(dataset_scenario.y_true))
 
-    VisualizationApp(scenario_path, additional_interval=additional_timeout).run()
+    VisualizationApp(scenario_path, measure_collections_scenario, additional_interval=additional_timeout).run()
 
 
 
