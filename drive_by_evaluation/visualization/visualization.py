@@ -155,6 +155,8 @@ class VisualizationApp(App):
         self.graph.xmin = cur_time - self.first_timestamp - 2
         self.graph.xmax = cur_time - self.first_timestamp + 2
 
+        #self.graph.export_to_png('C:\\sw\\master\\scenario_snapshots\\export_' + self.camera_files[self.cur_index] + '.png')
+
         next_dt = 1
         if self.cur_index + 1 < len(self.camera_files):
             next_time = self.get_timestamp(self.cur_index + 1)
@@ -172,15 +174,14 @@ class VisualizationApp(App):
 
 
 if __name__ == '__main__':
-    scenario_path = 'C:\\sw\\master\\scenarios\\overtaking_cars_and_perpendicular_cars.dat'
-    additional_timeout = 0.02
-
-    #scenario_path = 'C:\\sw\\master\\scenarios\\parking_cars.dat'
+    #scenario_path = 'C:\\sw\\master\\scenarios\\overtaking_cars_and_perpendicular_cars.dat'
     #additional_timeout = 0.02
+    scenario_path = 'C:\\sw\\master\\scenarios\\parking_cars.dat'
+    additional_timeout = 0.01
     #scenario_path = 'C:\\sw\\master\\scenarios\\parking_cars_angular.dat'
-    #additional_timeout = 0.02
+    #additional_timeout = 0.01
     #scenario_path = 'C:\\sw\\master\\scenarios\\overtaking_bike.dat'
-    #additional_timeout = 0.1
+    #additional_timeout = 0.01
 
     base_path = 'C:\\sw\\master\\collected data\\'
 
