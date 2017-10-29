@@ -21,6 +21,8 @@ from drive_by_evaluation.parking_map_clustering.dbscan_clustering_directional im
 from drive_by_evaluation.deep_learning_keras.evaluate_keras import simple_dense_model, predict_softmax
 import time
 
+from drive_by_evaluation.db_machine_learning.models import create_random_forest, predict
+
 
 class DriveByEvaluation:
 
@@ -37,11 +39,14 @@ class DriveByEvaluation:
             y_test = [x for i, x in enumerate(dataset.y_true) if i in test]
 
             model = create_and_train_model(dataset, x_train, y_train)
-
-            predictions = model.predict(x_test)
             y_pred, y_true = predict_from_model(model, x_test, y_test)
 
-            confusion_m = confusion_matrix(y_true, y_pred, labels=range(0, len(dataset.class_labels)))
+            #print(y_true)
+            #print(y_pred)
+            labels = dataset.class_labels
+            if dataset.is_softmax_y:
+                labels = range(0, len(dataset.class_labels))
+            confusion_m = confusion_matrix(y_true, y_pred, labels=labels)
             print_confusion_matrix_measures(confusion_m)
             confusion_res.append(confusion_m)
 
@@ -49,6 +54,7 @@ class DriveByEvaluation:
         print_confusion_matrix_measures(confusion_sum)
 
         return confusion_sum
+
 
 if __name__ == '__main__':
     base_path = 'C:\\sw\\master\\collected data\\'
@@ -65,7 +71,8 @@ if __name__ == '__main__':
         'min_measurement_value': 0.06,
     }
 
-    dataset = None
+    dataset_softmax_10cm = None
+    dataset_normal = None
     measure_collections_files_dir = MeasureCollection.read_directory(base_path, options=options)
 
     # parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
@@ -75,14 +82,16 @@ if __name__ == '__main__':
     measure_collections_dir = {}
     for file_name, measure_collections in measure_collections_files_dir.items():
         print(file_name)
-        dataset = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset, is_softmax_y=True)
+        dataset_softmax_10cm = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset_softmax_10cm, is_softmax_y=True)
+        dataset_normal = DataSet.get_dataset(measure_collections, dataset=dataset_normal)
         measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
 
     start = time.time()
     # confusion_m_simp = evaluate_model(simple_dense_model, dataset)
 
     evaluator = DriveByEvaluation()
-    confusion_m_lstm = evaluator.evaluate(simple_dense_model, predict_softmax, dataset)
+    # confusion_m_lstm = evaluator.evaluate(create_random_forest, predict, dataset_normal)
+    confusion_m_lstm = evaluator.evaluate(simple_dense_model, predict_softmax, dataset_softmax_10cm)
     # confusion_m_conv = evaluate_model(create_conv_model, dataset)
     print(time.time() - start)
 

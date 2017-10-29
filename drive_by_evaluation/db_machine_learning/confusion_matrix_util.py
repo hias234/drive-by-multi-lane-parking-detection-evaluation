@@ -17,8 +17,8 @@ def print_confusion_matrix_measures(confusion_m):
     false_neg = np.sum(confusion_m, axis=1) - true_pos
 
     print('Accuracy Total:  ', np.sum(true_pos) / np.sum(confusion_m))
-    print('Recall Total:    ', np.sum(true_pos) / (np.sum(true_pos) + np.sum(false_neg)))
-    print('Precision Total: ', np.sum(true_pos) / (np.sum(true_pos) + np.sum(false_pos)))
+    # print('Recall Total:    ', np.sum(true_pos) / (np.sum(true_pos) + np.sum(false_neg)))
+    # print('Precision Total: ', np.sum(true_pos) / (np.sum(true_pos) + np.sum(false_pos)))
     precision = (true_pos / (true_pos + false_pos))
     print('Precision: ', precision)
     recall = (true_pos / (true_pos + false_neg))

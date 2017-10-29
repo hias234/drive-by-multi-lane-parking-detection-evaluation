@@ -75,8 +75,6 @@ def evaluate_model(create_model, dataset):
 def predict_softmax(model, x_test, y_test):
     predictions = model.predict(x_test)
 
-    # predictions = post_process(predictions, x_test, y_test)
-
     y_pred = []
     y_true = []
 
@@ -87,6 +85,7 @@ def predict_softmax(model, x_test, y_test):
         y_true.append(clazz_true)
 
     return y_pred, y_true
+
 
 if __name__ == '__main__':
     base_path = 'C:\\sw\\master\\collected data\\'
