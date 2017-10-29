@@ -1,62 +1,93 @@
-import matplotlib.pyplot as plt
 import numpy as np
+import keras
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Activation
+from keras.optimizers import SGD
+from keras.wrappers.scikit_learn import KerasClassifier
+from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import KFold
 
-from drive_by_evaluation.visualization.show_plots import MeasurementVisualization
+from drive_by_evaluation.db_machine_learning.multi_scorer import MultiScorer
 from drive_by_evaluation.measure_collection import MeasureCollection
-from drive_by_evaluation.measurement import Measurement
+from drive_by_evaluation.db_machine_learning.db_data_set import DataSet
+from drive_by_evaluation.deep_learning_keras.lstm import create_lstm_model
+from drive_by_evaluation.deep_learning_keras.conv import create_conv_model
+
+import operator
+
+from drive_by_evaluation.db_machine_learning.confusion_matrix_util import print_confusion_matrix_measures, sumup_confusion_matrices
+from drive_by_evaluation.parking_map_clustering.dbscan_clustering_directional import create_parking_space_map, filter_parking_space_map_mcs
+from drive_by_evaluation.deep_learning_keras.evaluate_keras import simple_dense_model, predict_softmax
+import time
 
 
 class DriveByEvaluation:
 
-    def __init__(self):
-        self.visualize = MeasurementVisualization()
+    # def __init__(self):
+    #     self.clf_and_datasets = []
 
-    def evaluate(self, measurements):
-        measurements = self.filter_flawed_measurements(measurements)
+    def evaluate(self, create_and_train_model, predict_from_model, dataset, number_of_splits=5, shuffle=False):
+        kfold = KFold(n_splits=number_of_splits, shuffle=shuffle)
+        confusion_res = []
+        for train, test in kfold.split(dataset.x, dataset.y_true):
+            x_train = [x for i, x in enumerate(dataset.x) if i in train]
+            y_train = [x for i, x in enumerate(dataset.y_true) if i in train]
+            x_test = [x for i, x in enumerate(dataset.x) if i in test]
+            y_test = [x for i, x in enumerate(dataset.y_true) if i in test]
 
-        plateaus = MeasureCollection.create_measure_collections(measurements)
+            model = create_and_train_model(dataset, x_train, y_train)
 
-        fig = plt.figure(3)
-        self.visualize.show_distance_signal_scatter(measurements, fig=fig)
-        #self.visualize.show_distance_signal_low_pass(measurements, fig=fig)
+            predictions = model.predict(x_test)
+            y_pred, y_true = predict_from_model(model, x_test, y_test)
 
-        for plateau in plateaus:
-            # print(len(plateau.measures), plateau.avg_distance, plateau.get_length(), plateau.get_distance_variance())
-            xs = [plateau.first_measure().timestamp, plateau.last_measure().timestamp]
-            ys = [plateau.first_measure().distance, plateau.last_measure().distance]
-            # ys = [plateau.avg_distance, plateau.avg_distance]
-            colors = {'NO_PARKING': 'black', 'OCCUPIED_PARKING_SPACE': 'orange', 'OVERTAKEN_CAR': 'magenta'}
-            probable_gt = plateau.get_probable_ground_truth()
-            plt.plot(xs, ys, color=colors[probable_gt])
-            plt.scatter(xs, ys, color='black', s=5)
-        fig.show()
+            confusion_m = confusion_matrix(y_true, y_pred, labels=range(0, len(dataset.class_labels)))
+            print_confusion_matrix_measures(confusion_m)
+            confusion_res.append(confusion_m)
 
-        first_plateaus = plateaus[50:70]
-        plateau_avg_distances = [p.avg_distance for p in first_plateaus]
-        bins = [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 100000]
-        freq, bins = np.histogram(plateau_avg_distances, bins, weights=[len(p.measures) for p in first_plateaus])
-        for i in range(0, len(bins)-1):
-            print(bins[i], freq[i])
+        confusion_sum = sumup_confusion_matrices(confusion_res, dataset.get_nr_of_classes())
+        print_confusion_matrix_measures(confusion_sum)
+
+        return confusion_sum
 
 if __name__ == '__main__':
-    #measurements = Measurement.read('C:\\sw\\master\\collected data\\data_20170707\\raw_20170705_065613_869794.dat',
-    #                                'C:\\sw\\master\\collected data\\data_20170707\\raw_20170705_065613_869794.dat_images_Camera\\00gt1499703007.98.dat')
-    #measurements = Measurement.read('C:\\sw\\master\\collected data\\data\\raw_20170705_064859_283466.dat',
-    #                                'C:\\sw\\master\\collected data\\data\\raw_20170705_064859_283466.dat_images_Camera\\00gt1499791938.51.dat')
-    # measurements = Measurement.read('C:\\sw\\master\\collected data\\data_20170718\\raw_20170718_074348_696382.dat',
-    #                                'C:\\sw\\master\\collected data\\data_20170718\\raw_20170718_074348_696382.dat_images_Camera\\00gt1500398878.87.dat')
-    measurements = Measurement.read('C:\\sw\\master\\collected data\\data_20170718\\raw_20170718_074500_002138.dat',
-                                    'C:\\sw\\master\\collected data\\data_20170718\\raw_20170718_074500_002138.dat_images_Camera\\00gt1500400602.86.dat')
-    #plateaus = MeasureCollection.create_measure_collections(measurements)
-    #MeasureCollection.write_to_file('C:\\sw\\master\\collected data\\data_20170707\\tagged_mc_20170705_065613_869794.dat', plateaus)
-    evaluation = DriveByEvaluation()
-    evaluation.evaluate(measurements)
+    base_path = 'C:\\sw\\master\\collected data\\'
 
-    #bins = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 100000]
-    #bins = [0, 50, 100, 150, 200, 250, 300, 350, 400, 100000]
-    #print(bins)
-    #freq, bins = np.histogram([measure.distance for measure in measurements], bins)
-    #for i in range(0,len(bins)):
-    #    print(bins[i], freq[i])
+    options = {
+        'mc_min_speed': 3.0,
+        'mc_merge': True,
+        'mc_separation_threshold': 1.0,
+        'mc_min_measure_count': 2,
+        # 'mc_surrounding_times_s': [2.0, 5.0],
+        'outlier_threshold_distance': 1.0,
+        'outlier_threshold_diff': 0.5,
+        # 'replacement_values': {0.01: 10.01},
+        'min_measurement_value': 0.06,
+    }
 
-    plt.show()
+    dataset = None
+    measure_collections_files_dir = MeasureCollection.read_directory(base_path, options=options)
+
+    # parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
+    # measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
+    #                                                             parking_space_map_clusters)
+
+    measure_collections_dir = {}
+    for file_name, measure_collections in measure_collections_files_dir.items():
+        print(file_name)
+        dataset = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset, is_softmax_y=True)
+        measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
+
+    start = time.time()
+    # confusion_m_simp = evaluate_model(simple_dense_model, dataset)
+
+    evaluator = DriveByEvaluation()
+    confusion_m_lstm = evaluator.evaluate(simple_dense_model, predict_softmax, dataset)
+    # confusion_m_conv = evaluate_model(create_conv_model, dataset)
+    print(time.time() - start)
+
+    # print_confusion_matrix_measures(confusion_m_simp)
+    print('lstm')
+    print_confusion_matrix_measures(confusion_m_lstm)
+    # print('conv')
+    # print_confusion_matrix_measures(confusion_m_conv)

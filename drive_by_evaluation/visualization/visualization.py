@@ -53,9 +53,10 @@ class VisualizationAppStarter(App):
 
 class VisualizationApp(App):
 
-    def __init__(self, data_file, measure_collections_f, additional_interval, **kwargs):
+    def __init__(self, data_file, measure_collections_f, additional_interval, restart=True, **kwargs):
         super(VisualizationApp, self).__init__(**kwargs)
 
+        self.restart = restart
         self.data_file = data_file
         self.additional_interval = additional_interval
         self.camera_folder = data_file + '_images_Camera\\'
@@ -138,6 +139,10 @@ class VisualizationApp(App):
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
         if keycode[1] == 'spacebar':
             self.on_start_stop()
+        elif keycode[1] == 'right':
+            self.move_forward()
+        elif keycode[1] == 'left':
+            self.move_backward()
         return True
 
     def on_start_stop(self):
@@ -147,8 +152,25 @@ class VisualizationApp(App):
         else:
             self.running = False
 
+    def move_forward(self):
+        if not self.running:
+            self.cur_index += 4
+            self.show_next_image(0)
+
+    def move_backward(self):
+        if not self.running:
+            self.cur_index -= 6
+            self.show_next_image(0)
+
     def show_next_image(self, dt):
         self.cur_index += 1
+        if self.cur_index >= len(self.camera_files):
+            if self.restart:
+                self.cur_index = 0
+            else:
+                self.running = False
+                return 0
+
         self.image.source = os.path.join(self.camera_folder, self.camera_files[self.cur_index])
         cur_time = self.get_timestamp(self.cur_index)
 
@@ -161,11 +183,23 @@ class VisualizationApp(App):
         if self.cur_index + 1 < len(self.camera_files):
             next_time = self.get_timestamp(self.cur_index + 1)
             next_dt = next_time - cur_time + self.additional_interval
+            if self.running:
+                if self.additional_interval < 0:
+                    while self.cur_index < len(self.camera_files) and self.get_timestamp(self.cur_index) - cur_time < -self.additional_interval:
+                        self.cur_index += 1
+                        next_dt = 0.001
+
+                if self.running:
+                    Clock.schedule_once(self.show_next_image, abs(next_dt))
         else:
             self.cur_index = -1
+            if self.running:
+                Clock.schedule_once(self.show_next_image, next_dt)
 
-        if self.running:
-            Clock.schedule_once(self.show_next_image, next_dt)
+            if next_dt <= 0:
+                skip_images = int(-next_dt / 0.03)
+                self.cur_index += skip_images
+                Clock.schedule_once(self.show_next_image, 0.001)
 
     def get_timestamp(self, index):
         f = self.camera_files[index]
@@ -175,13 +209,16 @@ class VisualizationApp(App):
 
 if __name__ == '__main__':
     #scenario_path = 'C:\\sw\\master\\scenarios\\overtaking_cars_and_perpendicular_cars.dat'
-    #additional_timeout = 0.02
-    scenario_path = 'C:\\sw\\master\\scenarios\\parking_cars.dat'
-    additional_timeout = 0.01
+    #additional_timeout = -0.01
+    #scenario_path = 'C:\\sw\\master\\scenarios\\parking_cars.dat'
+    #additional_timeout = 0.01
     #scenario_path = 'C:\\sw\\master\\scenarios\\parking_cars_angular.dat'
-    #additional_timeout = 0.01
-    #scenario_path = 'C:\\sw\\master\\scenarios\\overtaking_bike.dat'
-    #additional_timeout = 0.01
+    #additional_timeout = 0.00
+    scenario_path = 'C:\\sw\\master\\scenarios\\overtaking_bike.dat'
+    additional_timeout = 0.0
+
+    #scenario_path = 'C:\\sw\\master\\collected data\\data_20170725_linz\\raw_20170725_065205_690205.dat'
+    #additional_timeout = -0.4
 
     base_path = 'C:\\sw\\master\\collected data\\'
 
@@ -217,8 +254,6 @@ if __name__ == '__main__':
 
     predictions = clf.predict(np.array(dataset_scenario.x)).reshape(1, -1)[0]
 
-    #print(predictions[0])
-    #print(dataset_scenario.y_true[0])
     nr_false = 0
     for i in range(0, len(dataset_scenario.y_true)):
         measure_collections_scenario[i].prediction = predictions[i]

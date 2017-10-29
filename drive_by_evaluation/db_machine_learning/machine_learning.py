@@ -124,6 +124,7 @@ if __name__ == '__main__':
         'outlier_threshold_distance': 1.0,
         'outlier_threshold_diff': 0.5,
         # 'replacement_values': {0.01: 10.01},
+        #'max_measure_value': 10.0,
         'min_measurement_value': 0.06,
     }
 

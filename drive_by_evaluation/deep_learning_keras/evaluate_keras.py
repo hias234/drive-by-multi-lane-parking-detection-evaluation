@@ -42,7 +42,7 @@ def simple_dense_model(dataset, x_train, y_train):
                   metrics=['accuracy'])
 
     model.fit(x_train, y_train,
-              epochs=500,
+              epochs=5,
               #class_weight=dataset.get_class_weights()
               )
 
@@ -60,18 +60,7 @@ def evaluate_model(create_model, dataset):
 
         model = create_model(dataset, x_train, y_train)
 
-        predictions = model.predict(x_test)
-
-        # predictions = post_process(predictions, x_test, y_test)
-
-        y_pred = []
-        y_true = []
-
-        for i, prediction in enumerate(predictions):
-            clazz_predicted, _ = max(enumerate(prediction), key=operator.itemgetter(1))
-            clazz_true, _ = max(enumerate(y_test[i]), key=operator.itemgetter(1))
-            y_pred.append(clazz_predicted)
-            y_true.append(clazz_true)
+        y_pred, y_true = predict_softmax(model, x_test, y_test)
 
         confusion_m = confusion_matrix(y_true, y_pred, labels=range(0, len(dataset.class_labels)))
         print_confusion_matrix_measures(confusion_m)
@@ -82,6 +71,22 @@ def evaluate_model(create_model, dataset):
 
     return confusion_sum
 
+
+def predict_softmax(model, x_test, y_test):
+    predictions = model.predict(x_test)
+
+    # predictions = post_process(predictions, x_test, y_test)
+
+    y_pred = []
+    y_true = []
+
+    for i, prediction in enumerate(predictions):
+        clazz_predicted, _ = max(enumerate(prediction), key=operator.itemgetter(1))
+        clazz_true, _ = max(enumerate(y_test[i]), key=operator.itemgetter(1))
+        y_pred.append(clazz_predicted)
+        y_true.append(clazz_true)
+
+    return y_pred, y_true
 
 if __name__ == '__main__':
     base_path = 'C:\\sw\\master\\collected data\\'
