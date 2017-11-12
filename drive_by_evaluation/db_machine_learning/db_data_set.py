@@ -7,15 +7,20 @@ class DataSet:
     def __init__(self, class_labels, is_softmax_y):
         self.x = []
         self.y_true = []
+        self.mcs = []
         self.class_labels = class_labels
         self.is_softmax_y = is_softmax_y
 
-    def append_sample(self, x, y_true):
+    def append_sample(self, x, y_true, mc):
         self.x.append(x)
         self.y_true.append(y_true)
+        self.mcs.append(mc)
 
     def get_nr_of_classes(self):
         return len(self.class_labels)
+
+    def class_to_index(self, clazz):
+        return self.class_labels.index(clazz)
 
     def get_class_weights(self):
         class_weights = {}
@@ -48,13 +53,13 @@ class DataSet:
         return ground_truth
 
     @staticmethod
-    def append_to_dataset(dataset, features, ground_truth, class_labels):
+    def append_to_dataset(dataset, features, mc, ground_truth, class_labels):
         if dataset.is_softmax_y:
             index = class_labels.index(ground_truth)
             softmax_y = keras.utils.to_categorical(index, num_classes=len(class_labels))[0].tolist()
-            dataset.append_sample(features, softmax_y)
+            dataset.append_sample(features, softmax_y, mc)
         else:
-            dataset.append_sample(features, ground_truth)
+            dataset.append_sample(features, ground_truth, mc)
 
         return dataset
 
@@ -96,7 +101,7 @@ class DataSet:
                 features.append(surrounding_mc.get_acceleration())
 
             ground_truth = DataSet.get_four_classes_groundtruth(mc)
-            dataset = DataSet.append_to_dataset(dataset, features, ground_truth, class_labels)
+            dataset = DataSet.append_to_dataset(dataset, features, mc, ground_truth, class_labels)
 
         return dataset
 
@@ -114,7 +119,7 @@ class DataSet:
             np.append(features, mc.get_acceleration())
 
             ground_truth = DataSet.get_four_classes_groundtruth(mc)
-            dataset = DataSet.append_to_dataset(dataset, features.tolist(), ground_truth, class_labels)
+            dataset = DataSet.append_to_dataset(dataset, features.tolist(), mc, ground_truth, class_labels)
 
         return dataset
 
@@ -132,7 +137,7 @@ class DataSet:
             np.append(features, mc.get_acceleration())
 
             ground_truth = DataSet.get_parking_classes_groundtruth(mc)
-            dataset = DataSet.append_to_dataset(dataset, features.tolist(), ground_truth, class_labels)
+            dataset = DataSet.append_to_dataset(dataset, features.tolist(), mc, ground_truth, class_labels)
 
         return dataset
 
@@ -159,7 +164,7 @@ class DataSet:
             np.append(features, mc.get_acceleration())
 
             ground_truth = DataSet.get_four_classes_groundtruth(mc)
-            dataset = DataSet.append_to_dataset(dataset, features.tolist(), ground_truth, class_labels)
+            dataset = DataSet.append_to_dataset(dataset, features.tolist(), mc, ground_truth, class_labels)
 
         return dataset
 
@@ -192,7 +197,7 @@ class DataSet:
             x.append(mc.get_acceleration())
 
             ground_truth = DataSet.get_four_classes_groundtruth(mc)
-            dataset = DataSet.append_to_dataset(dataset, x, ground_truth, class_labels)
+            dataset = DataSet.append_to_dataset(dataset, x, mc, ground_truth, class_labels)
 
         return dataset
 
@@ -201,20 +206,22 @@ class DataSet:
         prev_features = np.zeros(100)
         cur_mc = measure_collections[mc_index]
         i = 0
-        next_length = 0.0
-        first_m = cur_mc.measures[0]
+        last_length = -1.0
 
-        prev_index = mc_index - 1
-        while prev_index >= 0 and i < len(prev_features):
-            mc = measure_collections[prev_index]
-            for m in mc.measures[::-1]: # traverse over reverted list of measures
-                if i < len(prev_features):
-                    cur_length = m.distance_to(first_m)
-                    if next_length <= cur_length:
-                        prev_features[len(prev_features) - 1 - i] = m.distance
-                        next_length += 0.1
-                        i += 1
-            prev_index -= 1
+        if mc_index > 0:
+            first_m = measure_collections[mc_index - 1].measures[len(measure_collections[mc_index - 1].measures) - 1]
+
+            prev_index = mc_index - 1
+            while prev_index >= 0 and i < len(prev_features):
+                mc = measure_collections[prev_index]
+                for m in mc.measures[::-1]: # traverse over reverted list of measures
+                    if i < len(prev_features):
+                        cur_length = m.distance_to(first_m)
+                        if last_length + 0.1 <= cur_length:
+                            prev_features[len(prev_features) - 1 - i] = m.distance
+                            last_length += cur_length
+                            i += 1
+                prev_index -= 1
 
         return prev_features
 
@@ -223,19 +230,20 @@ class DataSet:
         next_features = np.zeros(100)
         cur_mc = measure_collections[mc_index]
         i = 0
-        next_length = 0.0
-        first_m = cur_mc.measures[len(cur_mc.measures) - 1]
+        last_length = -1.0
+        if mc_index < len(measure_collections) - 1:
+            first_m = measure_collections[mc_index + 1].measures[0]
 
-        next_index = mc_index + 1
-        while next_index < len(measure_collections) and i < len(next_features):
-            mc = measure_collections[next_index]
-            for m in mc.measures:
-                if i < len(next_features):
-                    cur_length = m.distance_to(first_m)
-                    if next_length <= cur_length:
-                        next_features[i] = m.distance
-                        next_length += 0.1
-                        i += 1
-            next_index += 1
+            next_index = mc_index + 1
+            while next_index < len(measure_collections) and i < len(next_features):
+                mc = measure_collections[next_index]
+                for m in mc.measures:
+                    if i < len(next_features):
+                        cur_length = m.distance_to(first_m)
+                        if last_length + 0.1 <= cur_length:
+                            next_features[i] = m.distance
+                            last_length = cur_length
+                            i += 1
+                next_index += 1
 
         return next_features

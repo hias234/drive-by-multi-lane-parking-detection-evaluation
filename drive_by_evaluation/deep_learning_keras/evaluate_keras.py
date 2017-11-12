@@ -42,7 +42,7 @@ def simple_dense_model(dataset, x_train, y_train):
                   metrics=['accuracy'])
 
     model.fit(x_train, y_train,
-              epochs=5,
+              epochs=200,
               #class_weight=dataset.get_class_weights()
               )
 
@@ -112,13 +112,14 @@ if __name__ == '__main__':
     measure_collections_dir = {}
     for file_name, measure_collections in measure_collections_files_dir.items():
         print(file_name)
-        dataset = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset, is_softmax_y=True)
+        # dataset = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset, is_softmax_y=True)
+        dataset = DataSet.get_raw_sensor_dataset_per_10cm_p_surroundings(measure_collections, dataset=dataset, is_softmax_y=True)
         measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
 
     start = time.time()
     #confusion_m_simp = evaluate_model(simple_dense_model, dataset)
 
-    confusion_m_lstm = evaluate_model(create_lstm_model, dataset)
+    confusion_m_lstm = evaluate_model(simple_dense_model, dataset)
     #confusion_m_conv = evaluate_model(create_conv_model, dataset)
     print(time.time() - start)
 
