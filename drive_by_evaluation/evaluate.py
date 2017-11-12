@@ -114,7 +114,7 @@ def enhance_dataset2(dataset, predictions):
     return dataset_normal_plus
 
 
-def enhance_dataset(dataset, predictions):
+def enhance_dataset(dataset, predictions, predictions_are_softmax=False):
     dataset_normal_plus = DataSet(class_labels=dataset.class_labels, is_softmax_y=dataset.is_softmax_y)
     surrounding_mcs = 20
     for i in range(0, len(predictions)):
@@ -143,7 +143,8 @@ def enhance_dataset(dataset, predictions):
                 #features.extend([0.0 for cnt in range(len(dataset.x[0]))])
             j += 1
         dataset_normal_plus.x.append(features)
-        dataset_normal_plus.y_true.append(dataset_normal.y_true[i])
+        dataset_normal_plus.mcs.append(dataset.mcs[i])
+        dataset_normal_plus.y_true.append(dataset.y_true[i])
 
     return dataset_normal_plus
 
@@ -167,14 +168,14 @@ if __name__ == '__main__':
     dataset_normal = None
     measure_collections_files_dir = MeasureCollection.read_directory(base_path, options=options)
 
-    parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
-    measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
-                                                                 parking_space_map_clusters)
+    #parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
+    #measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
+    #                                                             parking_space_map_clusters)
 
     measure_collections_dir = {}
     for file_name, measure_collections in measure_collections_files_dir.items():
         print(file_name)
-        #dataset_softmax_10cm = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset_softmax_10cm, is_softmax_y=True)
+        dataset_softmax_10cm = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections, dataset=dataset_softmax_10cm, is_softmax_y=True)
         dataset_normal = DataSet.get_dataset(measure_collections, dataset=dataset_normal)
         measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
 
@@ -199,12 +200,16 @@ if __name__ == '__main__':
 
     dataset_normal_plus = enhance_dataset(dataset_normal, predictions)
     #dataset_normal_plus = enhance_dataset2(dataset_normal, predictions)
+    dataset_softmax_plus = enhance_dataset(dataset_softmax_10cm, predictions, predictions_are_softmax=False)
 
     print('dataset constructed')
 
     start = time.time()
     evaluator = DriveByEvaluation()
-    confusion_m_lstm_after, predictions_after = evaluator.evaluate(create_random_forest, predict, dataset_normal_plus, number_of_splits=10)
+    confusion_m_lstm_after, predictions_after = evaluator.evaluate(simple_dense_model,
+                                                                   predict_softmax,
+                                                                   dataset_softmax_plus,
+                                                                   number_of_splits=10)
     print(time.time() - start)
 
     cnt_diff = 0
