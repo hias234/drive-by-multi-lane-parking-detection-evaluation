@@ -117,7 +117,7 @@ class MeasurementVisualization:
         for name, mc_list in mc_dir.items():
             gmap.scatter([mc.center_latitude for mc in mc_list if GroundTruthClass.is_parking_car(mc.get_probable_ground_truth())],
                          [mc.center_longitude for mc in mc_list if GroundTruthClass.is_parking_car(mc.get_probable_ground_truth())],
-                         '#00FF00', size=2, marker=False)
+                         '#FF0000', size=2, marker=False)
             gmap.scatter([mc.center_latitude for mc in mc_list if not GroundTruthClass.is_parking_car(mc.get_probable_ground_truth())],
                          [mc.center_longitude for mc in mc_list if not GroundTruthClass.is_parking_car(mc.get_probable_ground_truth())],
                          '#000000', size=1, marker=False)

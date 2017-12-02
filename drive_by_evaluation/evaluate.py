@@ -30,7 +30,7 @@ class DriveByEvaluation:
     #     self.clf_and_datasets = []
 
     def evaluate(self, create_and_train_model, predict_from_model, dataset, post_process=None, number_of_splits=5, shuffle=False):
-        kfold = KFold(n_splits=number_of_splits, shuffle=shuffle)
+        kfold = KFold(n_splits=number_of_splits, shuffle=shuffle, random_state=42)
 
         predictions = ['' for i in range(len(dataset.x))]
         print(len(predictions))
@@ -168,9 +168,9 @@ if __name__ == '__main__':
     dataset_normal = None
     measure_collections_files_dir = MeasureCollection.read_directory(base_path, options=options)
 
-    #parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
-    #measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
-    #                                                             parking_space_map_clusters)
+    parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
+    measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
+                                                                 parking_space_map_clusters)
 
     measure_collections_dir = {}
     for file_name, measure_collections in measure_collections_files_dir.items():
@@ -206,10 +206,16 @@ if __name__ == '__main__':
 
     start = time.time()
     evaluator = DriveByEvaluation()
-    confusion_m_lstm_after, predictions_after = evaluator.evaluate(simple_dense_model,
-                                                                   predict_softmax,
-                                                                   dataset_softmax_plus,
-                                                                   number_of_splits=10)
+    confusion_m_lstm_after, predictions_after = evaluator.evaluate(create_random_forest,
+                                                                   predict,
+                                                                   dataset_normal_plus,
+                                                                   number_of_splits=10,
+                                                                   shuffle=True)
+    #confusion_m_lstm_after, predictions_after = evaluator.evaluate(simple_dense_model,
+    #                                                               predict_softmax,
+    #                                                               dataset_softmax_plus,
+    #                                                               number_of_splits=10,
+    #                                                               shuffle=True)
     print(time.time() - start)
 
     cnt_diff = 0
