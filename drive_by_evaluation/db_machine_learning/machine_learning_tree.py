@@ -10,6 +10,7 @@ from drive_by_evaluation.db_machine_learning.multi_scorer import MultiScorer
 from drive_by_evaluation.measure_collection import MeasureCollection
 from sklearn import tree
 
+from drive_by_evaluation.parking_map_clustering.dbscan_clustering_directional import create_parking_space_map, filter_parking_space_map_mcs
 
 if __name__ == '__main__':
     base_path = 'C:\\sw\\master\\collected data\\'
@@ -30,12 +31,16 @@ if __name__ == '__main__':
     dataset = None
     measure_collections_files_dir = MeasureCollection.read_directory(base_path, options=options)
     measure_collections_dir = {}
+
+    parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
+    measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir, parking_space_map_clusters)
+
     for file_name, measure_collections in measure_collections_files_dir.items():
         print(file_name)
         dataset = DataSet.get_dataset(measure_collections, dataset=dataset)
         measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
 
-    dataset.to_arff_file('whole_dataset.arff')
+    dataset.to_arff_file('parking_map_filtered_dataset.arff')
 
     classifiers = {
        'DecisionTree_GINI': DecisionTreeClassifier(max_depth=3),
