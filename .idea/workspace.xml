@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="26a5a07e-bfa3-4c29-91cd-f0b59044c6af" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/drive-by-tensor-flow-ml.iml" afterPath="$PROJECT_DIR$/.idea/drive-by-tensor-flow-ml.iml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/whole_dataset_binary_parking_no_parking.arff" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/db_data_set.py" afterPath="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/db_data_set.py" />
-      <change beforePath="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning.py" afterPath="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning.py" />
-      <change beforePath="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning_tree.py" afterPath="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning_tree.py" />
-      <change beforePath="$PROJECT_DIR$/drive_by_evaluation/evaluate.py" afterPath="$PROJECT_DIR$/drive_by_evaluation/evaluate.py" />
-      <change beforePath="$PROJECT_DIR$/drive_by_evaluation/measure_collection.py" afterPath="$PROJECT_DIR$/drive_by_evaluation/measure_collection.py" />
-      <change beforePath="$PROJECT_DIR$/drive_by_evaluation/parking_map_clustering/dbscan_clustering_directional.py" afterPath="$PROJECT_DIR$/drive_by_evaluation/parking_map_clustering/dbscan_clustering_directional.py" />
-      <change beforePath="$PROJECT_DIR$/drive_by_evaluation/visualization/show_plots.py" afterPath="$PROJECT_DIR$/drive_by_evaluation/visualization/show_plots.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -57,8 +50,8 @@
       <file leaf-file-name="db_data_set.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/db_data_set.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
-              <caret line="87" column="43" lean-forward="false" selection-start-line="87" selection-start-column="43" selection-end-line="87" selection-end-column="43" />
+            <state relative-caret-position="323">
+              <caret line="85" column="40" lean-forward="false" selection-start-line="85" selection-start-column="40" selection-end-line="85" selection-end-column="40" />
               <folding>
                 <element signature="e#0#61#0" expanded="true" />
                 <element signature="e#653#978#0" expanded="false" />
@@ -76,51 +69,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="whole_dataset.arff" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/whole_dataset.arff">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" column="43" lean-forward="false" selection-start-line="10" selection-start-column="43" selection-end-line="10" selection-end-column="43" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ground_truth.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/drive_by_evaluation/ground_truth.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="19" column="71" lean-forward="false" selection-start-line="19" selection-start-column="54" selection-end-line="19" selection-end-column="71" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="machine_learning_tree.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning_tree.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="37" column="17" lean-forward="false" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tree_pruned_parknet.dot" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/tree_pruned_parknet.dot">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="31" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="machine_learning.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1258">
-              <caret line="149" column="0" lean-forward="false" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
+            <state relative-caret-position="204">
+              <caret line="133" column="0" lean-forward="false" selection-start-line="133" selection-start-column="0" selection-end-line="133" selection-end-column="0" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
                 <element signature="e#1123#2116#0" expanded="false" />
@@ -132,21 +85,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="measure_collection.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/drive_by_evaluation/measure_collection.py">
+      <file leaf-file-name="whole_dataset_binary_parking_no_parking.arff" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/whole_dataset_binary_parking_no_parking.arff">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4114">
-              <caret line="343" column="41" lean-forward="false" selection-start-line="312" selection-start-column="8" selection-end-line="343" selection-end-column="41" />
-              <folding>
-                <element signature="e#1#10#0" expanded="true" />
-                <element signature="e#781#3566#0" expanded="false" />
-                <element signature="e#3611#3794#0" expanded="false" />
-                <element signature="e#10643#11673#0" expanded="false" />
-                <element signature="e#11751#11803#0" expanded="false" />
-                <element signature="e#11881#12381#0" expanded="false" />
-                <element signature="e#12439#13417#0" expanded="false" />
-                <element signature="e#13463#13563#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="187">
+              <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -154,7 +98,7 @@
       <file leaf-file-name="machine_learning_raw.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning_raw.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1717">
+            <state relative-caret-position="861">
               <caret line="131" column="26" lean-forward="false" selection-start-line="131" selection-start-column="26" selection-end-line="132" selection-end-column="50" />
               <folding />
             </state>
@@ -164,7 +108,7 @@
       <file leaf-file-name="evaluate.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/drive_by_evaluation/evaluate.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2499">
+            <state relative-caret-position="17">
               <caret line="170" column="49" lean-forward="false" selection-start-line="170" selection-start-column="49" selection-end-line="170" selection-end-column="49" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
@@ -173,11 +117,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dbscan_clustering_directional.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="dbscan_clustering_directional.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/drive_by_evaluation/parking_map_clustering/dbscan_clustering_directional.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="41" column="0" lean-forward="false" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+            <state relative-caret-position="544">
+              <caret line="66" column="0" lean-forward="false" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -264,6 +208,7 @@
         <option value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/whole_dataset.arff" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/parking_map_clustering/dbscan_clustering_directional.py" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/evaluate.py" />
+        <option value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/whole_dataset_binary_parking_no_parking.arff" />
       </list>
     </option>
   </component>
@@ -341,8 +286,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\sw\master\code\drive-by-multi-lane-parking-detection-evaluation\drive_by_evaluation\parking_map_clustering" />
       <recent name="C:\sw\master\code\drive-by-multi-lane-parking-detection-evaluation\drive_by_evaluation\db_machine_learning" />
+      <recent name="C:\sw\master\code\drive-by-multi-lane-parking-detection-evaluation\drive_by_evaluation\parking_map_clustering" />
       <recent name="C:\sw\master\code\drive-by-multi-lane-parking-detection-evaluation\drive_by_evaluation\deep_learning_keras" />
       <recent name="C:\sw\master\code\drive-by-multi-lane-parking-detection-evaluation\parking_space_maps" />
       <recent name="C:\sw\master\code\drive-by-tensor-flow-ml\drive_by_evaluation\deep_learning_keras" />
@@ -638,6 +583,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39130434" sideWeight="0.50416666" order="7" side_tool="true" content_ui="tabs" />
@@ -687,7 +633,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/non_shuffle_cross_validation.py" />
     <entry file="file://$PROJECT_DIR$/parking_space_maps/Ruhender_Verkehr_Urfahr.dxf">
       <provider selected="true" editor-type-id="LargeFileEditor">
         <state relative-caret-position="-516031">
@@ -932,28 +877,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/tree_pruned_parknet.dot">
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/whole_dataset.arff">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="31" selection-end-column="1" />
+        <state relative-caret-position="17">
+          <caret line="10" column="43" lean-forward="false" selection-start-line="10" selection-start-column="43" selection-end-line="10" selection-end-column="43" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/measure_collection.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4114">
-          <caret line="343" column="41" lean-forward="false" selection-start-line="312" selection-start-column="8" selection-end-line="343" selection-end-column="41" />
-          <folding>
-            <element signature="e#1#10#0" expanded="true" />
-            <element signature="e#781#3566#0" expanded="false" />
-            <element signature="e#3611#3794#0" expanded="false" />
-            <element signature="e#10643#11673#0" expanded="false" />
-            <element signature="e#11751#11803#0" expanded="false" />
-            <element signature="e#11881#12381#0" expanded="false" />
-            <element signature="e#12439#13417#0" expanded="false" />
-            <element signature="e#13463#13563#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -967,24 +895,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning_tree.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
+        <state relative-caret-position="17">
           <caret line="37" column="17" lean-forward="false" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/whole_dataset.arff">
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/tree_pruned_parknet.dot">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="43" lean-forward="false" selection-start-line="10" selection-start-column="43" selection-end-line="10" selection-end-column="43" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="31" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/db_data_set.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="87" column="43" lean-forward="false" selection-start-line="87" selection-start-column="43" selection-end-line="87" selection-end-column="43" />
+        <state relative-caret-position="323">
+          <caret line="85" column="40" lean-forward="false" selection-start-line="85" selection-start-column="40" selection-end-line="85" selection-end-column="40" />
           <folding>
             <element signature="e#0#61#0" expanded="true" />
             <element signature="e#653#978#0" expanded="false" />
@@ -1001,18 +929,55 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/measure_collection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="343" column="41" lean-forward="false" selection-start-line="312" selection-start-column="8" selection-end-line="343" selection-end-column="41" />
+          <folding>
+            <element signature="e#1#10#0" expanded="false" />
+            <element signature="e#781#3566#0" expanded="false" />
+            <element signature="e#3611#3794#0" expanded="false" />
+            <element signature="e#10643#11673#0" expanded="false" />
+            <element signature="e#11751#11803#0" expanded="false" />
+            <element signature="e#11881#12381#0" expanded="false" />
+            <element signature="e#12439#13417#0" expanded="false" />
+            <element signature="e#13463#13563#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning_raw.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1717">
+        <state relative-caret-position="861">
           <caret line="131" column="26" lean-forward="false" selection-start-line="131" selection-start-column="26" selection-end-line="132" selection-end-column="50" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/evaluate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="170" column="49" lean-forward="false" selection-start-line="170" selection-start-column="49" selection-end-line="170" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/parking_map_clustering/dbscan_clustering_directional.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="66" column="0" lean-forward="false" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1258">
-          <caret line="149" column="0" lean-forward="false" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
+        <state relative-caret-position="204">
+          <caret line="133" column="0" lean-forward="false" selection-start-line="133" selection-start-column="0" selection-end-line="133" selection-end-column="0" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
             <element signature="e#1123#2116#0" expanded="false" />
@@ -1023,23 +988,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/evaluate.py">
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/whole_dataset_binary_parking_no_parking.arff">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2499">
-          <caret line="170" column="49" lean-forward="false" selection-start-line="170" selection-start-column="49" selection-end-line="170" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/parking_map_clustering/dbscan_clustering_directional.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="41" column="0" lean-forward="false" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="187">
+          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
