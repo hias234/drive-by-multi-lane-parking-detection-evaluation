@@ -191,7 +191,7 @@ class MeasureCollection:
                 cur_measure_collection.add_measure(measure)
             else:
                 if (len(cur_measure_collection.measures) >= min_measure_count and
-                    not MeasureCollection.contains_excluded_mcs(cur_measure_collection, excluded_mcs)):
+                        not MeasureCollection.contains_excluded_mcs(cur_measure_collection, excluded_mcs)):
 
                     measure_collections.append(cur_measure_collection)
 

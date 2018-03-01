@@ -1,6 +1,7 @@
 from drive_by_evaluation.ground_truth import GroundTruthClass
 import numpy as np
 import keras
+import os
 
 
 class DataSet:
@@ -247,3 +248,30 @@ class DataSet:
                 next_index += 1
 
         return next_features
+
+    def to_arff_file(self, path):
+        write_header = not os.path.exists(path)
+        is_arff_file = path.endswith('.arff')
+
+        with open(path, 'a') as arff_file:
+            if write_header and is_arff_file:
+                arff_file.write("@RELATION driveby\n")
+                arff_file.write("@ATTRIBUTE avg_distance NUMERIC\n")
+                arff_file.write("@ATTRIBUTE length NUMERIC\n")
+                arff_file.write("@ATTRIBUTE duration_s NUMERIC\n")
+                arff_file.write("@ATTRIBUTE nr_of_measures NUMERIC\n")
+                arff_file.write("@ATTRIBUTE distance_variance NUMERIC\n")
+                arff_file.write("@ATTRIBUTE avg_speed NUMERIC\n")
+                arff_file.write("@ATTRIBUTE avg_accel NUMERIC\n")
+                arff_file.write("@ATTRIBUTE diff_prev NUMERIC\n")
+                arff_file.write("@ATTRIBUTE diff_next NUMERIC\n")
+                arff_file.write("@ATTRIBUTE class {FREE_SPACE, PARKING_CAR, OVERTAKING_SITUATION, PARKING_MC_BC}\n")
+                arff_file.write("\n\n\n")
+                arff_file.write("@DATA\n")
+
+            for i in range(0, len(self.x)):
+                for x_i in self.x[i]:
+                    arff_file.write(str(x_i))
+                    arff_file.write(",")
+                arff_file.write(self.y_true[i])
+                arff_file.write("\n")

@@ -234,7 +234,7 @@ if __name__ == '__main__':
     i = 1
     for file_name, measure_collection in measure_collections_dir.items():
         #visualization.show_2d_scatter(measure_collection, fig=plt.figure(1))
-        #visualization.show_distances_plus_segmentation(measure_collection, fig=plt.figure(i))
+        visualization.show_distances_plus_segmentation(measure_collection, fig=plt.figure(i))
         #visualization.show_distance_for_class(measure_collection, [GroundTruthClass.OVERTAKEN_BICYCLE], fig=plt.figure(i))
         #gt25 += len([mc for mc in measure_collection if mc.get_probable_ground_truth() == GroundTruthClass.FREE_SPACE and mc.length >= 5])
         #free_space_measure_collections.extend([mc for mc in measure_collection if mc.get_probable_ground_truth() == GroundTruthClass.FREE_SPACE]);

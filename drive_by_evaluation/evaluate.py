@@ -172,6 +172,9 @@ if __name__ == '__main__':
     measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
                                                                  parking_space_map_clusters)
 
+    print(len(parking_space_map_clusters))
+    print(len(_))
+
     measure_collections_dir = {}
     for file_name, measure_collections in measure_collections_files_dir.items():
         print(file_name)

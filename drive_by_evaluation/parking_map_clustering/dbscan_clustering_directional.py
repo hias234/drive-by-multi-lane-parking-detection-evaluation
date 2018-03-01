@@ -54,6 +54,7 @@ def mc_metric(mc1, mc2):
 
     return min([dist1, dist2, dist3, dist4])
 
+
 # x, y is the point
 # p1, p2 are two points of a line
 def distance_to_line(x, y, p1_x, p1_y, p2_x, p2_y):
