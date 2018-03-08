@@ -168,12 +168,12 @@ if __name__ == '__main__':
     dataset_normal = None
     measure_collections_files_dir = MeasureCollection.read_directory(base_path, options=options)
 
-    parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
-    measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
-                                                                 parking_space_map_clusters)
+    #parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
+    #measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
+    #                                                             parking_space_map_clusters)
 
-    print(len(parking_space_map_clusters))
-    print(len(_))
+    #print(len(parking_space_map_clusters))
+    #print(len(_))
 
     measure_collections_dir = {}
     for file_name, measure_collections in measure_collections_files_dir.items():
@@ -186,10 +186,11 @@ if __name__ == '__main__':
     # confusion_m_simp = evaluate_model(simple_dense_model, dataset)
 
     evaluator = DriveByEvaluation()
-    confusion_m_lstm, predictions = evaluator.evaluate(create_random_forest, predict, dataset_normal,
-                                                       number_of_splits=10, shuffle=True)
+    # confusion_m_lstm, predictions = evaluator.evaluate(create_random_forest, predict, dataset_normal,
+    #                                                   number_of_splits=10, shuffle=True)
     # confusion_m_lstm = evaluator.evaluate(create_random_forest, predict, dataset_normal)
-    # confusion_m_lstm = evaluator.evaluate(simple_dense_model, predict_softmax, dataset_softmax_10cm)
+    confusion_m_lstm, predictions = evaluator.evaluate(simple_dense_model, predict_softmax, dataset_softmax_10cm,
+                                                       number_of_splits=10, shuffle=True)
     # confusion_m_conv = evaluate_model(create_conv_model, dataset)
     print(time.time() - start)
 

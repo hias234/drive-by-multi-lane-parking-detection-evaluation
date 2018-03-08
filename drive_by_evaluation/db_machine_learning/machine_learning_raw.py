@@ -152,9 +152,9 @@ if __name__ == '__main__':
     #write_to_file(base_path, ml_file_path)
     measure_collections_files_dir = MeasureCollection.read_directory(base_path, options=options)
 
-    parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
-    measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
-                                                                 parking_space_map_clusters)
+    #parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
+    #measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
+    #                                                             parking_space_map_clusters)
     print(MeasureCollection.get_size(measure_collections_files_dir))
 
     measure_collections_dir = {}
@@ -179,7 +179,7 @@ if __name__ == '__main__':
     }
 
     classifiers = {
-       #'NeuralNetwork': MLPClassifier(),
+       'NeuralNetwork': MLPClassifier(),
        #'NeuralNetwork_relu10000_hl5_10': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(100,100,100,100,100)),
        #'NeuralNetwork_relu10000_hl10_50': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50,50,50,50,50)),
        'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=1000000, hidden_layer_sizes=(50,50,50,50,50)),
@@ -198,7 +198,7 @@ if __name__ == '__main__':
             print(dataset_name)
             print(name)
 
-            kfold = KFold(n_splits=5)
+            kfold = KFold(n_splits=10, shuffle=True, random_state=42)
             cross_val_score(clf, dataset.x, dataset.y_true, cv=kfold, scoring=scorer)
             results = scorer.get_results()
 

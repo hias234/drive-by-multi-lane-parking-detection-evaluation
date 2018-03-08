@@ -5,7 +5,8 @@ import os
 
 
 class DataSet:
-    def __init__(self, class_labels, is_softmax_y):
+    def __init__(self, name, class_labels, is_softmax_y):
+        self.name = name
         self.x = []
         self.y_true = []
         self.mcs = []
@@ -68,7 +69,7 @@ class DataSet:
     def get_dataset(measure_collections, dataset=None, is_softmax_y=False):
         class_labels = ['FREE_SPACE', 'PARKING_CAR', 'OVERTAKING_SITUATION', 'PARKING_MC_BC']
         if dataset is None:
-            dataset = DataSet(class_labels, is_softmax_y)
+            dataset = DataSet('full_dataset', class_labels, is_softmax_y)
 
         for i, mc in enumerate(measure_collections):
             last_distance = 0 if i == 0 else measure_collections[i - 1].avg_distance  # .last_measure().distance
@@ -110,7 +111,7 @@ class DataSet:
     def get_raw_sensor_dataset(measure_collections, dataset=None, is_softmax_y=False):
         class_labels = ['FREE_SPACE', 'PARKING_CAR', 'OVERTAKING_SITUATION', 'PARKING_MC_BC']
         if dataset is None:
-            dataset = DataSet(class_labels, is_softmax_y)
+            dataset = DataSet('raw_dataset', class_labels, is_softmax_y)
 
         for i, mc in enumerate(measure_collections):
             features = np.zeros(1024)
@@ -128,7 +129,7 @@ class DataSet:
     def get_raw_sensor_dataset_parking_space_detection(measure_collections, dataset=None, is_softmax_y=False):
         class_labels = ['NO_PARKING_CAR', 'PARKING_CAR']
         if dataset is None:
-            dataset = DataSet(class_labels, is_softmax_y)
+            dataset = DataSet('raw_dataset_parking_space_detection', class_labels, is_softmax_y)
 
         for i, mc in enumerate(measure_collections):
             features = np.zeros(1024)
@@ -146,7 +147,7 @@ class DataSet:
     def get_raw_sensor_dataset_per_10cm(measure_collections, dataset=None, is_softmax_y=False):
         class_labels = ['FREE_SPACE', 'PARKING_CAR', 'OVERTAKING_SITUATION', 'PARKING_MC_BC']
         if dataset is None:
-            dataset = DataSet(class_labels, is_softmax_y)
+            dataset = DataSet('raw_dataset_per_10cm', class_labels, is_softmax_y)
 
         for mc in measure_collections:
             features = np.zeros(100)
@@ -174,7 +175,7 @@ class DataSet:
     def get_raw_sensor_dataset_per_10cm_p_surroundings(measure_collections, dataset=None, is_softmax_y=False):
         class_labels = ['FREE_SPACE', 'PARKING_CAR', 'OVERTAKING_SITUATION', 'PARKING_MC_BC']
         if dataset is None:
-            dataset = DataSet(class_labels, is_softmax_y)
+            dataset = DataSet('raw_dataset_per10cm_p_surrounding', class_labels, is_softmax_y)
 
         for mc_index, mc in enumerate(measure_collections):
             features = np.zeros(100)

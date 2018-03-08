@@ -151,15 +151,16 @@ if __name__ == '__main__':
     classifiers = {
        #'NeuralNetwork': MLPClassifier(),
        #'NeuralNetwork_relu1000': MLPClassifier(activation='relu', max_iter=10000000000),
-       #'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50)),
-       #'NeuralNetwork_relu1000000': MLPClassifier(activation='relu', max_iter=10000000),
+       'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50)),
+       'NeuralNetwork_relu1000000': MLPClassifier(activation='relu', max_iter=10000000),
        'DecisionTree_GINI': DecisionTreeClassifier(),
-       #'knn20': KNeighborsClassifier(21),
-       #'supportVector': SVC(),
+       'knn20': KNeighborsClassifier(21),
+       'knn4': KNeighborsClassifier(4),
+       'supportVector': SVC(),
        #'gaussian': GaussianProcessClassifier(),
-       #'randomforest100': RandomForestClassifier(n_estimators=100, n_jobs=-1, random_state=42),
-       #'randomforest1000': RandomForestClassifier(n_estimators=1000, n_jobs=-1, random_state=42),
-       #'randomforest1000_balanced': RandomForestClassifier(n_estimators=1000, n_jobs=-1, random_state=42, class_weight='balanced'),
+       'randomforest100': RandomForestClassifier(n_estimators=100, n_jobs=-1, random_state=42),
+       'randomforest1000': RandomForestClassifier(n_estimators=1000, n_jobs=-1, random_state=42),
+       'randomforest1000_balanced': RandomForestClassifier(n_estimators=1000, n_jobs=-1, random_state=42, class_weight='balanced'),
        #'randomforest10000_balanced': RandomForestClassifier(n_estimators=10000, class_weight='balanced')
        #'custom': SurroundingClf(measure_collections_dir, base_clf=MLPClassifier(), lvl2_clf=MLPClassifier())
     }
@@ -194,7 +195,7 @@ if __name__ == '__main__':
         # print(len(mismatches))
         #
         # continue
-        kfold = KFold(n_splits=5)
+        kfold = KFold(n_splits=10, shuffle=True, random_state=42)
         cross_val_score(clf, dataset.x, dataset.y_true, cv=kfold, scoring=scorer)
         results = scorer.get_results()
         print(time.time() - start)

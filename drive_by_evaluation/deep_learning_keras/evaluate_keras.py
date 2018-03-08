@@ -23,17 +23,19 @@ import time
 
 
 def simple_dense_model(dataset, x_train, y_train):
+    hidden_dims = 64
+
     model = Sequential()
-    model.add(Dense(64, activation='relu', input_dim=len(dataset.x[0])))
-    model.add(Dropout(0.1))
-    model.add(Dense(64, activation='relu'))
-    model.add(Dropout(0.1))
-    model.add(Dense(64, activation='relu'))
-    model.add(Dropout(0.1))
-    model.add(Dense(64, activation='relu'))
-    model.add(Dropout(0.1))
-    model.add(Dense(64, activation='relu'))
-    model.add(Dropout(0.1))
+    model.add(Dense(hidden_dims, activation='relu', input_dim=len(dataset.x[0])))
+    model.add(Dropout(0.2))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.2))
     model.add(Dense(len(dataset.class_labels), activation='softmax'))
 
     sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
@@ -49,8 +51,8 @@ def simple_dense_model(dataset, x_train, y_train):
     return model
 
 
-def evaluate_model(create_model, dataset):
-    kfold = KFold(n_splits=5, shuffle=False)
+def evaluate_model(create_model, dataset, n_splits=10, shuffle=True):
+    kfold = KFold(n_splits, shuffle)
     confusion_res = []
     for train, test in kfold.split(dataset.x, dataset.y_true):
         x_train = [x for i, x in enumerate(dataset.x) if i in train]
