@@ -89,6 +89,8 @@ def create_parking_space_map(measure_collections_files_dir):
     clusters = []
     noise_cluster = None
 
+    cluster_lens = []
+
     unique_labels = set(labels)
 
     for k in unique_labels:
@@ -99,6 +101,7 @@ def create_parking_space_map(measure_collections_files_dir):
         lat.extend([x[2] for i, x in enumerate(clustering_data) if class_member_mask[i]])
         long.extend([x[3] for i, x in enumerate(clustering_data) if class_member_mask[i]])
 
+        cluster_lens.append(len(lat))
         print('k %d' % k)
         print('len %d' % len(lat))
 
@@ -122,6 +125,8 @@ def create_parking_space_map(measure_collections_files_dir):
                 lat = [x[0] for i, x in enumerate(clustering_data) if class_member_mask[i]]
                 long = [x[1] for i, x in enumerate(clustering_data) if class_member_mask[i]]
                 noise_cluster = [[lat[i], long[i]] for i in range(0, len(lat))]
+
+    print('Average %d', np.average(cluster_lens))
 
     return clusters, noise_cluster
 

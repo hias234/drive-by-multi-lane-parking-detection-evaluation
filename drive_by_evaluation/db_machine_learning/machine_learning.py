@@ -128,12 +128,13 @@ if __name__ == '__main__':
         'min_measurement_value': 0.06,
     }
 
-    dataset = None
+    normal_dataset = None
+    dataset_2d_parknet = None
     #write_to_file(base_path, ml_file_path)
     measure_collections_files_dir = MeasureCollection.read_directory(base_path, options=options)
 
-    #parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
-    #measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir, parking_space_map_clusters)
+    parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
+    measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir, parking_space_map_clusters)
 
     print(MeasureCollection.get_size(measure_collections_files_dir))
 
@@ -145,77 +146,85 @@ if __name__ == '__main__':
         #print('filtered', len(measure_collection))
         #MeasureCollection.write_arff_file(measure_collections1, ml_file_path)
         #measure_collection = [mc for mc in measure_collection if mc.length > 0.5]
-        dataset = DataSet.get_dataset(measure_collections, dataset=dataset)
+        normal_dataset = DataSet.get_dataset(measure_collections, dataset=normal_dataset)
+        dataset_2d_parknet = DataSet.get_2d_dataset(measure_collections, dataset=dataset_2d_parknet)
         measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
 
     classifiers = {
+        'DecisionTree_max_depth_2': DecisionTreeClassifier(max_depth=2)
        #'NeuralNetwork': MLPClassifier(),
        #'NeuralNetwork_relu1000': MLPClassifier(activation='relu', max_iter=10000000000),
-       'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50)),
-       'NeuralNetwork_relu1000000': MLPClassifier(activation='relu', max_iter=10000000),
-       'DecisionTree_GINI': DecisionTreeClassifier(),
-       'knn20': KNeighborsClassifier(21),
-       'knn4': KNeighborsClassifier(4),
-       'supportVector': SVC(),
+       #'NeuralNetwork_relu10000_hl5': MLPClassifier(activation='relu', max_iter=100000, hidden_layer_sizes=(50,50,50,50,50)),
+       #'NeuralNetwork_relu1000000': MLPClassifier(activation='relu', max_iter=10000000),
+       #'DecisionTree_GINI': DecisionTreeClassifier(),
+       #'knn20': KNeighborsClassifier(21),
+       #'knn4': KNeighborsClassifier(4),
+       #'supportVector': SVC(),
        #'gaussian': GaussianProcessClassifier(),
-       'randomforest100': RandomForestClassifier(n_estimators=100, n_jobs=-1, random_state=42),
-       'randomforest1000': RandomForestClassifier(n_estimators=1000, n_jobs=-1, random_state=42),
-       'randomforest1000_balanced': RandomForestClassifier(n_estimators=1000, n_jobs=-1, random_state=42, class_weight='balanced'),
+       #'randomforest100': RandomForestClassifier(n_estimators=100, n_jobs=-1, random_state=42),
+       #'randomforest1000': RandomForestClassifier(n_estimators=1000, n_jobs=-1, random_state=42),
+       #'randomforest1000_balanced': RandomForestClassifier(n_estimators=1000, n_jobs=-1, random_state=42, class_weight='balanced'),
        #'randomforest10000_balanced': RandomForestClassifier(n_estimators=10000, class_weight='balanced')
        #'custom': SurroundingClf(measure_collections_dir, base_clf=MLPClassifier(), lvl2_clf=MLPClassifier())
     }
 
+    datasets = {
+        #'normal_dataset': normal_dataset,
+        '2d_dataset_parknet': dataset_2d_parknet
+    }
+
     for name, clf in classifiers.items():
-        start = time.time()
-        scorer = MultiScorer({
-            'Accuracy': (accuracy_score, {}),
-            'Precision': (precision_score, {'average': 'weighted'}),
-            'Recall': (recall_score, {'average': 'weighted'}),
-            'ConfusionMatrix': (confusion_matrix, {'labels': dataset.class_labels})
-        })
-        print(name)
+        for dataset_name, dataset in datasets.items():
+            start = time.time()
+            scorer = MultiScorer({
+                'Accuracy': (accuracy_score, {}),
+                'Precision': (precision_score, {'average': 'weighted'}),
+                'Recall': (recall_score, {'average': 'weighted'}),
+                'ConfusionMatrix': (confusion_matrix, {'labels': dataset.class_labels})
+            })
+            print(name, dataset_name)
 
-        # X_train, X_test, y_train, y_test = train_test_split(dataset.x, dataset.y_true, test_size=0.33, random_state=42)
-        # clf.fit(X_train, y_train)
-        # print('fitted')
-        # i = 0
-        # mismatches = []
-        # while i < len(X_test[0]):
-        #      predicted = clf.predict(np.array(X_test), [[1, 15], [15, 0]])
-        #                              #.reshape(1, -1))
-        #      #print(predicted[0])
-        #      #print(dataset_test[1][i])
-        #      if predicted[0] != y_test[i]:
-        #           print('features: ', X_test)
-        #           print('GroundTruth: ', y_test)
-        #           print('Predicted: ', predicted[0])
-        #           print('')
-        #           mismatches.append((X_test, y_test, predicted[0]))
-        #      i += 1
-        # print(len(mismatches))
-        #
-        # continue
-        kfold = KFold(n_splits=10, shuffle=True, random_state=42)
-        cross_val_score(clf, dataset.x, dataset.y_true, cv=kfold, scoring=scorer)
-        results = scorer.get_results()
-        print(time.time() - start)
+            # X_train, X_test, y_train, y_test = train_test_split(dataset.x, dataset.y_true, test_size=0.33, random_state=42)
+            # clf.fit(X_train, y_train)
+            # print('fitted')
+            # i = 0
+            # mismatches = []
+            # while i < len(X_test[0]):
+            #      predicted = clf.predict(np.array(X_test), [[1, 15], [15, 0]])
+            #                              #.reshape(1, -1))
+            #      #print(predicted[0])
+            #      #print(dataset_test[1][i])
+            #      if predicted[0] != y_test[i]:
+            #           print('features: ', X_test)
+            #           print('GroundTruth: ', y_test)
+            #           print('Predicted: ', predicted[0])
+            #           print('')
+            #           mismatches.append((X_test, y_test, predicted[0]))
+            #      i += 1
+            # print(len(mismatches))
+            #
+            # continue
+            kfold = KFold(n_splits=10, shuffle=True, random_state=42)
+            cross_val_score(clf, dataset.x, dataset.y_true, cv=kfold, scoring=scorer)
+            results = scorer.get_results()
+            print(time.time() - start)
 
-        confusion_m = None
-        for metric_name in results.keys():
-            if metric_name == 'ConfusionMatrix':
-                print(metric_name)
-                confusion_m = np.sum(results[metric_name], axis=0)
-                print(dataset.class_labels)
-                print(confusion_m)
-            else:
-                print(metric_name, np.average(results[metric_name]))
+            confusion_m = None
+            for metric_name in results.keys():
+                if metric_name == 'ConfusionMatrix':
+                    print(metric_name)
+                    confusion_m = np.sum(results[metric_name], axis=0)
+                    print(dataset.class_labels)
+                    print(confusion_m)
+                else:
+                    print(metric_name, np.average(results[metric_name]))
 
-        true_pos = np.array(np.diag(confusion_m), dtype=float)
-        false_pos = np.sum(confusion_m, axis=0) - true_pos
-        false_neg = np.sum(confusion_m, axis=1) - true_pos
+            true_pos = np.array(np.diag(confusion_m), dtype=float)
+            false_pos = np.sum(confusion_m, axis=0) - true_pos
+            false_neg = np.sum(confusion_m, axis=1) - true_pos
 
-        precision = (true_pos / (true_pos + false_pos))
-        print('Precision: ', precision)
-        recall = (true_pos / (true_pos + false_neg))
-        print('Recall: ', recall)
-        print('')
+            precision = (true_pos / (true_pos + false_pos))
+            print('Precision: ', precision)
+            recall = (true_pos / (true_pos + false_neg))
+            print('Recall: ', recall)
+            print('')

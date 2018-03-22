@@ -38,7 +38,7 @@ def simple_dense_model(dataset, x_train, y_train):
     model.add(Dropout(0.2))
     model.add(Dense(len(dataset.class_labels), activation='softmax'))
 
-    sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+    # sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
     model.compile(loss='categorical_crossentropy',
                   optimizer='adam',
                   metrics=['accuracy'])

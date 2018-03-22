@@ -149,8 +149,8 @@ class MeasurementVisualization:
         if fig is None:
             fig = plt.figure(500)
         for measure_collection in measure_collections:
-            xs = [measure_collection.length]
-            ys = [measure_collection.avg_distance]
+            xs = [measure_collection.avg_distance]
+            ys = [measure_collection.length]
             probable_gt = measure_collection.get_probable_ground_truth()
             color = 'black'
             if GroundTruthClass.is_parking_car(probable_gt):
@@ -158,10 +158,12 @@ class MeasurementVisualization:
             elif GroundTruthClass.is_overtaking_situation(probable_gt):
                 color = 'magenta'
             elif GroundTruthClass.is_parking_motorcycle_or_bicycle(probable_gt):
-                color = 'yellow'
-            plt.scatter(xs, ys, color=color, s=5)
+                color = 'cyan'
+            plt.scatter(xs, ys, color=color, s=5, alpha=0.5)
 
             # plt.scatter([measure_collection.first_measure().timestamp], [measure_collection.get_acceleration() * 1000], color='orange')
+        plt.xlabel('Distance from Sensing Vehicle [m]')
+        plt.ylabel('Length [m]')
         fig.show()
 
     def show_distance_for_class(self, measure_collections, classes, fig=None):
@@ -205,12 +207,12 @@ if __name__ == '__main__':
 
     font = {'family': 'normal',
             'weight': 'normal',
-            'size': 30}
+            'size': 17}
 
     matplotlib.rc('font', **font)
 
     options = {
-        'mc_min_speed': 3.0,
+        'mc_min_speed': 1.0,
         'mc_merge': True,
         'mc_separation_threshold': 1.0,
         'mc_min_measure_count': 2,
@@ -230,6 +232,11 @@ if __name__ == '__main__':
 
     #free_space_measure_collections = []
     measure_collections_dir = MeasureCollection.read_directory(base_path, options=options)
+
+    #parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
+    #measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
+    #                                                             parking_space_map_clusters)
+
     #gt25 = 0
     i = 1
     for file_name, measure_collection in measure_collections_dir.items():
@@ -239,6 +246,10 @@ if __name__ == '__main__':
         #gt25 += len([mc for mc in measure_collection if mc.get_probable_ground_truth() == GroundTruthClass.FREE_SPACE and mc.length >= 5])
         #free_space_measure_collections.extend([mc for mc in measure_collection if mc.get_probable_ground_truth() == GroundTruthClass.FREE_SPACE]);
         i += 1
+
+    plt.plot([0.0, 3.0217], [1.245, 1.245], '--', c='red', linewidth=2.0)
+    plt.plot([3.0217, 3.0217], [1.245, 50], '--', c='red', linewidth=2.0)
+
     #
     # print gt25
     # visualization.show_distance_histogram_length(free_space_measure_collections, fig=plt.figure(i))

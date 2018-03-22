@@ -20,8 +20,11 @@ from drive_by_evaluation.db_machine_learning.confusion_matrix_util import print_
 from drive_by_evaluation.parking_map_clustering.dbscan_clustering_directional import create_parking_space_map, filter_parking_space_map_mcs
 from drive_by_evaluation.deep_learning_keras.evaluate_keras import simple_dense_model, predict_softmax
 import time
+import sklearn.utils
 
 from drive_by_evaluation.db_machine_learning.models import create_random_forest, predict, create_stacked, create_decision_tree, create_mlp
+
+from imblearn.combine import SMOTEENN
 
 
 class DriveByEvaluation:
@@ -29,7 +32,7 @@ class DriveByEvaluation:
     # def __init__(self):
     #     self.clf_and_datasets = []
 
-    def evaluate(self, create_and_train_model, predict_from_model, dataset, post_process=None, number_of_splits=5, shuffle=False):
+    def evaluate(self, create_and_train_model, predict_from_model, dataset, post_process=None, number_of_splits=5, shuffle=False, over_under_sample=False):
         kfold = KFold(n_splits=number_of_splits, shuffle=shuffle, random_state=42)
 
         predictions = ['' for i in range(len(dataset.x))]
@@ -41,6 +44,14 @@ class DriveByEvaluation:
             print('fold', fold_nr)
             x_train = [x for i, x in enumerate(dataset.x) if i in train]
             y_train = [x for i, x in enumerate(dataset.y_true) if i in train]
+
+            if over_under_sample:
+                print('over-under-sampling')
+                print('before:', len(x_train))
+                smote_enn = SMOTEENN(random_state=42)
+                x_train, y_train = smote_enn.fit_sample(x_train, y_train)
+                #x_train, y_train = sklearn.utils.resample(x_train, y_train, random_state=42)
+                print('after:', len(x_train))
 
             #model, dataset = create_and_train_model(dataset, x_train, y_train)
             model = create_and_train_model(dataset, x_train, y_train)
@@ -115,7 +126,9 @@ def enhance_dataset2(dataset, predictions):
 
 
 def enhance_dataset(dataset, predictions, predictions_are_softmax=False):
-    dataset_normal_plus = DataSet(class_labels=dataset.class_labels, is_softmax_y=dataset.is_softmax_y)
+    dataset_normal_plus = DataSet(name=dataset.name + '_enhanced',
+                                  class_labels=dataset.class_labels,
+                                  is_softmax_y=dataset.is_softmax_y)
     surrounding_mcs = 20
     for i in range(0, len(predictions)):
         features = [x for x in dataset.x[i]]
@@ -153,7 +166,7 @@ if __name__ == '__main__':
     base_path = 'C:\\sw\\master\\collected data\\'
 
     options = {
-        'mc_min_speed': 3.0,
+        'mc_min_speed': 1.0,
         'mc_merge': True,
         'mc_separation_threshold': 1.0,
         'mc_min_measure_count': 2,
@@ -168,9 +181,9 @@ if __name__ == '__main__':
     dataset_normal = None
     measure_collections_files_dir = MeasureCollection.read_directory(base_path, options=options)
 
-    #parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
-    #measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
-    #                                                             parking_space_map_clusters)
+    parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
+    measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
+                                                                 parking_space_map_clusters)
 
     #print(len(parking_space_map_clusters))
     #print(len(_))
@@ -186,11 +199,11 @@ if __name__ == '__main__':
     # confusion_m_simp = evaluate_model(simple_dense_model, dataset)
 
     evaluator = DriveByEvaluation()
-    # confusion_m_lstm, predictions = evaluator.evaluate(create_random_forest, predict, dataset_normal,
-    #                                                   number_of_splits=10, shuffle=True)
-    # confusion_m_lstm = evaluator.evaluate(create_random_forest, predict, dataset_normal)
-    confusion_m_lstm, predictions = evaluator.evaluate(simple_dense_model, predict_softmax, dataset_softmax_10cm,
+    confusion_m_lstm, predictions = evaluator.evaluate(create_random_forest, predict, dataset_normal,
                                                        number_of_splits=10, shuffle=True)
+    # confusion_m_lstm = evaluator.evaluate(create_random_forest, predict, dataset_normal)
+    # confusion_m_lstm, predictions = evaluator.evaluate(simple_dense_model, predict_softmax, dataset_softmax_10cm,
+    #                                                    number_of_splits=10, shuffle=True)
     # confusion_m_conv = evaluate_model(create_conv_model, dataset)
     print(time.time() - start)
 
@@ -204,7 +217,7 @@ if __name__ == '__main__':
 
     dataset_normal_plus = enhance_dataset(dataset_normal, predictions)
     #dataset_normal_plus = enhance_dataset2(dataset_normal, predictions)
-    dataset_softmax_plus = enhance_dataset(dataset_softmax_10cm, predictions, predictions_are_softmax=False)
+    #dataset_softmax_plus = enhance_dataset(dataset_softmax_10cm, predictions, predictions_are_softmax=False)
 
     print('dataset constructed')
 

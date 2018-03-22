@@ -33,17 +33,16 @@ if __name__ == '__main__':
     measure_collections_dir = {}
 
     parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
-    measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir, parking_space_map_clusters)
+    measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
+                                                                 parking_space_map_clusters)
 
     for file_name, measure_collections in measure_collections_files_dir.items():
         print(file_name)
-        dataset = DataSet.get_dataset(measure_collections, dataset=dataset)
+        dataset = DataSet.get_2d_dataset(measure_collections, dataset=dataset)
         measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
 
-    dataset.to_arff_file('parking_map_filtered_dataset.arff')
-
     classifiers = {
-       'DecisionTree_GINI': DecisionTreeClassifier(max_depth=3),
+       'DecisionTree_GINI': DecisionTreeClassifier(max_depth=2),
     }
 
     for name, clf in classifiers.items():
@@ -53,7 +52,7 @@ if __name__ == '__main__':
         from io import StringIO
 
         #dot_data = StringIO()
-        tree.export_graphviz(clf, out_file='tree_pruned_parknet.dot')
+        tree.export_graphviz(clf, out_file='tree_pruned_parknet_maxdepth2_filtered.dot')
         #print(dot_data.getvalue())
         #graph = pydot.graph_from_dot_data(dot_data.getvalue())
         #print(graph)
@@ -67,26 +66,6 @@ if __name__ == '__main__':
         })
         print(name)
 
-        # X_train, X_test, y_train, y_test = train_test_split(dataset.x, dataset.y_true, test_size=0.33, random_state=42)
-        # clf.fit(X_train, y_train)
-        # print('fitted')
-        # i = 0
-        # mismatches = []
-        # while i < len(X_test[0]):
-        #      predicted = clf.predict(np.array(X_test), [[1, 15], [15, 0]])
-        #                              #.reshape(1, -1))
-        #      #print(predicted[0])
-        #      #print(dataset_test[1][i])
-        #      if predicted[0] != y_test[i]:
-        #           print('features: ', X_test)
-        #           print('GroundTruth: ', y_test)
-        #           print('Predicted: ', predicted[0])
-        #           print('')
-        #           mismatches.append((X_test, y_test, predicted[0]))
-        #      i += 1
-        # print(len(mismatches))
-        #
-        # continue
         kfold = KFold(n_splits=5)
         cross_val_score(clf, dataset.x, dataset.y_true, cv=kfold, scoring=scorer)
         results = scorer.get_results()

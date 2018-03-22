@@ -62,7 +62,7 @@ def create_conv_model(dataset, x_train, y_train):
     # model.add(MaxPooling1D(5))
     # model.add(Conv1D(128, 3, activation='relu'))
     # model.add(Conv1D(128, 3, activation='relu'))
-    model.add(GlobalAveragePooling1D())
+    #  model.add(GlobalAveragePooling1D())
     # model.add(Dropout(0.5))
     model.add(Dense(len(dataset.class_labels), activation='softmax'))
 
