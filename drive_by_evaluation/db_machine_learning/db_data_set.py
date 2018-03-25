@@ -86,10 +86,10 @@ class DataSet:
         return dataset
 
     @staticmethod
-    def get_dataset(measure_collections, dataset=None, is_softmax_y=False):
+    def get_dataset(measure_collections, dataset=None, is_softmax_y=False, name='full_dataset'):
         class_labels = ['FREE_SPACE', 'PARKING_CAR', 'OVERTAKING_SITUATION', 'PARKING_MC_BC']
         if dataset is None:
-            dataset = DataSet('full_dataset', class_labels, is_softmax_y)
+            dataset = DataSet(name, class_labels, is_softmax_y)
 
         for i, mc in enumerate(measure_collections):
             last_distance = 0 if i == 0 else measure_collections[i - 1].avg_distance  # .last_measure().distance
@@ -128,10 +128,10 @@ class DataSet:
         return dataset
 
     @staticmethod
-    def get_filtered_feature_dataset(measure_collections, dataset=None, is_softmax_y=False):
+    def get_filtered_feature_dataset(measure_collections, dataset=None, is_softmax_y=False, name='less_features_dataset'):
         class_labels = ['FREE_SPACE', 'PARKING_CAR', 'OVERTAKING_SITUATION', 'PARKING_MC_BC']
         if dataset is None:
-            dataset = DataSet('full_dataset', class_labels, is_softmax_y)
+            dataset = DataSet(name, class_labels, is_softmax_y)
 
         for i, mc in enumerate(measure_collections):
             last_distance = 0 if i == 0 else measure_collections[i - 1].avg_distance  # .last_measure().distance
@@ -194,10 +194,10 @@ class DataSet:
         return dataset
 
     @staticmethod
-    def get_raw_sensor_dataset_per_10cm(measure_collections, dataset=None, is_softmax_y=False):
+    def get_raw_sensor_dataset_per_10cm(measure_collections, dataset=None, is_softmax_y=False, name='raw_sensor_dataset_per_10cm'):
         class_labels = ['FREE_SPACE', 'PARKING_CAR', 'OVERTAKING_SITUATION', 'PARKING_MC_BC']
         if dataset is None:
-            dataset = DataSet('raw_dataset_per_10cm', class_labels, is_softmax_y)
+            dataset = DataSet(name, class_labels, is_softmax_y)
 
         for mc in measure_collections:
             features = np.zeros(100)

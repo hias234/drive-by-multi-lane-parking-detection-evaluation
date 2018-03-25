@@ -64,13 +64,32 @@ class ClassifierEvaluationResult:
         print()
         print()
 
+    def print_short(self):
+        true_pos = np.array(np.diag(self.confusion_matrix), dtype=float)
+        false_pos = np.sum(self.confusion_matrix, axis=0) - true_pos
+        false_neg = np.sum(self.confusion_matrix, axis=1) - true_pos
+
+        precision = (true_pos / (true_pos + false_pos))
+        recall = (true_pos / (true_pos + false_neg))
+
+        print(self.classifier_evaluation_bundle.create_and_train_model, '\t',
+              self.classifier_evaluation_bundle.dataset.name, '\t',
+              self.classifier_evaluation_bundle.options, '\t',
+              precision, '\t',
+              recall, '\t',
+              self.learning_time_in_s
+              )
+
 
 class DriveByEvaluation:
 
     def evaluate_many(self, classifier_evaluation_bundles):
         results = []
 
+        i = 1
         for classifier_evaluation_bundle in classifier_evaluation_bundles:
+            print(i, 'of', len(classifier_evaluation_bundles), 'evaluated')
+
             confusion_sum, predictions, learning_time_in_s = self.evaluate(
                 create_and_train_model=classifier_evaluation_bundle.create_and_train_model,
                 predict_from_model=classifier_evaluation_bundle.predict_from_model,
@@ -85,6 +104,8 @@ class DriveByEvaluation:
                                                       confusion_sum,
                                                       predictions,
                                                       learning_time_in_s))
+
+            i += 1
 
         return results
 
@@ -229,10 +250,8 @@ if __name__ == '__main__':
         'mc_merge': True,
         'mc_separation_threshold': 1.0,
         'mc_min_measure_count': 2,
-        # 'mc_surrounding_times_s': [2.0, 5.0],
         'outlier_threshold_distance': 1.0,
         'outlier_threshold_diff': 0.5,
-        # 'replacement_values': {0.01: 10.01},
         'min_measurement_value': 0.06,
     }
 
@@ -246,9 +265,12 @@ if __name__ == '__main__':
         print(file_name)
         dataset_softmax_10cm = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections,
                                                                        dataset=dataset_softmax_10cm,
-                                                                       is_softmax_y=True)
-        dataset_normal = DataSet.get_dataset(measure_collections, dataset=dataset_normal)
-        dataset_less_features = DataSet.get_dataset(measure_collections, dataset=dataset_less_features)
+                                                                       is_softmax_y=True,
+                                                                       name='full_dataset_raw_sensor_10cm')
+        dataset_normal = DataSet.get_dataset(measure_collections, dataset=dataset_normal, name='full_dataset')
+        dataset_less_features = DataSet.get_dataset(measure_collections,
+                                                    dataset=dataset_less_features,
+                                                    name='full_dataset_less_features')
 
     parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
     filtered_measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
@@ -265,9 +287,13 @@ if __name__ == '__main__':
         print(file_name)
         filtered_dataset_softmax_10cm = DataSet.get_raw_sensor_dataset_per_10cm(measure_collections,
                                                                                 dataset=filtered_dataset_softmax_10cm,
-                                                                                is_softmax_y=True)
-        filtered_dataset_normal = DataSet.get_dataset(measure_collections, dataset=filtered_dataset_normal)
-        filtered_dataset_less_features = DataSet.get_dataset(measure_collections, dataset=filtered_dataset_less_features)
+                                                                                is_softmax_y=True,
+                                                                                name='filtered_dataset_raw_sensor_10cm')
+        filtered_dataset_normal = DataSet.get_dataset(measure_collections, dataset=filtered_dataset_normal,
+                                                      name='filtered_dataset')
+        filtered_dataset_less_features = DataSet.get_dataset(measure_collections,
+                                                             dataset=filtered_dataset_less_features,
+                                                             name='filtered_dataset_less_features')
 
     # create classifiers_test_bundles
     classifier_evaluation_bundles = []
@@ -306,6 +332,12 @@ if __name__ == '__main__':
 
     for result in results:
         result.print()
+
+    print()
+    print()
+
+    for result in results:
+        result.print_short()
 
     # start = time.time()
     # # confusion_m_simp = evaluate_model(simple_dense_model, dataset)
