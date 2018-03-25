@@ -198,6 +198,17 @@ class MeasurementVisualization:
         plt.xlabel('Length [m]')
         plt.ylabel('Count')
 
+    def show_gps_graph(self, measure_collections, fig=None):
+        if fig is None:
+            fig = plt.figure(10)
+        x = [measure_collection.center_latitude for measure_collection in measure_collections]
+        y = [measure_collection.measures[0].timestamp for measure_collection in measure_collections]
+
+        plt.plot(x, y)
+
+        plt.xlabel('Length [m]')
+        plt.ylabel('Count')
+
 
 if __name__ == '__main__':
     visualization = MeasurementVisualization()
@@ -240,15 +251,17 @@ if __name__ == '__main__':
     #gt25 = 0
     i = 1
     for file_name, measure_collection in measure_collections_dir.items():
-        visualization.show_2d_scatter(measure_collection, fig=plt.figure(1))
+        if i == 1:
+            visualization.show_gps_graph(measure_collection)
+        #visualization.show_2d_scatter(measure_collection, fig=plt.figure(1))
         #visualization.show_distances_plus_segmentation(measure_collection, fig=plt.figure(i))
         #visualization.show_distance_for_class(measure_collection, [GroundTruthClass.OVERTAKEN_BICYCLE], fig=plt.figure(i))
         #gt25 += len([mc for mc in measure_collection if mc.get_probable_ground_truth() == GroundTruthClass.FREE_SPACE and mc.length >= 5])
         #free_space_measure_collections.extend([mc for mc in measure_collection if mc.get_probable_ground_truth() == GroundTruthClass.FREE_SPACE]);
         i += 1
 
-    plt.plot([0.0, 3.0217], [1.245, 1.245], '--', c='red', linewidth=2.0)
-    plt.plot([3.0217, 3.0217], [1.245, 50], '--', c='red', linewidth=2.0)
+    #plt.plot([0.0, 3.0217], [1.245, 1.245], '--', c='red', linewidth=2.0)
+    #plt.plot([3.0217, 3.0217], [1.245, 50], '--', c='red', linewidth=2.0)
 
     #
     # print gt25

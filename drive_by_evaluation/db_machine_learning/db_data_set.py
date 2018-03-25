@@ -128,6 +128,36 @@ class DataSet:
         return dataset
 
     @staticmethod
+    def get_filtered_feature_dataset(measure_collections, dataset=None, is_softmax_y=False):
+        class_labels = ['FREE_SPACE', 'PARKING_CAR', 'OVERTAKING_SITUATION', 'PARKING_MC_BC']
+        if dataset is None:
+            dataset = DataSet('full_dataset', class_labels, is_softmax_y)
+
+        for i, mc in enumerate(measure_collections):
+            last_distance = 0 if i == 0 else measure_collections[i - 1].avg_distance  # .last_measure().distance
+            next_distance = 0 if len(measure_collections) == i + 1 else measure_collections[
+                i + 1].avg_distance  # .first_measure().distance
+            features = [
+                mc.avg_distance,
+                mc.get_length(),
+                mc.get_duration(),
+                mc.get_nr_of_measures(),
+                mc.avg_distance - last_distance,
+                mc.avg_distance - next_distance,
+            ]
+
+            for interval, surrounding_mc in mc.time_surrounding_mcs.items():
+                features.append(surrounding_mc.avg_distance)
+                features.append(surrounding_mc.avg_speed)
+                features.append(surrounding_mc.length)
+                features.append(surrounding_mc.get_acceleration())
+
+            ground_truth = DataSet.get_four_classes_groundtruth(mc)
+            dataset = DataSet.append_to_dataset(dataset, features, mc, ground_truth, class_labels)
+
+        return dataset
+
+    @staticmethod
     def get_raw_sensor_dataset(measure_collections, dataset=None, is_softmax_y=False):
         class_labels = ['FREE_SPACE', 'PARKING_CAR', 'OVERTAKING_SITUATION', 'PARKING_MC_BC']
         if dataset is None:

@@ -56,7 +56,34 @@ def create_decision_tree(dataset, x_train, y_train):
 
 
 def create_mlp(dataset, x_train, y_train):
-    clf = MLPClassifier(hidden_layer_sizes=(100,100,100,100,100), max_iter=1000000, random_state=42)
+    clf = MLPClassifier(hidden_layer_sizes=100, max_iter=1000000, random_state=42)
+    clf.fit(x_train, y_train)
+
+    return clf
+
+
+def create_naive_bayes(dataset, x_train, y_train):
+    clf = GaussianNB()
+    clf.fit(x_train, y_train)
+
+    return clf
+
+
+def create_kNN5(dataset, x_train, y_train):
+    clf = KNeighborsClassifier()
+    clf.fit(x_train, y_train)
+
+    return clf
+
+def create_kNN21(dataset, x_train, y_train):
+    clf = KNeighborsClassifier(n_neighbors=21)
+    clf.fit(x_train, y_train)
+
+    return clf
+
+
+def create_svm(dataset, x_train, y_train):
+    clf = SVC()
     clf.fit(x_train, y_train)
 
     return clf
