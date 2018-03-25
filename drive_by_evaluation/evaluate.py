@@ -1,14 +1,7 @@
 import numpy as np
-import keras
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation
-from keras.optimizers import SGD
-from keras.wrappers.scikit_learn import KerasClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
-from sklearn.model_selection import cross_val_score
+from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import KFold
 
-from drive_by_evaluation.db_machine_learning.multi_scorer import MultiScorer
 from drive_by_evaluation.measure_collection import MeasureCollection
 from drive_by_evaluation.db_machine_learning.db_data_set import DataSet
 from drive_by_evaluation.deep_learning_keras.lstm import create_lstm_model
@@ -22,8 +15,13 @@ from drive_by_evaluation.deep_learning_keras.evaluate_keras import simple_dense_
 import time
 import sklearn.utils
 
-from drive_by_evaluation.db_machine_learning.models import create_random_forest, predict, create_stacked, \
-    create_decision_tree, create_mlp, create_naive_bayes, create_kNN5, create_kNN21, create_svm
+from drive_by_evaluation.db_machine_learning.models import random_forest_100_trees, random_forest_1000_trees_entropy, \
+    random_forest_1000_trees, random_forest_100_trees_entropy, predict, create_stacked, \
+    decision_tree, decision_tree_entropy_minsamples_10, decision_tree_minsamples_10, decision_tree_entropy,\
+    mlp_100_hidden_layer_maxiter_1000000, mlp_5x50_hidden_layer_maxiter_1000000, \
+    mlp_100_hidden_layer_maxiter_10000000_minlearning_rate, mlp_100_hidden_layer_maxiter_1000000_early_stopping, \
+    naive_bayes, kNN5, kNN21, kNN1, kNN3, kNN9, svm, svm_sigmoid
+
 
 from imblearn.combine import SMOTEENN
 
@@ -72,13 +70,28 @@ class ClassifierEvaluationResult:
         precision = (true_pos / (true_pos + false_pos))
         recall = (true_pos / (true_pos + false_neg))
 
-        print(self.classifier_evaluation_bundle.create_and_train_model, '\t',
-              self.classifier_evaluation_bundle.dataset.name, '\t',
-              self.classifier_evaluation_bundle.options, '\t',
-              precision, '\t',
-              recall, '\t',
-              self.learning_time_in_s
-              )
+        output = (self.classifier_evaluation_bundle.create_and_train_model.__name__ + '\t' +
+                  self.classifier_evaluation_bundle.dataset.name + '\t')
+
+        for name, value in self.classifier_evaluation_bundle.options.items():
+            output += str(value) + '\t'
+
+        output += str(np.sum(true_pos) / np.sum(self.confusion_matrix)) + '\t' # total accuracy
+
+        for i in range(0, len(precision)):
+            output += str(recall[i]) + '\t' + str(precision[i]) + '\t'
+
+        output += str(self.learning_time_in_s) + '\t'
+
+        output += '['
+        for i in range(0, len(self.confusion_matrix)):
+            output += '['
+            for j in range(0, len(self.confusion_matrix[i])):
+                output += str(self.confusion_matrix[i][j]) + ' '
+            output += ']'
+        output += ']'
+
+        print(output)
 
 
 class DriveByEvaluation:
@@ -100,10 +113,14 @@ class DriveByEvaluation:
                 over_under_sample=classifier_evaluation_bundle.options.get('over_under_sample', False)
             )
 
-            results.append(ClassifierEvaluationResult(classifier_evaluation_bundle,
-                                                      confusion_sum,
-                                                      predictions,
-                                                      learning_time_in_s))
+            result = ClassifierEvaluationResult(classifier_evaluation_bundle,
+                                                  confusion_sum,
+                                                  predictions,
+                                                  learning_time_in_s)
+            results.append(result)
+
+            result.print()
+            result.print_short()
 
             i += 1
 
@@ -299,8 +316,14 @@ if __name__ == '__main__':
     classifier_evaluation_bundles = []
 
     # classic classifiers for filtered and full dataset
-    classic_classifiers = [create_random_forest, create_decision_tree, create_mlp, create_naive_bayes, create_kNN5,
-                           create_kNN21, create_svm]
+    classic_classifiers =  [random_forest_100_trees, random_forest_1000_trees_entropy,
+                            random_forest_1000_trees, random_forest_100_trees_entropy,
+                            decision_tree, decision_tree_entropy_minsamples_10, decision_tree_minsamples_10,
+                            decision_tree_entropy, mlp_100_hidden_layer_maxiter_1000000,
+                            mlp_5x50_hidden_layer_maxiter_1000000,
+                            mlp_100_hidden_layer_maxiter_10000000_minlearning_rate,
+                            mlp_100_hidden_layer_maxiter_1000000_early_stopping,
+                            naive_bayes, kNN5, kNN21, kNN1, kNN3, kNN9, svm, svm_sigmoid]
 
     evaluation_options = [
         {
@@ -317,15 +340,16 @@ if __name__ == '__main__':
         }
     ]
 
-    for classic_classifier in classic_classifiers:
-        classifier_evaluation_bundles.append(
-            ClassifierEvaluationBundle(classic_classifier, predict, dataset_normal))
-        classifier_evaluation_bundles.append(
-            ClassifierEvaluationBundle(classic_classifier, predict, filtered_dataset_normal))
-        classifier_evaluation_bundles.append(
-            ClassifierEvaluationBundle(classic_classifier, predict, dataset_less_features))
-        classifier_evaluation_bundles.append(
-            ClassifierEvaluationBundle(classic_classifier, predict, filtered_dataset_less_features))
+    for evaluation_option in evaluation_options:
+        for classic_classifier in classic_classifiers:
+            classifier_evaluation_bundles.append(
+                ClassifierEvaluationBundle(classic_classifier, predict, dataset_normal, options=evaluation_option))
+            classifier_evaluation_bundles.append(
+                ClassifierEvaluationBundle(classic_classifier, predict, filtered_dataset_normal, options=evaluation_option))
+            classifier_evaluation_bundles.append(
+                ClassifierEvaluationBundle(classic_classifier, predict, dataset_less_features, options=evaluation_option))
+            classifier_evaluation_bundles.append(
+                ClassifierEvaluationBundle(classic_classifier, predict, filtered_dataset_less_features, options=evaluation_option))
 
     evaluator = DriveByEvaluation()
     results = evaluator.evaluate_many(classifier_evaluation_bundles)
