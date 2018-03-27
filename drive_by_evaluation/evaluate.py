@@ -24,6 +24,8 @@ from drive_by_evaluation.db_machine_learning.models import random_forest_100_tre
 
 
 from imblearn.combine import SMOTEENN
+from imblearn.over_sampling import SMOTE
+from imblearn.under_sampling import ClusterCentroids
 
 
 class ClassifierEvaluationBundle:
@@ -37,7 +39,7 @@ class ClassifierEvaluationBundle:
                 'post_process': None,
                 'number_of_splits': 10,
                 'shuffle': True,
-                'over_under_sample': False
+                'over_under_sample': 'none'
             }
         else:
             self.options = options
@@ -110,7 +112,7 @@ class DriveByEvaluation:
                 post_process=classifier_evaluation_bundle.options.get('post_process', None),
                 number_of_splits=classifier_evaluation_bundle.options.get('number_of_splits', 10),
                 shuffle=classifier_evaluation_bundle.options.get('shuffle', True),
-                over_under_sample=classifier_evaluation_bundle.options.get('over_under_sample', False)
+                over_under_sample=classifier_evaluation_bundle.options.get('over_under_sample', 'none')
             )
 
             result = ClassifierEvaluationResult(classifier_evaluation_bundle,
@@ -127,7 +129,7 @@ class DriveByEvaluation:
         return results
 
     def evaluate(self, create_and_train_model, predict_from_model, dataset, post_process=None, number_of_splits=5,
-                 shuffle=False, over_under_sample=False):
+                 shuffle=False, over_under_sample='none'):
         kfold = KFold(n_splits=number_of_splits, shuffle=shuffle, random_state=42)
 
         predictions = ['' for i in range(len(dataset.x))]
@@ -136,18 +138,30 @@ class DriveByEvaluation:
         fold_nr = 1
         confusion_res = []
 
+        print(create_and_train_model.__name__)
         start = time.time()
         for train, test in kfold.split(dataset.x, dataset.y_true):
             print('fold', fold_nr)
             x_train = [x for i, x in enumerate(dataset.x) if i in train]
             y_train = [x for i, x in enumerate(dataset.y_true) if i in train]
 
-            if over_under_sample:
+            if over_under_sample == 'over_under_sample':
                 print('over-under-sampling')
                 print('before:', len(x_train))
                 smote_enn = SMOTEENN(random_state=42)
                 x_train, y_train = smote_enn.fit_sample(x_train, y_train)
-                #x_train, y_train = sklearn.utils.resample(x_train, y_train, random_state=42)
+                print('after:', len(x_train))
+            elif over_under_sample == 'under_sample':
+                print('under-sampling')
+                print('before:', len(x_train))
+                centeriod_cluster = ClusterCentroids(random_state=42)
+                x_train, y_train = centeriod_cluster.fit_sample(x_train, y_train)
+                print('after:', len(x_train))
+            elif over_under_sample == 'over_sample':
+                print('over-sampling')
+                print('before:', len(x_train))
+                smote = SMOTE(random_state=42)
+                x_train, y_train = smote.fit_sample(x_train, y_train)
                 print('after:', len(x_train))
 
             model = create_and_train_model(dataset, x_train, y_train)
@@ -330,13 +344,13 @@ if __name__ == '__main__':
             'post_process': None,
             'number_of_splits': 10,
             'shuffle': True,
-            'over_under_sample': False
+            'over_under_sample': 'under_sample'
         },
         {
             'post_process': None,
             'number_of_splits': 10,
             'shuffle': True,
-            'over_under_sample': True
+            'over_under_sample': 'over_sample'
         }
     ]
 
