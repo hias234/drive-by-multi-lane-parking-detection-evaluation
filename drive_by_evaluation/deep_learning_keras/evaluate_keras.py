@@ -14,6 +14,8 @@ import time
 
 
 def dense_5layer32_dropout20_epochs200(dataset, x_train, y_train):
+    y_train_softmax = DataSet.to_softmax_y(y_train, dataset.class_labels)
+
     hidden_dims = 32
 
     model = Sequential()
@@ -33,7 +35,7 @@ def dense_5layer32_dropout20_epochs200(dataset, x_train, y_train):
                   optimizer='adam',
                   metrics=['accuracy'])
 
-    model.fit(x_train, y_train,
+    model.fit(x_train, y_train_softmax,
               epochs=200,
               verbose=0,
               )
@@ -188,19 +190,20 @@ def evaluate_model(create_model, dataset, n_splits=10, shuffle=True):
     return confusion_sum
 
 
-def predict_softmax(model, x_test, y_test):
+def predict_softmax(model, dataset, x_test, y_test):
     predictions = model.predict(x_test)
 
     y_pred = []
-    y_true = []
+    #y_true = []
 
     for i, prediction in enumerate(predictions):
         clazz_predicted, _ = max(enumerate(prediction), key=operator.itemgetter(1))
-        clazz_true, _ = max(enumerate(y_test[i]), key=operator.itemgetter(1))
-        y_pred.append(clazz_predicted)
-        y_true.append(clazz_true)
+        class_label_predicted = dataset.class_labels[clazz_predicted]
+        #clazz_true, _ = max(enumerate(y_test_softmax[i]), key=operator.itemgetter(1))
+        y_pred.append(class_label_predicted)
+        #y_true.append(clazz_true)
 
-    return y_pred, y_true
+    return y_pred, y_test
 
 
 if __name__ == '__main__':

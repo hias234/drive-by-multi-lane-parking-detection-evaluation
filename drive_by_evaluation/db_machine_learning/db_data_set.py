@@ -56,14 +56,22 @@ class DataSet:
 
     @staticmethod
     def append_to_dataset(dataset, features, mc, ground_truth, class_labels):
-        if dataset.is_softmax_y:
-            index = class_labels.index(ground_truth)
-            softmax_y = keras.utils.to_categorical(index, num_classes=len(class_labels))[0].tolist()
-            dataset.append_sample(features, softmax_y, mc)
-        else:
-            dataset.append_sample(features, ground_truth, mc)
-
+        # if dataset.is_softmax_y:
+        #     index = class_labels.index(ground_truth)
+        #     softmax_y = keras.utils.to_categorical(index, num_classes=len(class_labels))[0].tolist()
+        #     dataset.append_sample(features, softmax_y, mc)
+        # else:
+        dataset.append_sample(features, ground_truth, mc)
         return dataset
+
+    @staticmethod
+    def to_softmax_y(ys, class_labels):
+        ys_softmax = []
+        for y in ys:
+            index = class_labels.index(y)
+            softmax_y = keras.utils.to_categorical(index, num_classes=len(class_labels))[0].tolist()
+            ys_softmax.append(softmax_y)
+        return ys_softmax
 
     @staticmethod
     def get_2d_dataset(measure_collections, dataset=None, is_softmax_y=False):

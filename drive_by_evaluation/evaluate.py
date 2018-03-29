@@ -106,7 +106,7 @@ class DriveByEvaluation:
 
         i = 1
         for classifier_evaluation_bundle in classifier_evaluation_bundles:
-            print(i, 'of', len(classifier_evaluation_bundles), 'evaluated')
+            print('evaluating bundle', i, 'of', len(classifier_evaluation_bundles))
 
             confusion_sum, predictions, learning_time_in_s = self.evaluate(
                 create_and_train_model=classifier_evaluation_bundle.create_and_train_model,
@@ -173,7 +173,7 @@ class DriveByEvaluation:
             x_test = [x for i, x in enumerate(dataset.x) if i in test]
             y_test = [x for i, x in enumerate(dataset.y_true) if i in test]
 
-            y_pred, y_true = predict_from_model(model, x_test, y_test)
+            y_pred, y_true = predict_from_model(model, dataset, x_test, y_test)
             print('predicted')
 
             if post_process is not None:
@@ -182,11 +182,14 @@ class DriveByEvaluation:
             for i, test_index in enumerate(test):
                 predictions[test_index] = y_pred[i]
 
+            #print(dataset.class_labels)
+            #print(len(y_true))
+            #print(len(y_pred))
             #print(y_true)
             #print(y_pred)
             labels = dataset.class_labels
-            if dataset.is_softmax_y:
-                labels = range(0, len(dataset.class_labels))
+            #if dataset.is_softmax_y:
+            #    labels = range(0, len(dataset.class_labels))
             confusion_m = confusion_matrix(y_true, y_pred, labels=labels)
             #print_confusion_matrix_measures(confusion_m)
             confusion_res.append(confusion_m)
@@ -365,11 +368,12 @@ def create_dense_deep_learning_classifier_evaluation_bundles(dataset_softmax_10c
     ]
 
     deep_learning_classifiers = [dense_5layer32_dropout20_epochs200,
-                                 dense_5layer64_dropout20_epochs200,
-                                 dense_5layer64_dropout20_epochs500,
-                                 dense_5layer32_epochs200,
-                                 dense_5layer64_epochs200,
-                                 dense_5layer64_epochs500]
+                                 #dense_5layer64_dropout20_epochs200,
+                                 #dense_5layer64_dropout20_epochs500,
+                                 #dense_5layer32_epochs200,
+                                 #dense_5layer64_epochs200,
+                                 #dense_5layer64_epochs500
+                                 ]
 
     for evaluation_option in evaluation_options:
         for classic_classifier in deep_learning_classifiers:
