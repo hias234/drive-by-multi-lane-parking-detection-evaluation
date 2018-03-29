@@ -5,15 +5,18 @@ from sklearn.model_selection import KFold
 from drive_by_evaluation.measure_collection import MeasureCollection
 from drive_by_evaluation.db_machine_learning.db_data_set import DataSet
 from drive_by_evaluation.deep_learning_keras.lstm import create_lstm_model
-from drive_by_evaluation.deep_learning_keras.conv import create_conv_model
+from drive_by_evaluation.deep_learning_keras.conv import conv_model_128_epochs
 
-import operator
+from drive_by_evaluation.deep_learning_keras.evaluate_keras import dense_5layer32_dropout20_epochs200,\
+    dense_5layer64_dropout20_epochs200, dense_5layer64_dropout20_epochs500, dense_5layer32_epochs200, \
+    dense_5layer64_epochs200, dense_5layer64_epochs500, predict_softmax
 
-from drive_by_evaluation.db_machine_learning.confusion_matrix_util import print_confusion_matrix_measures, sumup_confusion_matrices
-from drive_by_evaluation.parking_map_clustering.dbscan_clustering_directional import create_parking_space_map, filter_parking_space_map_mcs
-from drive_by_evaluation.deep_learning_keras.evaluate_keras import simple_dense_model, predict_softmax
+from drive_by_evaluation.db_machine_learning.confusion_matrix_util import print_confusion_matrix_measures, \
+    sumup_confusion_matrices
+from drive_by_evaluation.parking_map_clustering.dbscan_clustering_directional import create_parking_space_map, \
+    filter_parking_space_map_mcs
+
 import time
-import sklearn.utils
 
 from drive_by_evaluation.db_machine_learning.models import random_forest_100_trees, random_forest_1000_trees_entropy, \
     random_forest_1000_trees, random_forest_100_trees_entropy, predict, create_stacked, \
@@ -273,6 +276,113 @@ def enhance_dataset(dataset, predictions, predictions_are_softmax=False):
     return dataset_normal_plus
 
 
+def create_classic_classifier_evaluation_bundles(dataset_normal, filtered_dataset_normal,
+                                                 dataset_less_features, filtered_dataset_less_features):
+    classifier_evaluation_bundles = []
+
+    evaluation_options = [
+        {
+            'post_process': None,
+            'number_of_splits': 10,
+            'shuffle': True,
+            'over_under_sample': 'none'
+        },
+        {
+            'post_process': None,
+            'number_of_splits': 10,
+            'shuffle': True,
+            'over_under_sample': 'over_under_sample'
+        },
+        {
+            'post_process': None,
+            'number_of_splits': 10,
+            'shuffle': True,
+            'over_under_sample': 'under_sample'
+        },
+        {
+            'post_process': None,
+            'number_of_splits': 10,
+            'shuffle': True,
+            'over_under_sample': 'over_sample'
+        }
+    ]
+
+    # classic classifiers for filtered and full dataset
+    classic_classifiers = [random_forest_100_trees, random_forest_1000_trees_entropy,
+                           random_forest_1000_trees, random_forest_100_trees_entropy,
+                           decision_tree, decision_tree_entropy_minsamples_10, decision_tree_minsamples_10,
+                           decision_tree_entropy, mlp_100_hidden_layer_maxiter_1000000,
+                           mlp_5x50_hidden_layer_maxiter_1000000,
+                           mlp_100_hidden_layer_maxiter_10000000_minlearning_rate,
+                           mlp_100_hidden_layer_maxiter_1000000_early_stopping,
+                           naive_bayes, kNN5, kNN21, kNN1, kNN3, kNN9, svm, svm_sigmoid]
+
+    for evaluation_option in evaluation_options:
+        for classic_classifier in classic_classifiers:
+            classifier_evaluation_bundles.append(
+                ClassifierEvaluationBundle(classic_classifier, predict, dataset_normal, options=evaluation_option))
+            classifier_evaluation_bundles.append(
+                ClassifierEvaluationBundle(classic_classifier, predict, filtered_dataset_normal,
+                                           options=evaluation_option))
+            classifier_evaluation_bundles.append(
+                ClassifierEvaluationBundle(classic_classifier, predict, dataset_less_features,
+                                           options=evaluation_option))
+            classifier_evaluation_bundles.append(
+                ClassifierEvaluationBundle(classic_classifier, predict, filtered_dataset_less_features,
+                                           options=evaluation_option))
+
+    return classifier_evaluation_bundles
+
+
+def create_dense_deep_learning_classifier_evaluation_bundles(dataset_softmax_10cm, filtered_dataset_softmax_10cm):
+    classifier_evaluation_bundles = []
+
+    evaluation_options = [
+        {
+            'post_process': None,
+            'number_of_splits': 10,
+            'shuffle': True,
+            'over_under_sample': 'none'
+        },
+        {
+            'post_process': None,
+            'number_of_splits': 10,
+            'shuffle': True,
+            'over_under_sample': 'over_under_sample'
+        },
+        {
+            'post_process': None,
+            'number_of_splits': 10,
+            'shuffle': True,
+            'over_under_sample': 'under_sample'
+        },
+        {
+            'post_process': None,
+            'number_of_splits': 10,
+            'shuffle': True,
+            'over_under_sample': 'over_sample'
+        }
+    ]
+
+    deep_learning_classifiers = [dense_5layer32_dropout20_epochs200,
+                                 dense_5layer64_dropout20_epochs200,
+                                 dense_5layer64_dropout20_epochs500,
+                                 dense_5layer32_epochs200,
+                                 dense_5layer64_epochs200,
+                                 dense_5layer64_epochs500]
+
+    for evaluation_option in evaluation_options:
+        for classic_classifier in deep_learning_classifiers:
+            classifier_evaluation_bundles.append(
+                ClassifierEvaluationBundle(classic_classifier, predict_softmax, dataset_softmax_10cm,
+                                           options=evaluation_option))
+            classifier_evaluation_bundles.append(
+                ClassifierEvaluationBundle(classic_classifier, predict_softmax, filtered_dataset_softmax_10cm,
+                                           options=evaluation_option))
+
+    return classifier_evaluation_bundles
+
+
 if __name__ == '__main__':
     base_path = 'C:\\sw\\master\\collected data\\'
 
@@ -326,44 +436,13 @@ if __name__ == '__main__':
                                                              dataset=filtered_dataset_less_features,
                                                              name='filtered_dataset_less_features')
 
-    # create classifiers_test_bundles
-    classifier_evaluation_bundles = []
+    #classifier_evaluation_bundles = create_classic_classifier_evaluation_bundles(dataset_normal,
+    #                                                                             filtered_dataset_normal,
+    #                                                                             dataset_less_features,
+    #                                                                             filtered_dataset_less_features)
 
-    # classic classifiers for filtered and full dataset
-    classic_classifiers =  [random_forest_100_trees, random_forest_1000_trees_entropy,
-                            random_forest_1000_trees, random_forest_100_trees_entropy,
-                            decision_tree, decision_tree_entropy_minsamples_10, decision_tree_minsamples_10,
-                            decision_tree_entropy, mlp_100_hidden_layer_maxiter_1000000,
-                            mlp_5x50_hidden_layer_maxiter_1000000,
-                            mlp_100_hidden_layer_maxiter_10000000_minlearning_rate,
-                            mlp_100_hidden_layer_maxiter_1000000_early_stopping,
-                            naive_bayes, kNN5, kNN21, kNN1, kNN3, kNN9, svm, svm_sigmoid]
-
-    evaluation_options = [
-        {
-            'post_process': None,
-            'number_of_splits': 10,
-            'shuffle': True,
-            'over_under_sample': 'under_sample'
-        },
-        {
-            'post_process': None,
-            'number_of_splits': 10,
-            'shuffle': True,
-            'over_under_sample': 'over_sample'
-        }
-    ]
-
-    for evaluation_option in evaluation_options:
-        for classic_classifier in classic_classifiers:
-            classifier_evaluation_bundles.append(
-                ClassifierEvaluationBundle(classic_classifier, predict, dataset_normal, options=evaluation_option))
-            classifier_evaluation_bundles.append(
-                ClassifierEvaluationBundle(classic_classifier, predict, filtered_dataset_normal, options=evaluation_option))
-            classifier_evaluation_bundles.append(
-                ClassifierEvaluationBundle(classic_classifier, predict, dataset_less_features, options=evaluation_option))
-            classifier_evaluation_bundles.append(
-                ClassifierEvaluationBundle(classic_classifier, predict, filtered_dataset_less_features, options=evaluation_option))
+    classifier_evaluation_bundles = create_dense_deep_learning_classifier_evaluation_bundles(
+        dataset_softmax_10cm, filtered_dataset_softmax_10cm)
 
     evaluator = DriveByEvaluation()
     results = evaluator.evaluate_many(classifier_evaluation_bundles)

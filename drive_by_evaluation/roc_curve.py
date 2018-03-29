@@ -15,13 +15,13 @@ from drive_by_evaluation.db_machine_learning.multi_scorer import MultiScorer
 from drive_by_evaluation.measure_collection import MeasureCollection
 from drive_by_evaluation.db_machine_learning.db_data_set import DataSet
 from drive_by_evaluation.deep_learning_keras.lstm import create_lstm_model
-from drive_by_evaluation.deep_learning_keras.conv import create_conv_model
+from drive_by_evaluation.deep_learning_keras.conv import conv_model_128_epochs
 
 import operator
 
 from drive_by_evaluation.db_machine_learning.confusion_matrix_util import print_confusion_matrix_measures, sumup_confusion_matrices
 from drive_by_evaluation.parking_map_clustering.dbscan_clustering_directional import create_parking_space_map, filter_parking_space_map_mcs
-from drive_by_evaluation.deep_learning_keras.evaluate_keras import simple_dense_model, predict_softmax
+from drive_by_evaluation.deep_learning_keras.evaluate_keras import dense_5layer64_dropout20_epochs200, predict_softmax
 import time
 
 from drive_by_evaluation.db_machine_learning.models import create_random_forest, predict, create_stacked, create_decision_tree, create_mlp

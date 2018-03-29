@@ -2,7 +2,7 @@ from keras.models import Sequential
 from keras.layers import Embedding, LSTM, Dropout, Dense, Conv1D, GlobalMaxPool1D, GlobalAveragePooling1D
 
 
-def create_conv_model(dataset, x_train, y_train):
+def conv_model_128_epochs(dataset, x_train, y_train):
     maxlen = 1026
     embedding_dims = 50
     max_features = 500

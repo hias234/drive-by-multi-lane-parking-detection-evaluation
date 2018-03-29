@@ -1,28 +1,47 @@
 
-import numpy as np
-import keras
 from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation
-from keras.optimizers import SGD
-from keras.wrappers.scikit_learn import KerasClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
-from sklearn.model_selection import cross_val_score
+from keras.layers import Dense, Dropout
+from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import KFold
 
-from drive_by_evaluation.db_machine_learning.multi_scorer import MultiScorer
 from drive_by_evaluation.measure_collection import MeasureCollection
 from drive_by_evaluation.db_machine_learning.db_data_set import DataSet
-from drive_by_evaluation.deep_learning_keras.lstm import create_lstm_model
-from drive_by_evaluation.deep_learning_keras.conv import create_conv_model
 
 import operator
 
 from drive_by_evaluation.db_machine_learning.confusion_matrix_util import print_confusion_matrix_measures, sumup_confusion_matrices
-from drive_by_evaluation.parking_map_clustering.dbscan_clustering_directional import create_parking_space_map, filter_parking_space_map_mcs
 import time
 
 
-def simple_dense_model(dataset, x_train, y_train):
+def dense_5layer32_dropout20_epochs200(dataset, x_train, y_train):
+    hidden_dims = 32
+
+    model = Sequential()
+    model.add(Dense(hidden_dims, activation='relu', input_dim=len(dataset.x[0])))
+    model.add(Dropout(0.2))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(Dense(len(dataset.class_labels), activation='softmax'))
+
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+    model.fit(x_train, y_train,
+              epochs=200,
+              verbose=0,
+              )
+
+    return model
+
+
+def dense_5layer64_dropout20_epochs200(dataset, x_train, y_train):
     hidden_dims = 64
 
     model = Sequential()
@@ -38,17 +57,112 @@ def simple_dense_model(dataset, x_train, y_train):
     model.add(Dropout(0.2))
     model.add(Dense(len(dataset.class_labels), activation='softmax'))
 
-    # sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
     model.compile(loss='categorical_crossentropy',
                   optimizer='adam',
                   metrics=['accuracy'])
 
     model.fit(x_train, y_train,
               epochs=200,
-              #class_weight=dataset.get_class_weights()
+              verbose=0,
               )
 
     return model
+
+def dense_5layer64_dropout20_epochs500(dataset, x_train, y_train):
+    hidden_dims = 64
+
+    model = Sequential()
+    model.add(Dense(hidden_dims, activation='relu', input_dim=len(dataset.x[0])))
+    model.add(Dropout(0.2))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(Dense(len(dataset.class_labels), activation='softmax'))
+
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+    model.fit(x_train, y_train,
+              epochs=500,
+              verbose=0,
+              )
+
+    return model
+
+
+def dense_5layer32_epochs200(dataset, x_train, y_train):
+    hidden_dims = 32
+
+    model = Sequential()
+    model.add(Dense(hidden_dims, activation='relu', input_dim=len(dataset.x[0])))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(len(dataset.class_labels), activation='softmax'))
+
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+    model.fit(x_train, y_train,
+              epochs=200,
+              verbose=0,
+              )
+
+    return model
+
+def dense_5layer64_epochs200(dataset, x_train, y_train):
+    hidden_dims = 64
+
+    model = Sequential()
+    model.add(Dense(hidden_dims, activation='relu', input_dim=len(dataset.x[0])))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(len(dataset.class_labels), activation='softmax'))
+
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+    model.fit(x_train, y_train,
+              epochs=200,
+              verbose=0,
+              )
+
+    return model
+
+
+def dense_5layer64_epochs500(dataset, x_train, y_train):
+    hidden_dims = 64
+
+    model = Sequential()
+    model.add(Dense(hidden_dims, activation='relu', input_dim=len(dataset.x[0])))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(len(dataset.class_labels), activation='softmax'))
+
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+    model.fit(x_train, y_train,
+              epochs=500,
+              verbose=0,
+              )
+
+    return model
+
 
 
 def evaluate_model(create_model, dataset, n_splits=10, shuffle=True):
@@ -121,7 +235,7 @@ if __name__ == '__main__':
     start = time.time()
     #confusion_m_simp = evaluate_model(simple_dense_model, dataset)
 
-    confusion_m_lstm = evaluate_model(simple_dense_model, dataset)
+    confusion_m_lstm = evaluate_model(dense_5layer64_dropout20_epochs200, dataset)
     #confusion_m_conv = evaluate_model(create_conv_model, dataset)
     print(time.time() - start)
 
