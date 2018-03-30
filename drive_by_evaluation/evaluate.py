@@ -367,12 +367,12 @@ def create_dense_deep_learning_classifier_evaluation_bundles(dataset_softmax_10c
         }
     ]
 
-    deep_learning_classifiers = [dense_5layer32_dropout20_epochs200,
-                                 #dense_5layer64_dropout20_epochs200,
-                                 #dense_5layer64_dropout20_epochs500,
-                                 #dense_5layer32_epochs200,
-                                 #dense_5layer64_epochs200,
-                                 #dense_5layer64_epochs500
+    deep_learning_classifiers = [#  dense_5layer32_dropout20_epochs200,
+                                 dense_5layer64_dropout20_epochs200,
+                                 dense_5layer64_dropout20_epochs500,
+                                 dense_5layer32_epochs200,
+                                 dense_5layer64_epochs200,
+                                 dense_5layer64_epochs500
                                  ]
 
     for evaluation_option in evaluation_options:

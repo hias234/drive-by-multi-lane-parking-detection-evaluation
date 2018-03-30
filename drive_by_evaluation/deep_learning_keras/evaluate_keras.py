@@ -44,6 +44,8 @@ def dense_5layer32_dropout20_epochs200(dataset, x_train, y_train):
 
 
 def dense_5layer64_dropout20_epochs200(dataset, x_train, y_train):
+    y_train_softmax = DataSet.to_softmax_y(y_train, dataset.class_labels)
+
     hidden_dims = 64
 
     model = Sequential()
@@ -63,14 +65,17 @@ def dense_5layer64_dropout20_epochs200(dataset, x_train, y_train):
                   optimizer='adam',
                   metrics=['accuracy'])
 
-    model.fit(x_train, y_train,
+    model.fit(x_train, y_train_softmax,
               epochs=200,
               verbose=0,
               )
 
     return model
 
+
 def dense_5layer64_dropout20_epochs500(dataset, x_train, y_train):
+    y_train_softmax = DataSet.to_softmax_y(y_train, dataset.class_labels)
+
     hidden_dims = 64
 
     model = Sequential()
@@ -90,7 +95,7 @@ def dense_5layer64_dropout20_epochs500(dataset, x_train, y_train):
                   optimizer='adam',
                   metrics=['accuracy'])
 
-    model.fit(x_train, y_train,
+    model.fit(x_train, y_train_softmax,
               epochs=500,
               verbose=0,
               )
@@ -99,6 +104,8 @@ def dense_5layer64_dropout20_epochs500(dataset, x_train, y_train):
 
 
 def dense_5layer32_epochs200(dataset, x_train, y_train):
+    y_train_softmax = DataSet.to_softmax_y(y_train, dataset.class_labels)
+
     hidden_dims = 32
 
     model = Sequential()
@@ -113,7 +120,7 @@ def dense_5layer32_epochs200(dataset, x_train, y_train):
                   optimizer='adam',
                   metrics=['accuracy'])
 
-    model.fit(x_train, y_train,
+    model.fit(x_train, y_train_softmax,
               epochs=200,
               verbose=0,
               )
@@ -121,6 +128,8 @@ def dense_5layer32_epochs200(dataset, x_train, y_train):
     return model
 
 def dense_5layer64_epochs200(dataset, x_train, y_train):
+    y_train_softmax = DataSet.to_softmax_y(y_train, dataset.class_labels)
+
     hidden_dims = 64
 
     model = Sequential()
@@ -135,7 +144,7 @@ def dense_5layer64_epochs200(dataset, x_train, y_train):
                   optimizer='adam',
                   metrics=['accuracy'])
 
-    model.fit(x_train, y_train,
+    model.fit(x_train, y_train_softmax,
               epochs=200,
               verbose=0,
               )
@@ -144,6 +153,8 @@ def dense_5layer64_epochs200(dataset, x_train, y_train):
 
 
 def dense_5layer64_epochs500(dataset, x_train, y_train):
+    y_train_softmax = DataSet.to_softmax_y(y_train, dataset.class_labels)
+
     hidden_dims = 64
 
     model = Sequential()
@@ -158,7 +169,7 @@ def dense_5layer64_epochs500(dataset, x_train, y_train):
                   optimizer='adam',
                   metrics=['accuracy'])
 
-    model.fit(x_train, y_train,
+    model.fit(x_train, y_train_softmax,
               epochs=500,
               verbose=0,
               )
