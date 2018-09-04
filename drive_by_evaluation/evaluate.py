@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import KFold
 
+from drive_by_evaluation.ground_truth import GroundTruthClass
 from drive_by_evaluation.measure_collection import MeasureCollection
 from drive_by_evaluation.db_machine_learning.db_data_set import DataSet
 from drive_by_evaluation.deep_learning_keras.lstm import create_lstm_model
@@ -9,7 +10,10 @@ from drive_by_evaluation.deep_learning_keras.conv import conv_model_128_epochs
 
 from drive_by_evaluation.deep_learning_keras.evaluate_keras import dense_5layer32_dropout20_epochs200,\
     dense_5layer64_dropout20_epochs200, dense_5layer64_dropout20_epochs500, dense_5layer32_epochs200, \
-    dense_5layer64_epochs200, dense_5layer64_epochs500, predict_softmax
+    dense_5layer64_epochs200, dense_5layer64_epochs500, dense_5layer128_epochs200, dense_5layer64_epochs100, \
+    dense_5layer64_epochs50, dense_5layer128_epochs100, dense_5layer128_epochs50,\
+    dense_5layer32_dropout10_epochs200, dense_5layer128_dropout10_epochs200, dense_5layer128_dropout50_epochs200,\
+    predict_softmax
 
 from drive_by_evaluation.db_machine_learning.confusion_matrix_util import print_confusion_matrix_measures, \
     sumup_confusion_matrices
@@ -75,6 +79,54 @@ class ClassifierEvaluationResult:
         precision = (true_pos / (true_pos + false_pos))
         recall = (true_pos / (true_pos + false_neg))
 
+        nr_of_par = 0
+        nr_of_per = 0
+        nr_of_ang = 0
+        nr_of_par_right = 0
+        nr_of_per_right = 0
+        nr_of_ang_right = 0
+        nr_of_par_fs = 0
+        nr_of_per_fs = 0
+        nr_of_ang_fs = 0
+        nr_of_par_os = 0
+        nr_of_per_os = 0
+        nr_of_ang_os = 0
+        nr_of_par_opv = 0
+        nr_of_per_opv = 0
+        nr_of_ang_opv = 0
+
+        for i, mc in enumerate(self.classifier_evaluation_bundle.dataset.mcs):
+            if mc.get_probable_ground_truth() == GroundTruthClass.PARALLEL_PARKING_CAR:
+                nr_of_par += 1
+                if self.predictions[i] == 'PARKING_CAR':
+                    nr_of_par_right += 1
+                elif self.predictions[i] == 'FREE_SPACE':
+                    nr_of_par_fs += 1
+                elif self.predictions[i] == 'OVERTAKING_SITUATION':
+                    nr_of_par_os += 1
+                elif self.predictions[i] == 'OTHER_PARKING_VEHICLE':
+                    nr_of_par_opv += 1
+            if mc.get_probable_ground_truth() == GroundTruthClass.PERPENDICULAR_PARKING_CAR:
+                nr_of_per += 1
+                if self.predictions[i] == 'PARKING_CAR':
+                    nr_of_per_right += 1
+                elif self.predictions[i] == 'FREE_SPACE':
+                    nr_of_per_fs += 1
+                elif self.predictions[i] == 'OVERTAKING_SITUATION':
+                    nr_of_per_os += 1
+                elif self.predictions[i] == 'OTHER_PARKING_VEHICLE':
+                    nr_of_per_opv += 1
+            if mc.get_probable_ground_truth() == GroundTruthClass.OTHER_PARKING_CAR:
+                nr_of_ang += 1
+                if self.predictions[i] == 'PARKING_CAR':
+                    nr_of_ang_right += 1
+                elif self.predictions[i] == 'FREE_SPACE':
+                    nr_of_ang_fs += 1
+                elif self.predictions[i] == 'OVERTAKING_SITUATION':
+                    nr_of_ang_os += 1
+                elif self.predictions[i] == 'OTHER_PARKING_VEHICLE':
+                    nr_of_ang_opv += 1
+
         output = (self.classifier_evaluation_bundle.create_and_train_model.__name__ + '\t' +
                   self.classifier_evaluation_bundle.dataset.name + '\t')
 
@@ -96,110 +148,107 @@ class ClassifierEvaluationResult:
             output += ']'
         output += ']'
 
+        output += '\t' + str(nr_of_par_right) + '\t' + str(nr_of_par) + '\t' + str(nr_of_par_right / nr_of_par)
+        output += '\t' + str(nr_of_par_fs) + '\t' + str(nr_of_par_os) + '\t' + str(nr_of_par_opv)
+        output += '\t' + str(nr_of_per_right) + '\t' + str(nr_of_per) + '\t' + str(nr_of_per_right / nr_of_per)
+        output += '\t' + str(nr_of_per_fs) + '\t' + str(nr_of_per_os) + '\t' + str(nr_of_per_opv)
+        output += '\t' + str(nr_of_ang_right) + '\t' + str(nr_of_ang) + '\t' + str(nr_of_ang_right / nr_of_ang)
+        output += '\t' + str(nr_of_ang_fs) + '\t' + str(nr_of_ang_os) + '\t' + str(nr_of_ang_opv)
+
         print(output)
 
 
-class DriveByEvaluation:
+def evaluate_many(classifier_evaluation_bundles):
+    results = []
 
-    def evaluate_many(self, classifier_evaluation_bundles):
-        results = []
+    i = 1
+    for classifier_evaluation_bundle in classifier_evaluation_bundles:
+        print('evaluating bundle', i, 'of', len(classifier_evaluation_bundles))
 
-        i = 1
-        for classifier_evaluation_bundle in classifier_evaluation_bundles:
-            print('evaluating bundle', i, 'of', len(classifier_evaluation_bundles))
+        confusion_sum, predictions, learning_time_in_s = evaluate(
+            create_and_train_model=classifier_evaluation_bundle.create_and_train_model,
+            predict_from_model=classifier_evaluation_bundle.predict_from_model,
+            dataset=classifier_evaluation_bundle.dataset,
+            post_process=classifier_evaluation_bundle.options.get('post_process', None),
+            number_of_splits=classifier_evaluation_bundle.options.get('number_of_splits', 10),
+            shuffle=classifier_evaluation_bundle.options.get('shuffle', True),
+            over_under_sample=classifier_evaluation_bundle.options.get('over_under_sample', 'none')
+        )
 
-            confusion_sum, predictions, learning_time_in_s = self.evaluate(
-                create_and_train_model=classifier_evaluation_bundle.create_and_train_model,
-                predict_from_model=classifier_evaluation_bundle.predict_from_model,
-                dataset=classifier_evaluation_bundle.dataset,
-                post_process=classifier_evaluation_bundle.options.get('post_process', None),
-                number_of_splits=classifier_evaluation_bundle.options.get('number_of_splits', 10),
-                shuffle=classifier_evaluation_bundle.options.get('shuffle', True),
-                over_under_sample=classifier_evaluation_bundle.options.get('over_under_sample', 'none')
-            )
+        result = ClassifierEvaluationResult(classifier_evaluation_bundle,
+                                            confusion_sum,
+                                            predictions,
+                                            learning_time_in_s)
+        results.append(result)
 
-            result = ClassifierEvaluationResult(classifier_evaluation_bundle,
-                                                  confusion_sum,
-                                                  predictions,
-                                                  learning_time_in_s)
-            results.append(result)
+        result.print()
+        result.print_short()
 
-            result.print()
-            result.print_short()
+        i += 1
 
-            i += 1
+    return results
 
-        return results
 
-    def evaluate(self, create_and_train_model, predict_from_model, dataset, post_process=None, number_of_splits=5,
-                 shuffle=False, over_under_sample='none'):
-        kfold = KFold(n_splits=number_of_splits, shuffle=shuffle, random_state=42)
+def evaluate(create_and_train_model, predict_from_model, dataset, post_process=None, number_of_splits=5,
+             shuffle=False, over_under_sample='none'):
+    kfold = KFold(n_splits=number_of_splits, shuffle=shuffle, random_state=42)
 
-        predictions = ['' for i in range(len(dataset.x))]
-        print(len(predictions))
+    predictions = ['' for i in range(len(dataset.x))]
+    print(len(predictions))
 
-        fold_nr = 1
-        confusion_res = []
+    fold_nr = 1
+    confusion_res = []
 
-        print(create_and_train_model.__name__)
-        start = time.time()
-        for train, test in kfold.split(dataset.x, dataset.y_true):
-            print('fold', fold_nr)
-            x_train = [x for i, x in enumerate(dataset.x) if i in train]
-            y_train = [x for i, x in enumerate(dataset.y_true) if i in train]
+    print(create_and_train_model.__name__)
+    start = time.time()
+    for train, test in kfold.split(dataset.x, dataset.y_true):
+        print('fold', fold_nr)
+        x_train = [x for i, x in enumerate(dataset.x) if i in train]
+        y_train = [x for i, x in enumerate(dataset.y_true) if i in train]
 
-            if over_under_sample == 'over_under_sample':
-                print('over-under-sampling')
-                print('before:', len(x_train))
-                smote_enn = SMOTEENN(random_state=42)
-                x_train, y_train = smote_enn.fit_sample(x_train, y_train)
-                print('after:', len(x_train))
-            elif over_under_sample == 'under_sample':
-                print('under-sampling')
-                print('before:', len(x_train))
-                centeriod_cluster = ClusterCentroids(random_state=42)
-                x_train, y_train = centeriod_cluster.fit_sample(x_train, y_train)
-                print('after:', len(x_train))
-            elif over_under_sample == 'over_sample':
-                print('over-sampling')
-                print('before:', len(x_train))
-                smote = SMOTE(random_state=42)
-                x_train, y_train = smote.fit_sample(x_train, y_train)
-                print('after:', len(x_train))
+        if over_under_sample == 'over_under_sample':
+            print('over-under-sampling')
+            print('before:', len(x_train))
+            smote_enn = SMOTEENN(random_state=42)
+            x_train, y_train = smote_enn.fit_sample(x_train, y_train)
+            print('after:', len(x_train))
+        elif over_under_sample == 'under_sample':
+            print('under-sampling')
+            print('before:', len(x_train))
+            centeriod_cluster = ClusterCentroids(random_state=42)
+            x_train, y_train = centeriod_cluster.fit_sample(x_train, y_train)
+            print('after:', len(x_train))
+        elif over_under_sample == 'over_sample':
+            print('over-sampling')
+            print('before:', len(x_train))
+            smote = SMOTE(random_state=42)
+            x_train, y_train = smote.fit_sample(x_train, y_train)
+            print('after:', len(x_train))
 
-            model = create_and_train_model(dataset, x_train, y_train)
-            print('trained')
+        model = create_and_train_model(dataset, x_train, y_train)
+        print('trained')
 
-            x_test = [x for i, x in enumerate(dataset.x) if i in test]
-            y_test = [x for i, x in enumerate(dataset.y_true) if i in test]
+        x_test = [x for i, x in enumerate(dataset.x) if i in test]
+        y_test = [x for i, x in enumerate(dataset.y_true) if i in test]
 
-            y_pred, y_true = predict_from_model(model, dataset, x_test, y_test)
-            print('predicted')
+        y_pred, y_true = predict_from_model(model, dataset, x_test, y_test)
+        print('predicted')
 
-            if post_process is not None:
-                y_pred = post_process(model, dataset, x_train, y_train, x_test, y_test, y_pred)
+        if post_process is not None:
+            y_pred = post_process(model, dataset, x_train, y_train, x_test, y_test, y_pred)
 
-            for i, test_index in enumerate(test):
-                predictions[test_index] = y_pred[i]
+        for i, test_index in enumerate(test):
+            predictions[test_index] = y_pred[i]
 
-            #print(dataset.class_labels)
-            #print(len(y_true))
-            #print(len(y_pred))
-            #print(y_true)
-            #print(y_pred)
-            labels = dataset.class_labels
-            #if dataset.is_softmax_y:
-            #    labels = range(0, len(dataset.class_labels))
-            confusion_m = confusion_matrix(y_true, y_pred, labels=labels)
-            #print_confusion_matrix_measures(confusion_m)
-            confusion_res.append(confusion_m)
-            fold_nr += 1
+        labels = dataset.class_labels
+        confusion_m = confusion_matrix(y_true, y_pred, labels=labels)
+        confusion_res.append(confusion_m)
+        fold_nr += 1
 
-        confusion_sum = sumup_confusion_matrices(confusion_res, dataset.get_nr_of_classes())
-        print_confusion_matrix_measures(confusion_sum)
-        learning_time = time.time() - start
+    confusion_sum = sumup_confusion_matrices(confusion_res, dataset.get_nr_of_classes())
+    learning_time = time.time() - start
 
-        return confusion_sum, predictions, learning_time
+    return confusion_sum, predictions, learning_time
 
 
 def enhance_dataset2(dataset, predictions):
@@ -279,8 +328,7 @@ def enhance_dataset(dataset, predictions, predictions_are_softmax=False):
     return dataset_normal_plus
 
 
-def create_classic_classifier_evaluation_bundles(dataset_normal, filtered_dataset_normal,
-                                                 dataset_less_features, filtered_dataset_less_features):
+def create_classic_classifier_evaluation_bundles(datasets):
     classifier_evaluation_bundles = []
 
     evaluation_options = [
@@ -290,48 +338,90 @@ def create_classic_classifier_evaluation_bundles(dataset_normal, filtered_datase
             'shuffle': True,
             'over_under_sample': 'none'
         },
-        {
-            'post_process': None,
-            'number_of_splits': 10,
-            'shuffle': True,
-            'over_under_sample': 'over_under_sample'
-        },
-        {
-            'post_process': None,
-            'number_of_splits': 10,
-            'shuffle': True,
-            'over_under_sample': 'under_sample'
-        },
-        {
-            'post_process': None,
-            'number_of_splits': 10,
-            'shuffle': True,
-            'over_under_sample': 'over_sample'
-        }
+        # {
+        #     'post_process': None,
+        #     'number_of_splits': 10,
+        #     'shuffle': True,
+        #     'over_under_sample': 'over_under_sample'
+        # },
+        # {
+        #     'post_process': None,
+        #     'number_of_splits': 10,
+        #     'shuffle': True,
+        #     'over_under_sample': 'under_sample'
+        # },
+        # {
+        #     'post_process': None,
+        #     'number_of_splits': 10,
+        #     'shuffle': True,
+        #     'over_under_sample': 'over_sample'
+        # }
     ]
 
     # classic classifiers for filtered and full dataset
-    classic_classifiers = [random_forest_100_trees, random_forest_1000_trees_entropy,
-                           random_forest_1000_trees, random_forest_100_trees_entropy,
-                           decision_tree, decision_tree_entropy_minsamples_10, decision_tree_minsamples_10,
-                           decision_tree_entropy, mlp_100_hidden_layer_maxiter_1000000,
-                           mlp_5x50_hidden_layer_maxiter_1000000,
-                           mlp_100_hidden_layer_maxiter_10000000_minlearning_rate,
-                           mlp_100_hidden_layer_maxiter_1000000_early_stopping,
-                           naive_bayes, kNN5, kNN21, kNN1, kNN3, kNN9, svm, svm_sigmoid]
+    classic_classifiers = [#random_forest_100_trees,
+                           #random_forest_1000_trees_entropy,
+                           #random_forest_1000_trees,
+                           random_forest_100_trees_entropy,
+                           #decision_tree,
+                           #decision_tree_entropy_minsamples_10,
+                           #decision_tree_minsamples_10,
+                           #decision_tree_entropy, mlp_100_hidden_layer_maxiter_1000000,
+                           #mlp_5x50_hidden_layer_maxiter_1000000,
+                           #mlp_100_hidden_layer_maxiter_10000000_minlearning_rate,
+                           #mlp_100_hidden_layer_maxiter_1000000_early_stopping,
+                           #naive_bayes, kNN5, kNN21, kNN1, kNN3, kNN9, svm, svm_sigmoid
+    ]
 
     for evaluation_option in evaluation_options:
         for classic_classifier in classic_classifiers:
+            for dataset in datasets:
+                classifier_evaluation_bundles.append(
+                    ClassifierEvaluationBundle(classic_classifier, predict, dataset, options=evaluation_option))
+
+    return classifier_evaluation_bundles
+
+
+def create_dense_deep_learning_classifier_evaluation_bundles_conv(dataset_softmax_10cm, filtered_dataset_softmax_10cm):
+    classifier_evaluation_bundles = []
+
+    evaluation_options = [
+        {
+            'post_process': None,
+            'number_of_splits': 10,
+            'shuffle': True,
+            'over_under_sample': 'none'
+        },
+        # {
+        #     'post_process': None,
+        #     'number_of_splits': 10,
+        #     'shuffle': True,
+        #     'over_under_sample': 'over_under_sample'
+        # },
+        # {
+        #     'post_process': None,
+        #     'number_of_splits': 10,
+        #     'shuffle': True,
+        #     'over_under_sample': 'under_sample'
+        # },
+        # {
+        #     'post_process': None,
+        #     'number_of_splits': 10,
+        #     'shuffle': True,
+        #     'over_under_sample': 'over_sample'
+        # }
+    ]
+
+    deep_learning_classifiers = [conv_model_128_epochs
+                                 ]
+
+    for evaluation_option in evaluation_options:
+        for classic_classifier in deep_learning_classifiers:
             classifier_evaluation_bundles.append(
-                ClassifierEvaluationBundle(classic_classifier, predict, dataset_normal, options=evaluation_option))
-            classifier_evaluation_bundles.append(
-                ClassifierEvaluationBundle(classic_classifier, predict, filtered_dataset_normal,
+                ClassifierEvaluationBundle(classic_classifier, predict_softmax, dataset_softmax_10cm,
                                            options=evaluation_option))
             classifier_evaluation_bundles.append(
-                ClassifierEvaluationBundle(classic_classifier, predict, dataset_less_features,
-                                           options=evaluation_option))
-            classifier_evaluation_bundles.append(
-                ClassifierEvaluationBundle(classic_classifier, predict, filtered_dataset_less_features,
+                ClassifierEvaluationBundle(classic_classifier, predict_softmax, filtered_dataset_softmax_10cm,
                                            options=evaluation_option))
 
     return classifier_evaluation_bundles
@@ -347,32 +437,41 @@ def create_dense_deep_learning_classifier_evaluation_bundles(dataset_softmax_10c
             'shuffle': True,
             'over_under_sample': 'none'
         },
-        {
-            'post_process': None,
-            'number_of_splits': 10,
-            'shuffle': True,
-            'over_under_sample': 'over_under_sample'
-        },
-        {
-            'post_process': None,
-            'number_of_splits': 10,
-            'shuffle': True,
-            'over_under_sample': 'under_sample'
-        },
-        {
-            'post_process': None,
-            'number_of_splits': 10,
-            'shuffle': True,
-            'over_under_sample': 'over_sample'
-        }
+        # {
+        #     'post_process': None,
+        #     'number_of_splits': 10,
+        #     'shuffle': True,
+        #     'over_under_sample': 'over_under_sample'
+        # },
+        # {
+        #     'post_process': None,
+        #     'number_of_splits': 10,
+        #     'shuffle': True,
+        #     'over_under_sample': 'under_sample'
+        # },
+        # {
+        #     'post_process': None,
+        #     'number_of_splits': 10,
+        #     'shuffle': True,
+        #     'over_under_sample': 'over_sample'
+        # }
     ]
 
-    deep_learning_classifiers = [#  dense_5layer32_dropout20_epochs200,
-                                 dense_5layer64_dropout20_epochs200,
-                                 dense_5layer64_dropout20_epochs500,
-                                 dense_5layer32_epochs200,
-                                 dense_5layer64_epochs200,
-                                 dense_5layer64_epochs500
+    deep_learning_classifiers = [
+        dense_5layer128_dropout10_epochs200,
+        dense_5layer128_epochs200
+        #dense_5layer128_dropout50_epochs200,
+        #dense_5layer32_dropout20_epochs200,
+                                 #dense_5layer64_dropout20_epochs200,
+                                 #dense_5layer64_dropout20_epochs500,
+                                 #dense_5layer32_epochs200,
+                                 #dense_5layer64_epochs200,
+                                 #dense_5layer64_epochs500,
+                                 #dense_5layer128_epochs200,
+                                 #dense_5layer64_epochs100,
+                                 #dense_5layer64_epochs50,
+                                 #dense_5layer128_epochs100,
+                                 #dense_5layer128_epochs50
                                  ]
 
     for evaluation_option in evaluation_options:
@@ -385,6 +484,70 @@ def create_dense_deep_learning_classifier_evaluation_bundles(dataset_softmax_10c
                                            options=evaluation_option))
 
     return classifier_evaluation_bundles
+
+
+def get_enhanced_dataset(classifier_evaluation_bundle, include_all_distances=False, nr_surrounding_samples=10):
+    base_dataset = classifier_evaluation_bundle.dataset
+    result = evaluate_many([classifier_evaluation_bundle])[0]
+
+    return get_enhanced_dataset_from_result(base_dataset, result,
+                                            include_all_distances=include_all_distances,
+                                            nr_surrounding_samples=nr_surrounding_samples)
+
+
+def get_enhanced_dataset_from_result(base_dataset, result, include_all_distances=False, nr_surrounding_samples=10):
+    enhanced_dataset = DataSet(name='new_enhanced_distance_dataset_' + str(nr_surrounding_samples) + '_' + base_dataset.name,
+                               class_labels=base_dataset.class_labels,
+                               is_softmax_y=base_dataset.is_softmax_y)
+
+    distances_per_class = {clazz: [] for clazz in base_dataset.class_labels}
+
+    for i in range(0, len(result.predictions)):
+        features = base_dataset.x[i][:]
+        features.append(base_dataset.class_to_index(result.predictions[i]))
+        j = i - 1
+        while j >= i - nr_surrounding_samples:
+            if j >= 0:
+                if include_all_distances:
+                    features.append(base_dataset.class_to_index(result.predictions[j]))
+                    features.append(base_dataset.x[j][0])
+                distances_per_class[result.predictions[j]].append(base_dataset.x[j][0])
+            else:
+                if include_all_distances:
+                    features.append(-1.0)
+                    features.append(0.0)
+                #features.extend([0.0 for cnt in range(len(dataset.x[0]))])
+            j -= 1
+        j = i + 1
+        while j <= i + nr_surrounding_samples:
+            if j < len(result.predictions):
+                if include_all_distances:
+                    features.append(base_dataset.class_to_index(result.predictions[j]))
+                    # features.extend(dataset.x[j])
+                    features.append(base_dataset.x[j][0])
+                distances_per_class[result.predictions[j]].append(base_dataset.x[j][0])
+            else:
+                if include_all_distances:
+                    features.append(-1.0)
+                    features.append(0.0)
+                # features.extend([0.0 for cnt in range(len(dataset.x[0]))])
+            j += 1
+
+        for clazz, distances in distances_per_class.items():
+            if len(distances) == 0:
+                features.append(0)
+                features.append(0)
+            else:
+                features.append(np.average(distances))
+                features.append(features[0] - np.average(distances))
+
+        enhanced_dataset.x.append(features)
+        enhanced_dataset.mcs.append(base_dataset.mcs[i])
+        enhanced_dataset.y_true.append(base_dataset.y_true[i])
+
+    # enhanced_dataset.to_arff_file(enhanced_dataset.name + '.arff')
+
+    return enhanced_dataset
 
 
 if __name__ == '__main__':
@@ -421,9 +584,6 @@ if __name__ == '__main__':
     filtered_measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
                                                                           parking_space_map_clusters)
 
-    #print(len(parking_space_map_clusters))
-    #print(len(_))
-
     # read filtered dataset
     filtered_dataset_softmax_10cm = None
     filtered_dataset_normal = None
@@ -440,16 +600,91 @@ if __name__ == '__main__':
                                                              dataset=filtered_dataset_less_features,
                                                              name='filtered_dataset_less_features')
 
-    #classifier_evaluation_bundles = create_classic_classifier_evaluation_bundles(dataset_normal,
-    #                                                                             filtered_dataset_normal,
-    #                                                                             dataset_less_features,
-    #                                                                             filtered_dataset_less_features)
+    # classifier_evaluation_bundles = create_classic_classifier_evaluation_bundles([dataset_normal,
+    #                                                                               filtered_dataset_normal,
+    #                                                                               #dataset_less_features,
+    #                                                                               #filtered_dataset_less_features
+    #                                                                              ])
 
-    classifier_evaluation_bundles = create_dense_deep_learning_classifier_evaluation_bundles(
-        dataset_softmax_10cm, filtered_dataset_softmax_10cm)
+    #classifier_evaluation_bundles = create_dense_deep_learning_classifier_evaluation_bundles(
+    #    dataset_softmax_10cm, filtered_dataset_softmax_10cm)
 
-    evaluator = DriveByEvaluation()
-    results = evaluator.evaluate_many(classifier_evaluation_bundles)
+    # base_cl_bundle = ClassifierEvaluationBundle(random_forest_1000_trees_entropy,
+    #                                             predict,
+    #                                             dataset_normal,
+    #                                             options={
+    #                                                         'post_process': None,
+    #                                                         'number_of_splits': 10,
+    #                                                         'shuffle': True,
+    #                                                         'over_under_sample': 'none'
+    #                                                     })
+    # result_full = evaluate_many([base_cl_bundle])[0]
+    # full_enhanced_dataset10 = get_enhanced_dataset_from_result(dataset_normal, result_full, nr_surrounding_samples=10)
+    #
+    # base_cl_bundle_filtered = ClassifierEvaluationBundle(random_forest_1000_trees_entropy,
+    #                                                      predict,
+    #                                                      filtered_dataset_normal,
+    #                                                      options={
+    #                                                          'post_process': None,
+    #                                                          'number_of_splits': 10,
+    #                                                          'shuffle': True,
+    #                                                          'over_under_sample': 'none'
+    #                                                      })
+    # result_filtered = evaluate_many([base_cl_bundle_filtered])[0]
+    # filtered_enhanced_dataset1 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered, nr_surrounding_samples=1)
+    # filtered_enhanced_dataset2 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered, nr_surrounding_samples=2)
+    # filtered_enhanced_dataset3 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered, nr_surrounding_samples=3)
+    # filtered_enhanced_dataset4 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered, nr_surrounding_samples=4)
+    # filtered_enhanced_dataset5 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered, nr_surrounding_samples=5)
+    # filtered_enhanced_dataset10 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered, nr_surrounding_samples=10)
+    # filtered_enhanced_dataset15 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered, nr_surrounding_samples=15)
+    # filtered_enhanced_dataset20 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered, nr_surrounding_samples=20)
+    # filtered_enhanced_dataset25 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered, nr_surrounding_samples=25)
+    # filtered_enhanced_dataset30 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered, nr_surrounding_samples=30)
+    # filtered_enhanced_dataset35 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered, nr_surrounding_samples=35)
+    # filtered_enhanced_dataset40 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered, nr_surrounding_samples=40)
+    # filtered_enhanced_dataset45 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered, nr_surrounding_samples=45)
+    # filtered_enhanced_dataset50 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered, nr_surrounding_samples=50)
+    #
+    # filtered_enhanced_dataset60 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered,
+    #                                                                nr_surrounding_samples=60)
+    # filtered_enhanced_dataset70 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered,
+    #                                                                nr_surrounding_samples=70)
+    # filtered_enhanced_dataset80 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered,
+    #                                                                nr_surrounding_samples=80)
+    # filtered_enhanced_dataset90 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered,
+    #                                                                nr_surrounding_samples=90)
+    # filtered_enhanced_dataset100 = get_enhanced_dataset_from_result(filtered_dataset_normal, result_filtered,
+    #                                                                nr_surrounding_samples=100)
+    #
+    # classifier_evaluation_bundles = create_classic_classifier_evaluation_bundles([
+    #                                                                               filtered_enhanced_dataset1,
+    #                                                                               filtered_enhanced_dataset2,
+    #                                                                               filtered_enhanced_dataset3,
+    #                                                                               filtered_enhanced_dataset4,
+    #                                                                               filtered_enhanced_dataset5,
+    #                                                                               filtered_enhanced_dataset10,
+    #                                                                               filtered_enhanced_dataset15,
+    #                                                                               filtered_enhanced_dataset20,
+    #                                                                               filtered_enhanced_dataset25,
+    #                                                                               filtered_enhanced_dataset30,
+    #                                                                               filtered_enhanced_dataset35,
+    #                                                                               filtered_enhanced_dataset40,
+    #                                                                               filtered_enhanced_dataset45,
+    #                                                                               filtered_enhanced_dataset50,
+    #                                                                               filtered_enhanced_dataset60,
+    #                                                                               filtered_enhanced_dataset70,
+    #                                                                               filtered_enhanced_dataset80,
+    #                                                                               filtered_enhanced_dataset90,
+    #                                                                               filtered_enhanced_dataset100,
+    #                                                                             ])
+
+    # cl_bundles_deep = create_dense_deep_learning_classifier_evaluation_bundles_conv(dataset_softmax_10cm, filtered_dataset_softmax_10cm)
+
+    classifier_evaluation_bundles = create_dense_deep_learning_classifier_evaluation_bundles(dataset_softmax_10cm,
+                                                                                             filtered_dataset_softmax_10cm)
+
+    results = evaluate_many(classifier_evaluation_bundles)
 
     for result in results:
         result.print()

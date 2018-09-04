@@ -153,10 +153,3 @@ class GPSMeasurement:
                              * (ts - self.timestamp) / (other_gps.timestamp - self.timestamp)
         return GPSMeasurement(ts, lan, lon, speed)
 
-
-if __name__ == '__main__':
-    measurements = Measurement.read('C:\\sw\\master\\collected data\\data_20170908_linz\\raw_20170908_080745_338288.dat',
-                                    'C:\\sw\\master\\collected data\\data_20170908_linz\\raw_20170908_080745_338288.dat_images_Camera\\00gt1505029259.89.dat')
-
-
-

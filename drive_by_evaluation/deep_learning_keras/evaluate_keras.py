@@ -43,6 +43,123 @@ def dense_5layer32_dropout20_epochs200(dataset, x_train, y_train):
     return model
 
 
+def dense_5layer32_dropout10_epochs200(dataset, x_train, y_train):
+    y_train_softmax = DataSet.to_softmax_y(y_train, dataset.class_labels)
+
+    hidden_dims = 32
+
+    model = Sequential()
+    model.add(Dense(hidden_dims, activation='relu', input_dim=len(dataset.x[0])))
+    model.add(Dropout(0.1))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.1))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.1))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.1))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.1))
+    model.add(Dense(len(dataset.class_labels), activation='softmax'))
+
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+    model.fit(x_train, y_train_softmax,
+              epochs=200,
+              verbose=0,
+              )
+
+    return model
+
+def dense_5layer128_dropout10_epochs200(dataset, x_train, y_train):
+    y_train_softmax = DataSet.to_softmax_y(y_train, dataset.class_labels)
+
+    hidden_dims = 128
+
+    model = Sequential()
+    model.add(Dense(hidden_dims, activation='relu', input_dim=len(dataset.x[0])))
+    model.add(Dropout(0.1))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.1))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.1))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.1))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.1))
+    model.add(Dense(len(dataset.class_labels), activation='softmax'))
+
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+    model.fit(x_train, y_train_softmax,
+              epochs=200,
+              verbose=0,
+              )
+
+    return model
+
+def dense_5layer128_dropout10_epochs200(dataset, x_train, y_train):
+    y_train_softmax = DataSet.to_softmax_y(y_train, dataset.class_labels)
+
+    hidden_dims = 128
+
+    model = Sequential()
+    model.add(Dense(hidden_dims, activation='relu', input_dim=len(dataset.x[0])))
+    model.add(Dropout(0.1))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.1))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.1))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.1))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.1))
+    model.add(Dense(len(dataset.class_labels), activation='softmax'))
+
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+    model.fit(x_train, y_train_softmax,
+              epochs=200,
+              verbose=0,
+              )
+
+    return model
+
+def dense_5layer128_dropout50_epochs200(dataset, x_train, y_train):
+    y_train_softmax = DataSet.to_softmax_y(y_train, dataset.class_labels)
+
+    hidden_dims = 128
+
+    model = Sequential()
+    model.add(Dense(hidden_dims, activation='relu', input_dim=len(dataset.x[0])))
+    model.add(Dropout(0.5))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(len(dataset.class_labels), activation='softmax'))
+
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+    model.fit(x_train, y_train_softmax,
+              epochs=200,
+              verbose=0,
+              )
+
+    return model
+
+
 def dense_5layer64_dropout20_epochs200(dataset, x_train, y_train):
     y_train_softmax = DataSet.to_softmax_y(y_train, dataset.class_labels)
 
@@ -176,6 +293,130 @@ def dense_5layer64_epochs500(dataset, x_train, y_train):
 
     return model
 
+
+def dense_5layer64_epochs100(dataset, x_train, y_train):
+    y_train_softmax = DataSet.to_softmax_y(y_train, dataset.class_labels)
+
+    hidden_dims = 64
+
+    model = Sequential()
+    model.add(Dense(hidden_dims, activation='relu', input_dim=len(dataset.x[0])))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(len(dataset.class_labels), activation='softmax'))
+
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+    model.fit(x_train, y_train_softmax,
+              epochs=100,
+              verbose=0,
+              )
+
+    return model
+
+
+def dense_5layer64_epochs50(dataset, x_train, y_train):
+    y_train_softmax = DataSet.to_softmax_y(y_train, dataset.class_labels)
+
+    hidden_dims = 64
+
+    model = Sequential()
+    model.add(Dense(hidden_dims, activation='relu', input_dim=len(dataset.x[0])))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(len(dataset.class_labels), activation='softmax'))
+
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+    model.fit(x_train, y_train_softmax,
+              epochs=50,
+              verbose=0,
+              )
+
+    return model
+
+
+def dense_5layer128_epochs50(dataset, x_train, y_train):
+    y_train_softmax = DataSet.to_softmax_y(y_train, dataset.class_labels)
+
+    hidden_dims = 128
+
+    model = Sequential()
+    model.add(Dense(hidden_dims, activation='relu', input_dim=len(dataset.x[0])))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(len(dataset.class_labels), activation='softmax'))
+
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+    model.fit(x_train, y_train_softmax,
+              epochs=50,
+              verbose=0,
+              )
+
+    return model
+
+
+def dense_5layer128_epochs200(dataset, x_train, y_train):
+    y_train_softmax = DataSet.to_softmax_y(y_train, dataset.class_labels)
+
+    hidden_dims = 128
+
+    model = Sequential()
+    model.add(Dense(hidden_dims, activation='relu', input_dim=len(dataset.x[0])))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(len(dataset.class_labels), activation='softmax'))
+
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+    model.fit(x_train, y_train_softmax,
+              epochs=200,
+              verbose=0,
+              )
+
+    return model
+
+
+def dense_5layer128_epochs100(dataset, x_train, y_train):
+    y_train_softmax = DataSet.to_softmax_y(y_train, dataset.class_labels)
+
+    hidden_dims = 128
+
+    model = Sequential()
+    model.add(Dense(hidden_dims, activation='relu', input_dim=len(dataset.x[0])))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(hidden_dims, activation='relu'))
+    model.add(Dense(len(dataset.class_labels), activation='softmax'))
+
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+    model.fit(x_train, y_train_softmax,
+              epochs=100,
+              verbose=0,
+              )
+
+    return model
 
 
 def evaluate_model(create_model, dataset, n_splits=10, shuffle=True):

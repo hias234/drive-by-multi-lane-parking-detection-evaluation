@@ -3,10 +3,8 @@ import numpy as np
 from drive_by_evaluation.ground_truth import GroundTruthClass
 from drive_by_evaluation.measure_collection import MeasureCollection
 from sklearn.cluster import DBSCAN
-from sklearn import metrics
 from geopy.distance import vincenty
 
-import matplotlib.pyplot as plt
 import gmplot
 
 import pprint

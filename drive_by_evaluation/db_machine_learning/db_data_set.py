@@ -1,4 +1,6 @@
 from drive_by_evaluation.ground_truth import GroundTruthClass
+from drive_by_evaluation.measure_collection import MeasureCollection
+from drive_by_evaluation.parking_map_clustering.dbscan_clustering_directional import create_parking_space_map, filter_parking_space_map_mcs
 import numpy as np
 import keras
 import os
@@ -334,3 +336,33 @@ class DataSet:
                     arff_file.write(",")
                 arff_file.write(self.y_true[i])
                 arff_file.write("\n")
+
+
+if __name__ == '__main__':
+    base_path = 'C:\\sw\\master\\collected data\\'
+
+    options = {
+        'mc_min_speed': 1.0,
+        'mc_merge': True,
+        'mc_separation_threshold': 1.0,
+        'mc_min_measure_count': 2,
+        'outlier_threshold_distance': 1.0,
+        'outlier_threshold_diff': 0.5,
+        'min_measurement_value': 0.06,
+    }
+
+    dataset = None
+    measure_collections_files_dir = MeasureCollection.read_directory(base_path, options=options)
+    measure_collections_dir = {}
+
+    parking_space_map_clusters, _ = create_parking_space_map(measure_collections_files_dir)
+    measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
+                                                                 parking_space_map_clusters)
+
+    for file_name, measure_collections in measure_collections_files_dir.items():
+        print(file_name)
+        dataset = DataSet.get_dataset(measure_collections, dataset=dataset)
+        measure_collections_dir.update(MeasureCollection.mc_list_to_dict(measure_collections))
+
+    dataset.to_arff_file('parking_map_filtered_dataset_new.arff')
+

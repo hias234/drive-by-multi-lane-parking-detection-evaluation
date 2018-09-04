@@ -5,9 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26a5a07e-bfa3-4c29-91cd-f0b59044c6af" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/db_data_set.py" afterPath="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/db_data_set.py" />
+      <change beforePath="$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras/conv.py" afterPath="$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras/conv.py" />
       <change beforePath="$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras/evaluate_keras.py" afterPath="$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras/evaluate_keras.py" />
       <change beforePath="$PROJECT_DIR$/drive_by_evaluation/evaluate.py" afterPath="$PROJECT_DIR$/drive_by_evaluation/evaluate.py" />
+      <change beforePath="$PROJECT_DIR$/drive_by_evaluation/measure_collection.py" afterPath="$PROJECT_DIR$/drive_by_evaluation/measure_collection.py" />
+      <change beforePath="$PROJECT_DIR$/drive_by_evaluation/measurement.py" afterPath="$PROJECT_DIR$/drive_by_evaluation/measurement.py" />
+      <change beforePath="$PROJECT_DIR$/drive_by_evaluation/parking_map_clustering/dbscan_clustering_directional.py" afterPath="$PROJECT_DIR$/drive_by_evaluation/parking_map_clustering/dbscan_clustering_directional.py" />
+      <change beforePath="$PROJECT_DIR$/drive_by_evaluation/results/classic_results_20180325.txt" afterPath="$PROJECT_DIR$/drive_by_evaluation/results/classic_results_20180325.txt" />
       <change beforePath="$PROJECT_DIR$/drive_by_evaluation/results/results_summary.xlsx" afterPath="$PROJECT_DIR$/drive_by_evaluation/results/results_summary.xlsx" />
+      <change beforePath="$PROJECT_DIR$/drive_by_evaluation/visualization/get_dataset_size.py" afterPath="$PROJECT_DIR$/drive_by_evaluation/visualization/get_dataset_size.py" />
+      <change beforePath="$PROJECT_DIR$/drive_by_evaluation/visualization/show_plots.py" afterPath="$PROJECT_DIR$/drive_by_evaluation/visualization/show_plots.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -27,16 +36,17 @@
     <SUITE FILE_PATH="coverage/drive_by_multi_lane_parking_detection_evaluation$machine_learning.coverage" NAME="machine_learning Coverage Results" MODIFIED="1519906386897" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning" />
     <SUITE FILE_PATH="coverage/drive_by_multi_lane_parking_detection_evaluation$dbscan_clustering.coverage" NAME="dbscan_clustering Coverage Results" MODIFIED="1507724888323" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/drive_by_evaluation/parking_map_clustering" />
     <SUITE FILE_PATH="coverage/drive_by_multi_lane_parking_detection_evaluation$machine_learning_raw.coverage" NAME="machine_learning_raw Coverage Results" MODIFIED="1507980527951" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning" />
-    <SUITE FILE_PATH="coverage/drive_by_multi_lane_parking_detection_evaluation$show_plots.coverage" NAME="show_plots Coverage Results" MODIFIED="1521969439231" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/drive_by_evaluation/visualization" />
+    <SUITE FILE_PATH="coverage/drive_by_multi_lane_parking_detection_evaluation$show_plots.coverage" NAME="show_plots Coverage Results" MODIFIED="1523610803116" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/drive_by_evaluation/visualization" />
     <SUITE FILE_PATH="coverage/drive_by_tensor_flow_ml$tag_ground_truth.coverage" NAME="tag_ground_truth Coverage Results" MODIFIED="1505131498879" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/drive_by_evaluation/ground_truth_tagging" />
     <SUITE FILE_PATH="coverage/drive_by_multi_lane_parking_detection_evaluation$test_keras_raw.coverage" NAME="test_keras_raw Coverage Results" MODIFIED="1506930672995" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras" />
     <SUITE FILE_PATH="coverage/drive_by_tensor_flow_ml$machine_learning.coverage" NAME="machine_learning Coverage Results" MODIFIED="1505130400063" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning" />
     <SUITE FILE_PATH="coverage/drive_by_multi_lane_parking_detection_evaluation$test_keras2.coverage" NAME="test_keras2 Coverage Results" MODIFIED="1505482926180" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras" />
     <SUITE FILE_PATH="coverage/drive_by_tensor_flow_ml$test_keras.coverage" NAME="test_keras Coverage Results" MODIFIED="1505129361894" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/deep_learning_keras" />
     <SUITE FILE_PATH="coverage/drive_by_multi_lane_parking_detection_evaluation$try_dxfgrabber.coverage" NAME="try_dxfgrabber Coverage Results" MODIFIED="1507455637633" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/parking_space_maps" />
+    <SUITE FILE_PATH="coverage/drive_by_multi_lane_parking_detection_evaluation$measure_collection.coverage" NAME="measure_collection Coverage Results" MODIFIED="1522416721128" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/drive_by_evaluation" />
     <SUITE FILE_PATH="coverage/drive_by_multi_lane_parking_detection_evaluation$evaluate_keras.coverage" NAME="evaluate_keras Coverage Results" MODIFIED="1509309238430" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras" />
     <SUITE FILE_PATH="coverage/drive_by_multi_lane_parking_detection_evaluation$lstm.coverage" NAME="lstm Coverage Results" MODIFIED="1506952002043" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras" />
-    <SUITE FILE_PATH="coverage/drive_by_multi_lane_parking_detection_evaluation$evaluate.coverage" NAME="evaluate Coverage Results" MODIFIED="1518873616332" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/drive_by_evaluation" />
+    <SUITE FILE_PATH="coverage/drive_by_multi_lane_parking_detection_evaluation$evaluate.coverage" NAME="evaluate Coverage Results" MODIFIED="1522582331958" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/drive_by_evaluation" />
     <SUITE FILE_PATH="coverage/drive_by_multi_lane_parking_detection_evaluation$example_keras2.coverage" NAME="example_keras2 Coverage Results" MODIFIED="1506623988867" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras" />
     <SUITE FILE_PATH="coverage/drive_by_multi_lane_parking_detection_evaluation$example_keras.coverage" NAME="example_keras Coverage Results" MODIFIED="1505482929118" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras" />
     <SUITE FILE_PATH="coverage/drive_by_multi_lane_parking_detection_evaluation$test_keras_raw_lstm1.coverage" NAME="test_keras_raw_lstm1 Coverage Results" MODIFIED="1506938461823" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras" />
@@ -55,94 +65,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="db_data_set.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/db_data_set.py">
+      <file leaf-file-name="machine_learning_tree.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning_tree.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="8" lean-forward="false" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
-              <folding>
-                <element signature="e#0#61#0" expanded="true" />
-                <element signature="e#684#1009#0" expanded="false" />
-                <element signature="e#1079#1487#0" expanded="false" />
-                <element signature="e#1560#1752#0" expanded="false" />
-                <element signature="e#2621#3442#0" expanded="false" />
-                <element signature="e#3567#5616#0" expanded="false" />
-                <element signature="e#5767#7059#0" expanded="false" />
-                <element signature="e#7174#7849#0" expanded="false" />
-                <element signature="e#7988#8653#0" expanded="false" />
-                <element signature="e#11241#12143#0" expanded="false" />
-                <element signature="e#12245#13071#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="measure_collection.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/drive_by_evaluation/measure_collection.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="373" column="51" lean-forward="true" selection-start-line="373" selection-start-column="51" selection-end-line="375" selection-end-column="73" />
-              <folding>
-                <element signature="e#781#3566#0" expanded="false" />
-                <element signature="e#3611#3794#0" expanded="false" />
-                <element signature="e#10643#11673#0" expanded="false" />
-                <element signature="e#11751#11803#0" expanded="false" />
-                <element signature="e#11881#12381#0" expanded="false" />
-                <element signature="e#12439#13417#0" expanded="false" />
-                <element signature="e#13463#13563#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="evaluate_keras.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras/evaluate_keras.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2689">
-              <caret line="171" column="38" lean-forward="false" selection-start-line="171" selection-start-column="38" selection-end-line="171" selection-end-column="38" />
-              <folding>
-                <element signature="e#1#36#0" expanded="true" />
-                <element signature="e#5788#6672#0" expanded="false" />
-                <element signature="e#7233#9009#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="evaluate.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/drive_by_evaluation/evaluate.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="169" column="48" lean-forward="true" selection-start-line="169" selection-start-column="48" selection-end-line="169" selection-end-column="48" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-                <element signature="e#3058#4225#0" expanded="false" />
-                <element signature="e#8732#10527#0" expanded="false" />
-                <element signature="e#10608#12242#0" expanded="false" />
-                <element signature="e#12444#14894#0" expanded="false" />
-                <element signature="e#17439#18200#0" expanded="false" />
-                <element signature="e#18810#19736#0" expanded="false" />
-                <element signature="e#20562#20583#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="training.py" pinned="false" current-in-tab="false">
-        <entry file="file://C:/python3/Lib/site-packages/keras/engine/training.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="143" column="0" lean-forward="false" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="classification.py" pinned="false" current-in-tab="false">
-        <entry file="file://C:/python3/Lib/site-packages/sklearn/metrics/classification.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="387">
-              <caret line="257" column="20" lean-forward="true" selection-start-line="257" selection-start-column="20" selection-end-line="257" selection-end-column="20" />
+            <state relative-caret-position="68">
+              <caret line="15" column="40" lean-forward="false" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -151,9 +78,131 @@
       <file leaf-file-name="conv.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras/conv.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="72" column="0" lean-forward="true" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
+            <state relative-caret-position="918">
+              <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="show_plots.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/drive_by_evaluation/visualization/show_plots.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2669">
+              <caret line="267" column="0" lean-forward="false" selection-start-line="267" selection-start-column="0" selection-end-line="267" selection-end-column="0" />
+              <folding>
+                <element signature="e#1#41#0" expanded="true" />
+                <element signature="e#1361#2019#0" expanded="false" />
+                <element signature="e#2118#2654#0" expanded="false" />
+                <element signature="e#2708#3194#0" expanded="false" />
+                <element signature="e#3251#3738#0" expanded="false" />
+                <element signature="e#3796#4059#0" expanded="false" />
+                <element signature="e#4114#4923#0" expanded="false" />
+                <element signature="e#6153#7074#0" expanded="false" />
+                <element signature="e#8500#8744#0" expanded="false" />
+                <element signature="e#8815#9145#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="evaluate.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/drive_by_evaluation/evaluate.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="416">
+              <caret line="479" column="52" lean-forward="true" selection-start-line="479" selection-start-column="52" selection-end-line="479" selection-end-column="52" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+                <element signature="e#2058#2564#0" expanded="false" />
+                <element signature="e#2606#7217#0" expanded="false" />
+                <element signature="e#7274#8490#0" expanded="false" />
+                <element signature="e#8657#10969#0" expanded="false" />
+                <element signature="e#11020#12815#0" expanded="false" />
+                <element signature="e#12896#14530#0" expanded="false" />
+                <element signature="e#14597#16586#0" expanded="false" />
+                <element signature="e#16713#18183#0" expanded="false" />
+                <element signature="e#16774#17484#0" expanded="false" />
+                <element signature="e#20663#21023#0" expanded="false" />
+                <element signature="e#21146#23504#0" expanded="false" />
+                <element signature="e#21730#22254#0" expanded="false" />
+                <element signature="e#22332#22930#0" expanded="false" />
+                <element signature="e#24162#24923#0" expanded="false" />
+                <element signature="e#25469#26395#0" expanded="false" />
+                <element signature="e#26401#26496#0" expanded="false" />
+                <element signature="e#34575#34596#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="db_data_set.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/db_data_set.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="19" column="34" lean-forward="false" selection-start-line="19" selection-start-column="34" selection-end-line="19" selection-end-column="34" />
+              <folding>
+                <element signature="e#893#1218#0" expanded="false" />
+                <element signature="e#1288#1696#0" expanded="false" />
+                <element signature="e#1769#1961#0" expanded="false" />
+                <element signature="e#2830#3651#0" expanded="false" />
+                <element signature="e#3776#5825#0" expanded="false" />
+                <element signature="e#5976#7268#0" expanded="false" />
+                <element signature="e#7383#8058#0" expanded="false" />
+                <element signature="e#8197#8862#0" expanded="false" />
+                <element signature="e#11450#12352#0" expanded="false" />
+                <element signature="e#12454#13280#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="get_dataset_size.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/drive_by_evaluation/visualization/get_dataset_size.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="357">
+              <caret line="39" column="0" lean-forward="false" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#68#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="measurement.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/drive_by_evaluation/measurement.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2550">
+              <caret line="153" column="50" lean-forward="false" selection-start-line="139" selection-start-column="0" selection-end-line="153" selection-end-column="50" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="measure_collection.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/drive_by_evaluation/measure_collection.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="850">
+              <caret line="114" column="18" lean-forward="false" selection-start-line="114" selection-start-column="8" selection-end-line="114" selection-end-column="18" />
+              <folding>
+                <element signature="e#1#10#0" expanded="true" />
+                <element signature="e#800#3585#0" expanded="false" />
+                <element signature="e#3630#3813#0" expanded="false" />
+                <element signature="e#4363#5152#0" expanded="false" />
+                <element signature="e#6419#6488#0" expanded="false" />
+                <element signature="e#6597#7177#0" expanded="false" />
+                <element signature="e#7183#7273#0" expanded="false" />
+                <element signature="e#7857#9947#0" expanded="false" />
+                <element signature="e#10044#10265#0" expanded="false" />
+                <element signature="e#10365#10705#0" expanded="false" />
+                <element signature="e#10789#11819#0" expanded="false" />
+                <element signature="e#11897#11949#0" expanded="false" />
+                <element signature="e#12027#12527#0" expanded="false" />
+                <element signature="e#12585#13563#0" expanded="false" />
+                <element signature="e#13609#13709#0" expanded="false" />
+                <element signature="e#13789#15581#0" expanded="false" />
+                <element signature="e#16925#17578#0" expanded="false" />
+                <element signature="e#17730#18564#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -187,8 +236,12 @@
       <find>PARKING_MC_BC</find>
       <find>PARKING_CAR</find>
       <find>fold</find>
-      <find>is_so</find>
       <find>softmax</find>
+      <find>add_measure</find>
+      <find>is_so</find>
+      <find>get_prob</find>
+      <find>y_train</find>
+      <find>conv</find>
     </findStrings>
     <replaceStrings>
       <replace>print($1)</replace>
@@ -199,6 +252,7 @@
       <replace>diff_prev_distance</replace>
       <replace>length</replace>
       <replace>OTHER</replace>
+      <replace>add_raw_sensor_value</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -207,7 +261,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/try_tensorflow.py" />
         <option value="$PROJECT_DIR$/deep_learning_keras/test_keras.py" />
         <option value="$PROJECT_DIR$/visualization/show_plots.py" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/ground_truth.py" />
@@ -226,33 +279,39 @@
         <option value="$PROJECT_DIR$/drive_by_evaluation/parking_map_clustering/dbscan_clustering.py" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/tree_pruned.dot" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras/lstm.py" />
-        <option value="$PROJECT_DIR$/drive_by_evaluation/measurement.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/visualization/visualization.py" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/confusion_matrix_util.py" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/staged_model.py" />
-        <option value="$PROJECT_DIR$/drive_by_evaluation/visualization/get_dataset_size.py" />
-        <option value="$PROJECT_DIR$/drive_by_evaluation/measure_collection.py" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/whole_dataset.arff" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/whole_dataset_binary_parking_no_parking.arff" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/whole_dataset_binary_overtaking_situations.arff" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning_raw.py" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras/test_keras1.py" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/plots/simple_models_comparison_plot.py" />
-        <option value="$PROJECT_DIR$/drive_by_evaluation/parking_map_clustering/dbscan_clustering_directional.py" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/roc_curve.py" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/tree_pruned_parknet_maxdepth2.dot" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning.py" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/parking_map_filtered_dataset_binary_overtaking.arff" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/parking_map_filtered_dataset_binary_parking.arff" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning_tree.py" />
-        <option value="$PROJECT_DIR$/drive_by_evaluation/visualization/show_plots.py" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/results/classic_results_20180325.txt" />
-        <option value="$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras/conv.py" />
-        <option value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/db_data_set.py" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/models.py" />
-        <option value="$PROJECT_DIR$/drive_by_evaluation/evaluate.py" />
+        <option value="$PROJECT_DIR$/drive_by_evaluation/parking_map_clustering/dbscan_clustering_directional.py" />
+        <option value="$PROJECT_DIR$/../../document/code/parking_space_map_clustering.py" />
+        <option value="$PROJECT_DIR$/../../document/code/clustering_metric.py" />
+        <option value="$PROJECT_DIR$/../../document/code/data_segmentation.py" />
+        <option value="$PROJECT_DIR$/drive_by_evaluation/measurement.py" />
+        <option value="$PROJECT_DIR$/../../document/code/interpolation.py" />
+        <option value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/db_data_set.py" />
+        <option value="$PROJECT_DIR$/drive_by_evaluation/enhanced_distance_dataset_10_full_dataset.arff" />
+        <option value="$PROJECT_DIR$/drive_by_evaluation/enhanced_distance_dataset_5_full_dataset.arff" />
+        <option value="$PROJECT_DIR$/drive_by_evaluation/visualization/show_plots.py" />
+        <option value="$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras/conv.py" />
+        <option value="$PROJECT_DIR$/drive_by_evaluation/measure_collection.py" />
         <option value="$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras/evaluate_keras.py" />
+        <option value="$PROJECT_DIR$/drive_by_evaluation/visualization/get_dataset_size.py" />
+        <option value="$PROJECT_DIR$/drive_by_evaluation/evaluate.py" />
       </list>
     </option>
   </component>
@@ -262,10 +321,11 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-7" />
-    <option name="width" value="1546" />
-    <option name="height" value="830" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-2075" />
+    <option name="y" value="-20" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -283,8 +343,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -301,13 +361,31 @@
               <item name="drive-by-multi-lane-parking-detection-evaluation" type="b2602c69:ProjectViewProjectNode" />
               <item name="drive-by-multi-lane-parking-detection-evaluation" type="462c0819:PsiDirectoryNode" />
               <item name="drive_by_evaluation" type="462c0819:PsiDirectoryNode" />
+              <item name="db_machine_learning" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="drive-by-multi-lane-parking-detection-evaluation" type="b2602c69:ProjectViewProjectNode" />
+              <item name="drive-by-multi-lane-parking-detection-evaluation" type="462c0819:PsiDirectoryNode" />
+              <item name="drive_by_evaluation" type="462c0819:PsiDirectoryNode" />
               <item name="deep_learning_keras" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="drive-by-multi-lane-parking-detection-evaluation" type="b2602c69:ProjectViewProjectNode" />
               <item name="drive-by-multi-lane-parking-detection-evaluation" type="462c0819:PsiDirectoryNode" />
               <item name="drive_by_evaluation" type="462c0819:PsiDirectoryNode" />
+              <item name="parking_map_clustering" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="drive-by-multi-lane-parking-detection-evaluation" type="b2602c69:ProjectViewProjectNode" />
+              <item name="drive-by-multi-lane-parking-detection-evaluation" type="462c0819:PsiDirectoryNode" />
+              <item name="drive_by_evaluation" type="462c0819:PsiDirectoryNode" />
               <item name="results" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="drive-by-multi-lane-parking-detection-evaluation" type="b2602c69:ProjectViewProjectNode" />
+              <item name="drive-by-multi-lane-parking-detection-evaluation" type="462c0819:PsiDirectoryNode" />
+              <item name="drive_by_evaluation" type="462c0819:PsiDirectoryNode" />
+              <item name="visualization" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -319,7 +397,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="settings.editor.selected.configurable" value="PyConsoleConfigurable.Python Console" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras/test_keras1.py" />
-    <property name="SearchEverywhereHistoryKey" value="dataset&#9;FILE&#9;file://C:/sw/master/code/drive-by-multi-lane-parking-detection-evaluation/drive_by_evaluation/db_machine_learning/db_data_set.py&#10;ground&#9;FILE&#9;file://C:/sw/master/code/drive-by-multi-lane-parking-detection-evaluation/drive_by_evaluation/ground_truth.py&#10;db&#9;FILE&#9;file://C:/sw/master/code/drive-by-multi-lane-parking-detection-evaluation/drive_by_evaluation/db_machine_learning/db_data_set.py" />
+    <property name="SearchEverywhereHistoryKey" value="measureme&#9;FILE&#9;file://C:/sw/master/code/drive-by-multi-lane-parking-detection-evaluation/drive_by_evaluation/measurement.py&#10;co&#9;FILE&#9;file://C:/sw/master/code/drive-by-multi-lane-parking-detection-evaluation/drive_by_evaluation/deep_learning_keras/conv.py&#10;ground&#9;null&#9;null&#10;dataset&#9;FILE&#9;file://C:/sw/master/code/drive-by-multi-lane-parking-detection-evaluation/drive_by_evaluation/db_machine_learning/db_data_set.py&#10;db&#9;FILE&#9;file://C:/sw/master/code/drive-by-multi-lane-parking-detection-evaluation/drive_by_evaluation/db_machine_learning/db_data_set.py" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -371,6 +449,25 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
+    <configuration name="db_data_set" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="drive-by-tensor-flow-ml" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/db_data_set.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
     <configuration name="evaluate" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -390,45 +487,26 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="machine_learning" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="get_dataset_size" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/drive_by_evaluation/visualization" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="drive-by-tensor-flow-ml" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/drive_by_evaluation/visualization/get_dataset_size.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="machine_learning_tree" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="drive-by-tensor-flow-ml" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning_tree.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-    </configuration>
-    <configuration name="roc_curve" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="measure_collection" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -441,7 +519,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="drive-by-tensor-flow-ml" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/drive_by_evaluation/roc_curve.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/drive_by_evaluation/measure_collection.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -617,17 +695,17 @@
       <item index="0" class="java.lang.String" itemvalue="Python.test_keras1" />
       <item index="1" class="java.lang.String" itemvalue="Python.show_plots" />
       <item index="2" class="java.lang.String" itemvalue="Python.evaluate" />
-      <item index="3" class="java.lang.String" itemvalue="Python.machine_learning" />
-      <item index="4" class="java.lang.String" itemvalue="Python.roc_curve" />
-      <item index="5" class="java.lang.String" itemvalue="Python.machine_learning_tree" />
+      <item index="3" class="java.lang.String" itemvalue="Python.measure_collection" />
+      <item index="4" class="java.lang.String" itemvalue="Python.db_data_set" />
+      <item index="5" class="java.lang.String" itemvalue="Python.get_dataset_size" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.evaluate" />
-        <item index="1" class="java.lang.String" itemvalue="Python.show_plots" />
-        <item index="2" class="java.lang.String" itemvalue="Python.machine_learning_tree" />
-        <item index="3" class="java.lang.String" itemvalue="Python.machine_learning" />
-        <item index="4" class="java.lang.String" itemvalue="Python.roc_curve" />
+        <item index="1" class="java.lang.String" itemvalue="Python.get_dataset_size" />
+        <item index="2" class="java.lang.String" itemvalue="Python.show_plots" />
+        <item index="3" class="java.lang.String" itemvalue="Python.db_data_set" />
+        <item index="4" class="java.lang.String" itemvalue="Python.measure_collection" />
       </list>
     </recent_temporary>
   </component>
@@ -653,29 +731,28 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
-    <editor active="true" />
+    <frame x="-1928" y="-8" width="1552" height="840" extended-state="6" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39130434" sideWeight="0.50416666" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.079166666" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="0" y="0" width="434" height="856" />
+      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.098958336" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="0" y="0" width="434" height="856" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32131496" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22163309" sideWeight="0.49583334" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.77441543" sideWeight="0.49583334" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32873806" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20104167" sideWeight="0.4943274" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2513021" sideWeight="0.4943274" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32767764" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25625" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3160981" sideWeight="0.50567263" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39955848" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39872748" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32767764" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
     </layout>
@@ -695,7 +772,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="23" />
+      <option name="time" value="30" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -704,88 +781,10 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://C:/python3/Lib/site-packages/sklearn/tree/export.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="304" column="0" lean-forward="false" selection-start-line="304" selection-start-column="0" selection-end-line="304" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/parking_space_maps/try_dxfgrabber.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="427">
-          <caret line="34" column="0" lean-forward="true" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/parking_map_clustering/dbscan_clustering.py" />
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/ground_truth_tagging/tag_ground_truth.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2163">
-          <caret line="132" column="19" lean-forward="false" selection-start-line="101" selection-start-column="4" selection-end-line="132" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/tree_pruned.dot">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="37" column="26" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="63" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/custom_clf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
-          <caret line="53" column="8" lean-forward="true" selection-start-line="53" selection-start-column="8" selection-end-line="53" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="5" column="10" lean-forward="false" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/try_tensorflow.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/python3/Lib/site-packages/sklearn/linear_model/logistic.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="1172" column="0" lean-forward="false" selection-start-line="1172" selection-start-column="0" selection-end-line="1172" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/python3/Lib/site-packages/mlxtend/classifier/stacking_classification.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2352">
-          <caret line="119" column="0" lean-forward="false" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/python3/Lib/site-packages/sklearn/tree/tree.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="451">
-          <caret line="738" column="0" lean-forward="false" selection-start-line="738" selection-start-column="0" selection-end-line="738" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/drive_by_evaluation/visualization/visualization.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4830">
           <caret line="243" column="0" lean-forward="false" selection-start-line="243" selection-start-column="0" selection-end-line="243" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/visualization/get_dataset_size.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="21" column="13" lean-forward="false" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -810,24 +809,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/ground_truth.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="19" column="71" lean-forward="false" selection-start-line="19" selection-start-column="54" selection-end-line="19" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/whole_dataset_binary_parking_no_parking.arff">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning_raw.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="184" column="126" lean-forward="true" selection-start-line="184" selection-start-column="38" selection-end-line="184" selection-end-column="126" />
         </state>
       </provider>
     </entry>
@@ -852,7 +837,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
           <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -860,27 +844,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="16" column="0" lean-forward="true" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/roc_curve.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="986">
-          <caret line="82" column="9" lean-forward="false" selection-start-line="82" selection-start-column="9" selection-end-line="82" selection-end-column="9" />
-          <folding>
-            <element signature="e#16#34#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/parking_map_clustering/dbscan_clustering_directional.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1598">
-          <caret line="128" column="47" lean-forward="false" selection-start-line="128" selection-start-column="47" selection-end-line="128" selection-end-column="47" />
-          <folding>
-            <element signature="e#970#1690#0" expanded="false" />
-            <element signature="e#1803#2039#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -895,20 +858,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
           <caret line="3304" column="4" lean-forward="false" selection-start-line="3304" selection-start-column="4" selection-end-line="3304" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1037">
-          <caret line="136" column="123" lean-forward="false" selection-start-line="135" selection-start-column="4" selection-end-line="136" selection-end-column="123" />
-          <folding>
-            <element signature="e#0#9#0" expanded="false" />
-            <element signature="e#1123#2116#0" expanded="false" />
-            <element signature="e#2196#3658#0" expanded="false" />
-            <element signature="e#3709#4374#0" expanded="false" />
-            <element signature="e#4438#4860#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -937,7 +886,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="15" column="1" lean-forward="false" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -949,44 +897,11 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/drive_by_evaluation/gps_curve.py" />
-    <entry file="file://$USER_HOME$/AppData/Local/Temp/lines3d_demo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/measurement.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="582">
-          <caret line="55" column="0" lean-forward="true" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/lines3d_demo.py" />
     <entry file="file://C:/python3/Lib/site-packages/sklearn/naive_bayes.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
           <caret line="106" column="6" lean-forward="false" selection-start-line="106" selection-start-column="6" selection-end-line="106" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/visualization/show_plots.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1802">
-          <caret line="223" column="0" lean-forward="false" selection-start-line="223" selection-start-column="0" selection-end-line="223" selection-end-column="0" />
-          <folding>
-            <element signature="e#1#41#0" expanded="false" />
-            <element signature="e#1342#2000#0" expanded="false" />
-            <element signature="e#2099#2635#0" expanded="false" />
-            <element signature="e#2689#3175#0" expanded="false" />
-            <element signature="e#3232#3719#0" expanded="false" />
-            <element signature="e#3777#4040#0" expanded="false" />
-            <element signature="e#4095#4904#0" expanded="false" />
-            <element signature="e#4993#6061#0" expanded="false" />
-            <element signature="e#7143#8395#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1009,33 +924,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="455">
           <caret line="582" column="0" lean-forward="false" selection-start-line="582" selection-start-column="0" selection-end-line="582" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning_tree.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="54" column="11" lean-forward="false" selection-start-line="54" selection-start-column="11" selection-end-line="54" selection-end-column="11" />
-          <folding>
-            <element signature="e#1#19#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/measure_collection.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="373" column="51" lean-forward="true" selection-start-line="373" selection-start-column="51" selection-end-line="375" selection-end-column="73" />
-          <folding>
-            <element signature="e#781#3566#0" expanded="false" />
-            <element signature="e#3611#3794#0" expanded="false" />
-            <element signature="e#10643#11673#0" expanded="false" />
-            <element signature="e#11751#11803#0" expanded="false" />
-            <element signature="e#11881#12381#0" expanded="false" />
-            <element signature="e#12439#13417#0" expanded="false" />
-            <element signature="e#13463#13563#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1043,7 +931,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
           <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1052,16 +939,8 @@
         <state relative-caret-position="200">
           <caret line="12" column="27" lean-forward="false" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
           <folding>
-            <element signature="e#1#19#0" expanded="true" />
+            <element signature="e#1#19#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras/conv.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="72" column="0" lean-forward="true" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1073,59 +952,256 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/db_data_set.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="8" lean-forward="false" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#61#0" expanded="true" />
-            <element signature="e#684#1009#0" expanded="false" />
-            <element signature="e#1079#1487#0" expanded="false" />
-            <element signature="e#1560#1752#0" expanded="false" />
-            <element signature="e#2621#3442#0" expanded="false" />
-            <element signature="e#3567#5616#0" expanded="false" />
-            <element signature="e#5767#7059#0" expanded="false" />
-            <element signature="e#7174#7849#0" expanded="false" />
-            <element signature="e#7988#8653#0" expanded="false" />
-            <element signature="e#11241#12143#0" expanded="false" />
-            <element signature="e#12245#13071#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/python3/Lib/site-packages/keras/engine/training.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="164">
           <caret line="143" column="0" lean-forward="false" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../document/code/parking_space_map_clustering.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../document/code/clustering_metric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="0" lean-forward="true" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/parking_map_clustering/dbscan_clustering_directional.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="52">
+          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="17" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#18#0" expanded="false" />
+            <element signature="e#1743#1979#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../document/code/data_segmentation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../document/code/interpolation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="43" lean-forward="false" selection-start-line="9" selection-start-column="43" selection-end-line="9" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/ground_truth.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/evaluate.py">
+    <entry file="file://$USER_HOME$/.PyCharm2017.3/system/python_stubs/-238803728/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="169" column="48" lean-forward="true" selection-start-line="169" selection-start-column="48" selection-end-line="169" selection-end-column="48" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-            <element signature="e#3058#4225#0" expanded="false" />
-            <element signature="e#8732#10527#0" expanded="false" />
-            <element signature="e#10608#12242#0" expanded="false" />
-            <element signature="e#12444#14894#0" expanded="false" />
-            <element signature="e#17439#18200#0" expanded="false" />
-            <element signature="e#18810#19736#0" expanded="false" />
-            <element signature="e#20562#20583#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="236">
+          <caret line="4167" column="8" lean-forward="false" selection-start-line="4167" selection-start-column="8" selection-end-line="4167" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/roc_curve.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-138">
+          <caret line="82" column="9" lean-forward="false" selection-start-line="82" selection-start-column="9" selection-end-line="82" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning_raw.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2618">
+          <caret line="184" column="126" lean-forward="false" selection-start-line="184" selection-start-column="38" selection-end-line="184" selection-end-column="126" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/whole_dataset_new.arff">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/parking_map_filtered_dataset_new.arff">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/enhanced_distance_dataset_50_full_dataset.arff" />
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/enhanced_distance_dataset_10_full_dataset.arff">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/enhanced_distance_dataset_5_full_dataset.arff">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-323">
+          <caret line="14" column="21" lean-forward="true" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="593">
+          <caret line="136" column="123" lean-forward="false" selection-start-line="135" selection-start-column="4" selection-end-line="136" selection-end-column="123" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/custom_clf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="593">
+          <caret line="53" column="8" lean-forward="false" selection-start-line="53" selection-start-column="8" selection-end-line="53" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras/evaluate_keras.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2689">
-          <caret line="171" column="38" lean-forward="false" selection-start-line="171" selection-start-column="38" selection-end-line="171" selection-end-column="38" />
+        <state relative-caret-position="1833">
+          <caret line="493" column="21" lean-forward="false" selection-start-line="493" selection-start-column="17" selection-end-line="493" selection-end-column="21" />
           <folding>
-            <element signature="e#1#36#0" expanded="true" />
-            <element signature="e#5788#6672#0" expanded="false" />
-            <element signature="e#7233#9009#0" expanded="false" />
+            <element signature="e#13583#14467#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/machine_learning_tree.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="15" column="40" lean-forward="false" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/deep_learning_keras/conv.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="918">
+          <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/measure_collection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="850">
+          <caret line="114" column="18" lean-forward="false" selection-start-line="114" selection-start-column="8" selection-end-line="114" selection-end-column="18" />
+          <folding>
+            <element signature="e#1#10#0" expanded="true" />
+            <element signature="e#800#3585#0" expanded="false" />
+            <element signature="e#3630#3813#0" expanded="false" />
+            <element signature="e#4363#5152#0" expanded="false" />
+            <element signature="e#6419#6488#0" expanded="false" />
+            <element signature="e#6597#7177#0" expanded="false" />
+            <element signature="e#7183#7273#0" expanded="false" />
+            <element signature="e#7857#9947#0" expanded="false" />
+            <element signature="e#10044#10265#0" expanded="false" />
+            <element signature="e#10365#10705#0" expanded="false" />
+            <element signature="e#10789#11819#0" expanded="false" />
+            <element signature="e#11897#11949#0" expanded="false" />
+            <element signature="e#12027#12527#0" expanded="false" />
+            <element signature="e#12585#13563#0" expanded="false" />
+            <element signature="e#13609#13709#0" expanded="false" />
+            <element signature="e#13789#15581#0" expanded="false" />
+            <element signature="e#16925#17578#0" expanded="false" />
+            <element signature="e#17730#18564#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/measurement.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2550">
+          <caret line="153" column="50" lean-forward="false" selection-start-line="139" selection-start-column="0" selection-end-line="153" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/db_machine_learning/db_data_set.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="19" column="34" lean-forward="false" selection-start-line="19" selection-start-column="34" selection-end-line="19" selection-end-column="34" />
+          <folding>
+            <element signature="e#893#1218#0" expanded="false" />
+            <element signature="e#1288#1696#0" expanded="false" />
+            <element signature="e#1769#1961#0" expanded="false" />
+            <element signature="e#2830#3651#0" expanded="false" />
+            <element signature="e#3776#5825#0" expanded="false" />
+            <element signature="e#5976#7268#0" expanded="false" />
+            <element signature="e#7383#8058#0" expanded="false" />
+            <element signature="e#8197#8862#0" expanded="false" />
+            <element signature="e#11450#12352#0" expanded="false" />
+            <element signature="e#12454#13280#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/visualization/show_plots.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2669">
+          <caret line="267" column="0" lean-forward="false" selection-start-line="267" selection-start-column="0" selection-end-line="267" selection-end-column="0" />
+          <folding>
+            <element signature="e#1#41#0" expanded="true" />
+            <element signature="e#1361#2019#0" expanded="false" />
+            <element signature="e#2118#2654#0" expanded="false" />
+            <element signature="e#2708#3194#0" expanded="false" />
+            <element signature="e#3251#3738#0" expanded="false" />
+            <element signature="e#3796#4059#0" expanded="false" />
+            <element signature="e#4114#4923#0" expanded="false" />
+            <element signature="e#6153#7074#0" expanded="false" />
+            <element signature="e#8500#8744#0" expanded="false" />
+            <element signature="e#8815#9145#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/visualization/get_dataset_size.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="39" column="0" lean-forward="false" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#68#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drive_by_evaluation/evaluate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="479" column="52" lean-forward="true" selection-start-line="479" selection-start-column="52" selection-end-line="479" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#2058#2564#0" expanded="false" />
+            <element signature="e#2606#7217#0" expanded="false" />
+            <element signature="e#7274#8490#0" expanded="false" />
+            <element signature="e#8657#10969#0" expanded="false" />
+            <element signature="e#11020#12815#0" expanded="false" />
+            <element signature="e#12896#14530#0" expanded="false" />
+            <element signature="e#14597#16586#0" expanded="false" />
+            <element signature="e#16713#18183#0" expanded="false" />
+            <element signature="e#16774#17484#0" expanded="false" />
+            <element signature="e#20663#21023#0" expanded="false" />
+            <element signature="e#21146#23504#0" expanded="false" />
+            <element signature="e#21730#22254#0" expanded="false" />
+            <element signature="e#22332#22930#0" expanded="false" />
+            <element signature="e#24162#24923#0" expanded="false" />
+            <element signature="e#25469#26395#0" expanded="false" />
+            <element signature="e#26401#26496#0" expanded="false" />
+            <element signature="e#34575#34596#0" expanded="false" />
           </folding>
         </state>
       </provider>

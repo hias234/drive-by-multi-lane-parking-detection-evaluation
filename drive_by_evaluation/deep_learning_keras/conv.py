@@ -1,9 +1,12 @@
 from keras.models import Sequential
 from keras.layers import Embedding, LSTM, Dropout, Dense, Conv1D, GlobalMaxPool1D, GlobalAveragePooling1D
+from drive_by_evaluation.db_machine_learning.db_data_set import DataSet
 
 
 def conv_model_128_epochs(dataset, x_train, y_train):
-    maxlen = 1026
+    y_train_softmax = DataSet.to_softmax_y(y_train, dataset.class_labels)
+
+    maxlen = 100
     embedding_dims = 50
     max_features = 500
 
@@ -30,7 +33,7 @@ def conv_model_128_epochs(dataset, x_train, y_train):
     # here, 20-dimensional vectors.
     model.add(Embedding(max_features,
                         embedding_dims,
-                        #input_length=maxlen
+                        input_length=maxlen
                         ))
     model.add(Dropout(0.2))
 
@@ -71,7 +74,7 @@ def conv_model_128_epochs(dataset, x_train, y_train):
                   optimizer='adam',
                   metrics=['accuracy'])
 
-    model.fit(x_train, y_train,
+    model.fit(x_train, y_train_softmax,
               epochs=100,
               batch_size=128)
 

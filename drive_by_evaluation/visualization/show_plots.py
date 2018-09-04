@@ -6,6 +6,7 @@ import gmplot
 
 from drive_by_evaluation.ground_truth import GroundTruthClass
 from drive_by_evaluation.measure_collection import MeasureCollection
+import numpy as np
 
 
 class MeasurementVisualization:
@@ -140,7 +141,7 @@ class MeasurementVisualization:
             elif GroundTruthClass.is_parking_motorcycle_or_bicycle(probable_gt):
                 color = 'yellow'
             plt.plot(xs, ys, color=color)
-            plt.scatter(xs, ys, color='black', s=5)
+            #plt.scatter(xs, ys, color='black', s=5)
 
             #plt.scatter([measure_collection.first_measure().timestamp], [measure_collection.get_acceleration() * 1000], color='orange')
         fig.show()
@@ -180,8 +181,8 @@ class MeasurementVisualization:
                     measures.extend(measure_collections[j].measures)
                     j += 1
                 self.show_distance_signal(measures, fig=fig, base_timestamp=base_timestamp, color='black')
-                #self.show_distance_signal(measure_collections[i].measures, fig=fig, color='g',
-                #                                  base_timestamp=base_timestamp)
+                self.show_distance_signal(measure_collections[i].measures, fig=fig, color='g',
+                                                  base_timestamp=base_timestamp)
                 j = 0 if i < 10 else i - 10
                 while j <= stop:
                     if measure_collections[j].get_probable_ground_truth() in classes:
@@ -227,10 +228,8 @@ if __name__ == '__main__':
         'mc_merge': True,
         'mc_separation_threshold': 1.0,
         'mc_min_measure_count': 2,
-        #'mc_surrounding_times_s': [2.0, 5.0],
         'outlier_threshold_distance': 1.0,
         'outlier_threshold_diff': 0.5,
-        'replacement_values': {0.01: 10.01},
         'min_measurement_value': 0.06,
     }
 
@@ -248,13 +247,20 @@ if __name__ == '__main__':
     #measure_collections_files_dir = filter_parking_space_map_mcs(measure_collections_files_dir,
     #                                                             parking_space_map_clusters)
 
+    #print(np.sqrt(MeasureCollection.calculate_avg_distance_variance_parking_car(measure_collections_dir)))
+    #print(np.sqrt(MeasureCollection.calculate_avg_distance_variance_parking_car(measure_collections_dir, surrounding_samples=2)))
+    #print(np.sqrt(MeasureCollection.calculate_avg_distance_variance_parking_car(measure_collections_dir, surrounding_samples=3)))
+    #print(np.sqrt(MeasureCollection.calculate_avg_distance_variance_parking_car(measure_collections_dir, surrounding_samples=5)))
+    #print(np.sqrt(MeasureCollection.calculate_avg_distance_variance_parking_car(measure_collections_dir, surrounding_samples=10)))
+
     #gt25 = 0
     i = 1
     for file_name, measure_collection in measure_collections_dir.items():
-        if i == 1:
-            visualization.show_gps_graph(measure_collection)
+        #if i == 1:
+        #    visualization.show_gps_graph(measure_collection)
         #visualization.show_2d_scatter(measure_collection, fig=plt.figure(1))
         #visualization.show_distances_plus_segmentation(measure_collection, fig=plt.figure(i))
+        visualization.show_distance_for_class(measure_collection, [GroundTruthClass.OTHER_PARKING_CAR], plt.figure(i))
         #visualization.show_distance_for_class(measure_collection, [GroundTruthClass.OVERTAKEN_BICYCLE], fig=plt.figure(i))
         #gt25 += len([mc for mc in measure_collection if mc.get_probable_ground_truth() == GroundTruthClass.FREE_SPACE and mc.length >= 5])
         #free_space_measure_collections.extend([mc for mc in measure_collection if mc.get_probable_ground_truth() == GroundTruthClass.FREE_SPACE]);
@@ -271,6 +277,7 @@ if __name__ == '__main__':
     #visualization.show_distance_signal(measurements)
     #visualization.show_3d(measurements)
     #visualization.show_gps_locations(measurements)
+    print('done')
     plt.show()
 
     #visualization.show_gps_locations_mc(measure_collections_dir)

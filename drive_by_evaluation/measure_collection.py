@@ -2,6 +2,7 @@
 import os
 from geopy.distance import vincenty
 import csv
+import numpy as np
 
 from drive_by_evaluation.measurement import Measurement
 from drive_by_evaluation.ground_truth import GroundTruth, GroundTruthClass
@@ -131,14 +132,16 @@ class MeasureCollection:
         return 0
 
     def get_distance_variance(self):
-        if self.variance != -1.0:
-            return self.variance
-
-        sum_top = 0
-        for measure in self.measures:
-            sum_top = (measure.distance - self.avg_distance)**2
-
-        return sum_top / len(self.measures)
+        # if self.variance != -1.0:
+        #     return self.variance
+        #
+        # sum_top = 0
+        # for measure in self.measures:
+        #     sum_top = (measure.distance - self.avg_distance)**2
+        #
+        # return sum_top / len(self.measures)
+        self.variance = np.var([m.distance for m in self.measures])
+        return self.variance
 
     def get_duration(self):
         return self.last_measure().timestamp - self.first_measure().timestamp
@@ -382,3 +385,19 @@ class MeasureCollection:
                 total_seconds += last_ts - first_ts
 
         return cnt_measure_collections, cnt_measurements, total_seconds
+
+    @staticmethod
+    def calculate_avg_distance_variance_parking_car(measure_collections_dir, surrounding_samples=1, max_time_diff_s=11120):
+        variances = []
+        for name, mc_list in measure_collections_dir.items():
+            parking_car_segments = [s for s in mc_list if GroundTruthClass.is_parking_car(s.get_probable_ground_truth())]
+            for i in range(surrounding_samples, len(parking_car_segments) - 1 - surrounding_samples):
+                # check time diff constraints
+                if abs(parking_car_segments[i - surrounding_samples].first_measure().timestamp - parking_car_segments[i + surrounding_samples].first_measure().timestamp) < max_time_diff_s:
+                    distances = []
+                    for j in range(i - surrounding_samples, i + surrounding_samples + 1):
+                        distances.append(parking_car_segments[j].avg_distance)
+
+                    variances.append(np.var(distances))
+
+        return np.average(variances)
